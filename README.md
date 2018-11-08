@@ -1,8 +1,9 @@
 # Petri Nets and Efficient Proof Search using Coalescence
-This forms the submission for XX40211 Dissertation, MComp Comp.Sci. w/ Maths. for Adam Lassiter, University of Bath, GB, 2018-19.
+This forms the submission for XX40211 Dissertation, MComp Comp.Sci. w/ Maths. for Adam Lassiter, University of Bath, 2018-19.
 
 ## Prerequisites
-The following do not represent minimum requirements, but those used in development and testing.
+The following do not represent minimum requirements, but those used in development and testing.  
+~ Omitted ~
 
 ## Getting Started
 ```
