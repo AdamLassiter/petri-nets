@@ -1,0 +1,76 @@
+======================================================================
+TestEqualityOperator
+
+ TestEqualityOperator.TestAlphaEquivalence
+(x)(p x) == (y)(p y)
+(y)(p y) != (x)(p y)
+
+ TestEqualityOperator.TestMultisetProperty
+(x)(p x | p x) != (x)(p x)
+======================================================================
+TestStandardFusion
+
+ TestStandardFusion.TestOneBound
+(x)(u x | ̅u y | p x y) -> ()(p y y)
+
+ TestStandardFusion.TestTwoBound
+(y x)(u x | ̅u y | p x y) -> (u0)(p u0 u0)
+
+ TestStandardFusion.TestZeroBound
+()(u x | ̅u y | p x y) -> ()(u x | ̅u y | p x y)
+======================================================================
+TestFlatteningTheorem
+
+ TestFlatteningTheorem.TestOneBound
+!(q)(p x | !(q y)) -> (y0)(!(y1)(q y1 | ̅y̅0 y1) | !(q)(p x | y0 y))
+
+ TestFlatteningTheorem.TestTwoBound
+!(q y)(p x | !(q y)) -> (y0)(!()(q y | ̅y̅0) | !(q y)(p x | y0))
+
+ TestFlatteningTheorem.TestZeroBound
+!(p x | !(q y)) -> (y0)(!(q0 y1)(q0 y1 | ̅y̅0 q0 y1) | !()(p x | y0 q y))
+======================================================================
+TestCrossReplicatorFusion
+
+ TestCrossReplicatorFusion.TestOneBoundInner
+()(u x | !(y)(̅u y | p x y)) -> ()(p x x | !(y)(̅u y | p x y))
+
+ TestCrossReplicatorFusion.TestOneBoundOuter
+(x)(u x | !()(̅u y | p x y)) -> ()(p y y | !()(̅u y | p y y))
+
+ TestCrossReplicatorFusion.TestTwoBound
+(x)(u x | !(y)(̅u y | p x y)) -> (u0)(p u0 u0 | !(y)(̅u y | p u0 y))
+
+ TestCrossReplicatorFusion.TestZeroBound
+()(u x | !()(̅u y | p x y)) -> ()(u x | !()(̅u y | p x y))
+======================================================================
+TestIntraReplicatorFusion
+
+ TestIntraReplicatorFusion.TestOneBoundInner
+()(p x y | !(x)(u x | ̅u y)) -> ()(p x y | !(x)(u x | ̅u y))
+
+ TestIntraReplicatorFusion.TestOneBoundOuter
+(x)(p x y | !()(u x | ̅u y)) -> ()(p y y | u y | ̅u y | !()(u y | ̅u y))
+
+ TestIntraReplicatorFusion.TestTwoBound
+(y x)(p x y | !()(u x | ̅u y)) -> (u0)(p u0 u0 | u u0 | ̅u u0 | !()(u u0 | ̅u u0))
+
+ TestIntraReplicatorFusion.TestZeroBound
+()(!()(u x | ̅u y | p x y)) -> ()(!()(u x | ̅u y | p x y))
+======================================================================
+TestMultiReplicatorFusion
+
+ TestMultiReplicatorFusion.TestOneBoundInner
+()(p x y | !()(̅u y) | !(x)(u x)) -> ()(p x y | !()(̅u y) | !(x)(u x))
+
+ TestMultiReplicatorFusion.TestOneBoundOuter
+(x)(p x y | !()(̅u y) | !()(u x)) -> ()(p y y | !()(̅u y) | !()(u y))
+
+ TestMultiReplicatorFusion.TestTwoBoundOuterInner
+(x)(p x y | !(y)(̅u y) | !()(u x)) -> (u0)(p u0 y | !(y)(̅u y) | !()(u u0))
+
+ TestMultiReplicatorFusion.TestTwoBoundOuterOuter
+(y x)(p x y | !()(̅u y) | !()(u x)) -> (u0)(p u0 u0 | !()(̅u u0) | !()(u u0))
+
+ TestMultiReplicatorFusion.TestZeroBound
+()(p x y | !()(̅u y) | !()(u x)) -> ()(p x y | !()(̅u y) | !()(u x))

@@ -1,0 +1,85 @@
+\begin{thebibliography}{11}
+\providecommand{\natexlab}[1]{#1}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+
+\bibitem[{Dean and Ghemawat(2008)}]{mapreduce}
+Dean, Jeffrey and Ghemawat, Sanjay.
+\newblock MapReduce: Simplified Data Processing on Large Clusters.
+\newblock In \emph{Commun. ACM}, vol.~51(1):107--113 (2008).
+\newblock ISSN 0001-0782.
+
+\bibitem[{Ehrhard and Laurent(2010)}]{acyclic-solos}
+Ehrhard, Thomas and Laurent, Olivier.
+\newblock Acyclic Solos and Differential Interaction Nets.
+\newblock In \emph{Logical Methods in Computer Science}, vol.~6(3):1--36
+  (2010).
+\newblock ISSN 1860-5974.
+
+\bibitem[{Graf et~al.(2008)Graf, Lin and Kinshuk}]{learning-styles}
+Graf, Sabine, Lin, Taiyu and Kinshuk, Taiyu.
+\newblock The relationship between learning styles and cognitive traits –
+  Getting additional information for improving student modelling.
+\newblock In \emph{Computers in Human Behavior}, vol.~24(2):122--137 (2008).
+\newblock ISSN 0747-5632.
+
+\bibitem[{Hoare(1978)}]{csp}
+Hoare, C. A.~R.
+\newblock Communicating Sequential Processes.
+\newblock In \emph{Communications of the ACM}, vol.~21(8):666--677 (1978).
+\newblock ISSN 0001-0782.
+
+\bibitem[{Laneve et~al.(2001)Laneve, Parrow and Victor}]{solo-diagrams}
+Laneve, Cosimo, Parrow, Joachim and Victor, Bj{\"o}rn.
+\newblock Solo Diagrams.
+\newblock In \emph{Theoretical Aspects of Computer Software: 4th International
+  Symposium, TACS 2001 Sendai, Japan, October 29--31, 2001 Proceedings}, (pp.
+  127--144). Springer Berlin Heidelberg (2001).
+\newblock ISBN 978-3-540-45500-4.
+
+\bibitem[{Laneve and Victor(1999)}]{solo-calculus}
+Laneve, Cosimo and Victor, Bj{\"o}rn.
+\newblock Solos in Concert.
+\newblock In \emph{Automata, Languages and Programming: 26th International
+  Colloquium, ICALP'99 Prague, Czech Republic, July 11--15, 1999 Proceedings},
+  (pp. 513--523). Springer Berlin Heidelberg (1999).
+\newblock ISBN 978-3-540-48523-0.
+
+\bibitem[{Machado(2013)}]{lambda-calculus}
+Machado, Rodrigo.
+\newblock An Introduction to Lambda Calculus and Functional Programming.
+\newblock In \emph{Theoretical Computer Science (WEIT), 2013 2nd
+  Workshop-School on}, (pp. 26--33). IEEE (2013).
+\newblock ISBN 978-1-4799-3057-9.
+
+\bibitem[{Milner(1980)}]{ccs-syntax}
+Milner, Robin.
+\newblock \emph{A Calculus of Communicating Systems}, chap.~5, (pp. 65--83).
+\newblock Lecture Notes in Computer Science, 92 (1980).
+\newblock ISBN 978-3-540-10235-9.
+
+\bibitem[{Parrow and Victor(1998)}]{fusion-calculus}
+Parrow, J. and Victor, B.
+\newblock The fusion calculus: expressiveness and symmetry in mobile processes.
+\newblock (pp. 176--185). IEEE Publishing (1998).
+\newblock ISBN 0-8186-8506-9.
+\newblock ISSN 1043-6871.
+
+\bibitem[{Parrow(2001)}]{pi-calculus}
+Parrow, Joachim.
+\newblock An Introduction to the $\pi$-Calculus.
+\newblock In \emph{Handbook of Process Algebra}, (pp. 479--543). Elsevier
+  Science (2001).
+\newblock ISBN 1-281-03639-0.
+
+\bibitem[{Xu(2009)}]{pi-calculus-in-ccs}
+Xu, Xian.
+\newblock Expressing First-Order π-Calculus in Higher-Order Calculus of
+  Communicating Systems.
+\newblock In \emph{Journal of Computer Science and Technology},
+  vol.~24(1):122--137 (2009).
+\newblock ISSN 1000-9000.
+
+\end{thebibliography}

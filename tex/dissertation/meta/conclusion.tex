@@ -1,0 +1,25 @@
+Over the course of the project, a set of interacting systems have been built.
+A representation of a calculus expression may be built from a textual input.
+From here, it may be converted to a normal form, which itself can be trivially converted to a diagram.
+\textit{With further work, I would like to have seen a connect between the REPL calculus interface and the diagram REST server.}
+This normal form may then be reduced to a simpler expression, with functions for testing for $\alpha$-equivalence.
+Diagrams may be constructed, albeit only through hard-coding them into the application.
+These diagrams can be reduced and converted to an abstract representation through JSON.
+Each of these diagrams may then be visualised, manipulated and examined through each reduction step.
+These visualisations of the diagram objects are believed to be clear and allow for a more intuitive understanding of the subject of process calculi.\\
+
+Through this project's development, \textit{I believe that the diagram objects serve as a superior representation of the calculus.}
+The mathematical purity to Solo Diagrams is something to be admired.
+This, combined with the relative lack of further research, leaves a strong case for deeper investigation into Solo Diagrams.\\
+
+The shortfalls of the project can mostly be attributed to implementation difficulties in the technicalities of the Solo Calculus.
+Nevertheless, there could be much improvement on the visualiser, for better differentiating cases of ambiguity and for allowing richer interaction on the user end.
+\textit{Through further work, I would like to see the ability to build, destroy and edit diagrams from within the visualisation program.}\\
+
+The specifics of finding general solutions to usually very human-solvable problems such as $\alpha$-equivalence and construction of suitable $\sigma$s in reduction steps has given new perspective on the implied vs in-practice hardness of said problems.
+Contrary to the comment made in~\ref{sssec:diagram-implementation-analysis} as to reduction of diagrams being done through conversion to calculus expressions, \textit{I believe it would be easier to approach the problem from the opposite direction.}
+\textit{Implementation of the Solo Calculus would be eased through converting expressions to diagrams and reducing through their set of rules instead.}
+Nevertheless, calculus expressions remain the obvious choice as an interface in situations concerning textual input and output.\\
+
+Future research and development towards the subject of Proof Nets could prove influential and extensive.
+The reader is referred to later sections in the work of~\cite{solo-diagrams} and of~\cite{acyclic-solos}.

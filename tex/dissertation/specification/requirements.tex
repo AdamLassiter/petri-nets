@@ -1,0 +1,48 @@
+\subsection{Requirements}
+    
+    The following requirements seek to provide an estimate for the progress path the project will take.
+    The priorities of each requirement are \textit{must > should > may > might}.
+    Where these changed over time and where requirements were not met has been noted.
+   
+    \subsubsection{Solo Calculus}
+        The first part of the system will be focused on text-based calculus expressions only.
+        This will form a basis upon which to implement other features.
+        This system:
+        \begin{itemize}
+            \item \textit{Must} support input and output of text representing expressions.
+            \item \textit{Must} be able to perform reductions on inputted expressions and return these reductions.
+            \item \textit{Should} provide this functionality though a accessible and useable user interface.
+            \item \textit{Might} be implemented to evaluate expressions concurrently.
+                \textit{This was not achieved over the course of the project.}
+        \end{itemize}
+
+    \subsubsection{Solo Diagrams}
+        This will be the first extension of the system, allowing interoperability with diagrams.
+        This system:
+        \begin{itemize}
+            \item \textit{Must} support input and output of diagrams.
+                \textit{While this was achieved during the project, it was only in part.
+                The diagrams used remained hard-coded in the application.
+                It was hoped that this could have been achieved through inputting a calculus expression using the above, converting to a diagram and using it.}
+            \item \textit{Should} provide a conversion between diagrams and expressions.
+                \textit{Again, see above as to how this could have been achieved.}
+            \item \textit{Should} provide the same reductions as are provided to calculus expressions.
+            \item \textit{May} be able to produce step-by-step reductions.
+            \item \textit{Might} be implemented to evaluate diagrams concurrently.
+                \textit{Again, this was not achieved over the course of the project.
+                The construction of diagrams allows for easily dividing into independent subdiagrams, which may be reduced with no interaction with one another.
+                This would allow for a simple method to partition the dataset across multiple processes.}
+        \end{itemize}
+
+    \subsubsection{Diagram Visualisation}
+        The second extension will build on the previous Solo Diagrams and provide a graphical interface for input/output/manipulation of diagrams.
+        This should provide a clear visual real-time representation of how the calculus works.
+        This system:
+        \begin{itemize}
+            \item \textit{Must} provide a visualisation of diagrams through a graphical user interface.
+            \item \textit{Should} support input/output of a diagram from/to an expression.
+                \textit{Again, see above as to how this could have been achieved.}
+            \item \textit{Should} support manipulation of a diagram within the GUI.
+            \item \textit{Should} be both intuitive and feature-complete to provide an obvious improvement over the text-based input of expressions as described above.
+            \item \textit{May} be able to produce step-by-step reductions.
+        \end{itemize}

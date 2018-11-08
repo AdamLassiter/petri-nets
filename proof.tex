@@ -1,0 +1,226 @@
+\documentclass[twocolumn]{article}
+
+% ~~~~~~~~~~~~~~~~~~~~~~~ Preamble ~~~~~~~~~~~~~~~~~~~~~~~
+
+\usepackage{bpextra}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+
+\titleformat{\section}
+  {\normalfont\scshape}{\thesection}{1em}{}
+
+% no paragraph indent
+\setlength{\parindent}{0pt}
+\setlength{\columnsep}{2em}
+
+% delta-equals (unused)
+\def\deltaeq{\mathrel{\ensurestackMath{\stackon[1pt]{=}{\scriptstyle\Delta}}}}
+\def\defeq{::=}
+
+
+% indented definitions, lemmas etc
+\makeatletter
+\newtheoremstyle{indented}
+    {5pt}% space before
+    {5pt}% space after
+    {\addtolength{\@totalleftmargin}{0em}
+     \addtolength{\linewidth}{-0em}
+     \parshape 1 0em \linewidth}% body font
+    {-0em}% indent
+    {\bfseries}% header font
+    {.}% punctuation
+    {.5em}% after theorem header
+    {}% header specification (empty for default)
+\makeatother
+
+% theorems with global counter
+\theoremstyle{indented}
+\newtheorem{sec-ctr}{???}[section]
+\newtheorem{theorem}[sec-ctr]{Theorem}
+\newtheorem{definition}[sec-ctr]{Definition}
+\newtheorem*{definition*}{Definition}
+\newtheorem{lemma}[sec-ctr]{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{example}[sec-ctr]{Example}
+\newtheorem*{example*}{Example}
+\newtheorem*{examples}{Examples}
+\newtheorem{corollary}[sec-ctr]{Corollary}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem{remark}[sec-ctr]{Remark}
+\newtheorem*{remark*}{Remark}
+\newtheorem*{remarks}{Remarks}
+
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+\title{Petri Nets and Proof Search for Additive Classical Logic}
+\author{Adam Lassiter\\Department of Computer Science\\University of Bath \and Willem Heijltjes\\Department of Computer Science\\University of Bath}
+\date{\today}
+
+\begin{document}
+    \maketitle
+    \begin{abstract}
+        \textbf{We investigate efficient algorithms for proof search within additive classical logic.}
+    \end{abstract}
+
+    \section{Additive Classical Logic}
+
+        \begin{definition}{Logic Statements\\}
+            A \textit{statement} within additive classical logic is constructed as follows:
+            \begin{align*}
+                \quad A, B, C                &\defeq \bot \,|\, \top \,|\, a \,|\, \neg\, a \,|\, A \vee B \,|\, A \wedge B \\
+                \quad \Gamma, \Delta, \Sigma &\defeq A_1 \ldots A_n
+            \end{align*}
+            where $\vee, \wedge$ are additive disjunction and conjunction respectively.
+        \end{definition}
+
+        \begin{example*}
+        \end{example*}
+
+
+        \begin{definition}{Proof Trees\\}
+            Within \textit{additive classical logic}, a \textit{proof tree} is constructed from the following deductions: \\
+            \begin{minipage}[H]{.49\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{~}
+                        \RightLabel{$\top$R}
+                        \UnaryInfC{$\vdash \top$}
+                    \end{prooftree}
+                    \begin{prooftree}
+                        \AxiomC{~}
+                        \RightLabel{$a$R}
+                        \UnaryInfC{$\vdash a, \neg\, a$}
+                    \end{prooftree}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash \Gamma, A, B$}
+                        \RightLabel{$\vee$R}
+                        \UnaryInfC{$\vdash \Gamma, A \vee B$}
+                    \end{prooftree}
+            \end{minipage}
+            \begin{minipage}[H]{.49\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash \Gamma, A$}
+                        \AxiomC{$\vdash \Gamma, B$}
+                        \RightLabel{$\wedge$R}
+                        \BinaryInfC{$\vdash \Gamma, A \wedge B$}
+                    \end{prooftree}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash \Gamma$}
+                        \RightLabel{$w$R}
+                        \UnaryInfC{$\vdash \Gamma, A$}
+                    \end{prooftree}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash \Gamma, A, A$}
+                        \RightLabel{$c$R}
+                        \UnaryInfC{$\vdash \Gamma, A$}
+                    \end{prooftree}
+            \end{minipage}
+        That is, a proof tree provides, without context, a proof of its bottom statement.
+        \end{definition}
+
+        \begin{example*}
+        \end{example*}
+
+
+        \begin{lemma}
+            \textit{Additive linear logic} rules may be encoded within \textit{multiplicative linear logic} and vice versa.
+        \end{lemma}
+
+
+        \begin{definition}{Subproofs\\}
+            A \textit{subproof} is a set of \textit{tops} $\Gamma_1 \ldots \Gamma_n$ and a singleton \textit{bottom} $\Delta$ such that the tree provides a proof of $\Gamma_1 \ldots \Gamma_n \implies \Delta$.
+        \end{definition}
+
+        \begin{corollary}{Proof Tree Equivalence\\}
+            Equivalence of subproofs is defined up to equivalence of tops and bottoms.
+            Subsequently, proof trees may be manipulated by substituting equivalent subproofs.
+        \end{corollary}
+        
+        \begin{example*}
+        \end{example*}
+
+
+        \begin{definition}{Additive Stratification\\}
+            A proof tree is said to be \textit{additively stratified} if $\vdash A$ is structured as follows:
+            \begin{prooftree}
+                \AxiomC{}
+                \UnaryInfC{$\vdash \top$}
+                \LeftLabel{$w*$}
+                \DeduceC{}
+                \UnaryInfC{$\vdash \Gamma_1$}
+                \LeftLabel{$\wedge*, \vee*$}
+                \ddotsDeduce\DeduceC{}
+                \AxiomC{}
+                \UnaryInfC{$\vdash a, \neg\, a$}
+                \RightLabel{$w*$}
+                \DeduceC{}
+                \UnaryInfC{$\vdash \Gamma_n$}
+                \RightLabel{$\wedge*, \vee*$}
+                \dotsdDeduce\DeduceC{}
+                \BinaryInfC{$\vdash \Delta \ldots \Delta$}
+                \RightLabel{$c*$}
+                \DeduceC{}
+                \UnaryInfC{$\vdash A$}
+            \end{prooftree}
+            That is, the deductions made in an additively stratified proof are strictly ordered by:
+            \setlist{nolistsep}
+            \begin{itemize}[noitemsep]
+                \item Top/Atomic
+                \item Weakening
+                \item Conjunction/Disjunction
+                \item Contraction
+            \end{itemize}
+        \end{definition}
+        
+        \begin{example*}
+        \end{example*}
+
+
+        \begin{theorem}{Stratification Equivalence\\}
+            Given $\vdash A$, there exists an additively stratified proof of $A$.
+        \end{theorem}
+        \begin{proof}
+            By examining each neighbouring pair of deductions.
+            \begin{enumerate}
+                \item For each instance of a weakening below another deduction, there exists an equivalent subproof that is additively stratified.
+                \item Similarly, for each instance of a contraction above another deduction, there exists an equivalent subproof that is additively stratified.
+                \item Finally, given any proof tree, the process of continued substitutions both halts and produces an additively stratified proof tree.
+            \end{enumerate}
+        \end{proof}
+
+
+
+    \section{Petri Nets}
+        
+        \begin{definition}{Petri Nets\\}
+            A petri net is \ldots
+        \end{definition}
+
+        \begin{example*}
+        \end{example*}
+
+        
+        \begin{definition}{Coalescence\\}
+            The coalescence algorithm is \ldots
+        \end{definition}
+
+
+        \begin{theorem}{Coalescence Proof Search\\}
+            The coalescence algorithm is a proof search \ldots
+        \end{theorem}
+
+        \begin{proof}
+            \begin{itemize}
+                \item $c$R $\equiv$ dimensionality
+                \item $a$R $\equiv$ 2-D token initialisation
+                \item $w$R $\equiv$ n-D extension of tokens
+                \item $\wedge$R, $\vee$R $\equiv$ petri net firing
+            \end{itemize}
+        \end{proof}
+        
+\end{document}

@@ -1,0 +1,68 @@
+\subsection{Solo Calculus}
+
+    Developed by Cosimo Laneve and Bj{\"o}rn Victor in the early 2000s, the Solo Calculus aims to be an improvement of the Fusion Calculus.
+    As such, there exists an encoding of the Fusion Calculus within the Solo Calculus (and hence an encoding of the $\pi$-calculus).
+    The name comes from the strong distinction between the components of the calculus: \textit{solos} and \textit{agents}.
+    These are roughly analogous to input/output actions and a calculus syntax similar to the $\pi$-calculus.
+    Through some clever design choices, the Solo Calculus is found to have some interesting properties over other process calculi.
+
+    \begin{definition}{Syntax\\}
+        \label{solo-calculus-syntax}
+        As defined by~\cite{solo-calculus}, the Solo Calculus is constructed from \textit{solos} ranged over by $\alpha, \beta \ldots$ and \textit{agents} ranged over by $P, Q \ldots$ as such:
+        \begin{center}
+            \begin{tabular}{ l l l }
+                $\alpha \quad \defeq$   & $u \, \tilde{x}$          & (input) \\
+                                        & $\bar{u} \, \tilde{x}$    & (output)~\footnotemark\\ \\
+                $P \quad \defeq$        & $0$                       & (inaction) \\
+                                        & $\alpha$                  & (solo) \\
+                                        & $Q \; | \; R$             & (composition) \\
+                                        & $(x) \, Q$                & (scope) \\
+                                        & $!\,P$                    & (replication)
+            \end{tabular}
+        \end{center}\footnotetext{$\tilde{x}$ is used as shorthand for any tuple $(x_1 \ldots x_n)$.}
+        where the scope operator $(x) \, P $ is a declaration of the named variable $x$ in $P$.
+        This ensures that $x$ is local to $P$, even if it assigned outside $P$ (ex. $(x \, y | (x) \, P)$ will never have $x \defeq y$ unless explicitly assigned such in P).
+    \end{definition}
+    This is a much more minimal syntax when compared to CCS (and certainly Higher-Order CCS as described by~\cite{pi-calculus-in-ccs}).
+    It will further be seen that the reduction rules retain this simplicity.
+    It should be noted that the names $u, x, etc\ldots$ within a solo may be treated as both channel names and as values.
+
+
+    \begin{remark*}{Match Operator\\}
+        The full definition by~\cite{solo-calculus} also includes the match operator $[x \, = \, y] \, P$ which computes $P$ if $x$ and $y$ are the same name, otherwise computes \textbf{0}.
+        It has been shown that the inclusion of the match operator is in fact extraneous, so it is excluded.
+    \end{remark*}
+
+
+    \begin{definition}{Structural Congruence\\}
+        The structural congruence relation $\equiv$ in the Solo Calculus is exactly that defined in Definition~\ref{fusion-calculus-structural-congruence}.
+    \end{definition}
+
+
+    \begin{definition}{Reduction\\}
+        Reduction semantics on solo expressions are defined as:
+        \begin{align*}
+            (x)(\bar{u} \, x \; | \; u \, y \; | \; P) \rightarrow & \, P\{y / x\} \\
+            P \rightarrow P' \implies &
+            \begin{cases}
+                P \; | \; Q \rightarrow P' \; | \; Q \\
+                (x) \, P \rightarrow (x) \, P' \\
+                P \equiv Q \text{ and } P' \equiv Q' \implies Q \rightarrow Q'
+            \end{cases}
+        \end{align*}
+        where $P\{y / x\}$ is $\alpha$-substitution of the name $x$ to the name $y$.
+    \end{definition}
+    The case of reducing $!P \rightarrow P \; | \; !P$ is rarely performed due to the potential explosion of terms.
+    Instead, it is subject to lazy evaluation --- the expansion is only performed in a reduction step if it is known that there exists an agent in $P$ that may perform a reduction.
+    Details of this will be seen later, or can be found discussed by~\cite{solo-diagrams}.
+    It is interesting to note also the asynchronous behaviour of the Solo Calculus.
+    Where in the $\pi$-calculus and CCS input/output actions where synchronised and preceded processes as guards, the Solo Calculus naturally treats all agents as unguarded and names may be substituted whenever is desired.
+    That is, there is no sequential aspect to the calculus, allowing for useful structural congruences, and terms may be evaluated exceptionally lazily.
+
+
+    \begin{remark*}
+        There exists an encoding of the Fusion Calculus within the Solo Calculus.
+        This can most easily be seen as an encoding of the choice-free Fusion Calculus as a combination of the above syntax and semantics of the Solo Calculus and also the prefix operator $\alpha \, . \, P$\footnotemark
+        \footnotetext{For further details,~\cite{solo-calculus} discuss this implementation in Section 3}.
+        Hence there exists an encoding of the $\pi$-calculus also, complete with the same style of guarded input/output communication.
+    \end{remark*}

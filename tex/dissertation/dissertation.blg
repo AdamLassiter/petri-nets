@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: dissertation.aux
+The style file: custom.bst
+Database file #1: dissertation.bib
+Warning--missing publisher in ccs-syntax
+Warning--empty booktitle in fusion-calculus
+You've used 13 entries,
+            2941 wiz_defined-function locations,
+            695 strings with 6934 characters,
+and the built_in function-call counts, 8275 in all, are:
+= -- 726
+> -- 194
+< -- 24
++ -- 86
+- -- 64
+* -- 547
+:= -- 1191
+add.period$ -- 58
+call.type$ -- 13
+change.case$ -- 93
+chr.to.int$ -- 14
+cite$ -- 15
+duplicate$ -- 652
+empty$ -- 701
+format.name$ -- 96
+if$ -- 1706
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 125
+newline$ -- 86
+num.names$ -- 52
+pop$ -- 245
+preamble$ -- 1
+purify$ -- 73
+quote$ -- 0
+skip$ -- 261
+stack$ -- 0
+substring$ -- 470
+swap$ -- 379
+text.length$ -- 13
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 111
+warning$ -- 2
+while$ -- 69
+width$ -- 0
+write$ -- 206
+(There were 2 warnings)
