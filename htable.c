@@ -15,7 +15,7 @@ const float htable_threshold = .75;
 
 
 // Get the n'th byte of a given value
-static char byteof(unsigned long long value, int n) {
+char byteof(unsigned long long value, int n) {
     return (value >> (8*n)) & 0xff;
 }
 
