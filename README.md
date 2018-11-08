@@ -23,5 +23,5 @@ This project remains the sole work of Adam Lassiter (https://gitlab.com/adamlass
 This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) for details.
 
 ## Acknowledgements
-* Willem Hejltjes - Project Supervisor
+* Willem Heijltjes - Project Supervisor
 
