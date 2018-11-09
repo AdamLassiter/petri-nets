@@ -1,9 +1,10 @@
-\documentclass[twocolumn]{article}
+\documentclass{article}
+%[twocolumn]
 
 % ~~~~~~~~~~~~~~~~~~~~~~~ Preamble ~~~~~~~~~~~~~~~~~~~~~~~
 
 \usepackage{bpextra}
-\usepackage[margin=0.75in]{geometry}
+\usepackage[margin=1.5in]{geometry}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{subcaption}
@@ -12,8 +13,8 @@
 \usepackage{titlesec}
 
 
-\titleformat{\section}
-  {\normalfont\scshape}{\thesection}{1em}{}
+%\titleformat{\section}
+%  {\normalfont\scshape}{\thesection}{1em}{}
 
 % no paragraph indent
 \setlength{\parindent}{0pt}
@@ -58,89 +59,106 @@
 
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-\title{Petri Nets and Proof Search for Additive Classical Logic}
+\title{Natural Proof Search for Classical Logic}
 \author{Adam Lassiter\\Department of Computer Science\\University of Bath \and Willem Heijltjes\\Department of Computer Science\\University of Bath}
 \date{\today}
 
 \begin{document}
     \maketitle
     \begin{abstract}
-        \textbf{We investigate efficient algorithms for proof search within additive classical logic.}
+        \textbf{We investigate a natural algorithm for proof search within classical logic.}
     \end{abstract}
 
     \section{Additive Classical Logic}
 
-        \begin{definition}{Logic Statements\\}
-            A \textit{statement} within additive classical logic is constructed as follows:
+        \begin{definition}{Formulae\\}
+            A \textit{formula} within additive classical logic is constructed as follows:
             \begin{align*}
                 \quad A, B, C                &\defeq \bot \,|\, \top \,|\, a \,|\, \neg\, a \,|\, A \vee B \,|\, A \wedge B \\
                 \quad \Gamma, \Delta, \Sigma &\defeq A_1 \ldots A_n
             \end{align*}
-            where $\vee, \wedge$ are additive disjunction and conjunction respectively.
+            where $\vee, \wedge$ are classical disjunction and conjunction respectively and $\Gamma, \Delta, \Sigma$ are contexts..
         \end{definition}
 
         \begin{example*}
         \end{example*}
 
 
-        \begin{definition}{Proof Trees\\}
-            Within \textit{additive classical logic}, a \textit{proof tree} is constructed from the following deductions: \\
-            \begin{minipage}[H]{.49\linewidth}
+        \begin{definition}{Sequent Proofs\\}
+            Within \textit{additive classical logic}, a \textit{sequent proof} is constructed from the following rules:\\
+            \begin{minipage}[H]{\linewidth}
+                \centering
+                \begin{minipage}[H]{.3\linewidth}
                     \begin{prooftree}
                         \AxiomC{~}
-                        \RightLabel{$\top$R}
+                        \RightLabel{$\top$}
                         \UnaryInfC{$\vdash \top$}
                     \end{prooftree}
                     \begin{prooftree}
                         \AxiomC{~}
-                        \RightLabel{$a$R}
+                        \RightLabel{$ax$}
                         \UnaryInfC{$\vdash a, \neg\, a$}
                     \end{prooftree}
+                \end{minipage}
+                \begin{minipage}[H]{.3\linewidth}
                     \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A, B$}
+                        \AxiomC{$\vdash \Gamma, A$}
                         \RightLabel{$\vee$R}
                         \UnaryInfC{$\vdash \Gamma, A \vee B$}
                     \end{prooftree}
-            \end{minipage}
-            \begin{minipage}[H]{.49\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma, A$}
                         \AxiomC{$\vdash \Gamma, B$}
                         \RightLabel{$\wedge$R}
                         \BinaryInfC{$\vdash \Gamma, A \wedge B$}
                     \end{prooftree}
+                \end{minipage}
+                \begin{minipage}[H]{.3\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma$}
-                        \RightLabel{$w$R}
+                        \RightLabel{$w$}
                         \UnaryInfC{$\vdash \Gamma, A$}
                     \end{prooftree}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma, A, A$}
-                        \RightLabel{$c$R}
+                        \RightLabel{$c$}
                         \UnaryInfC{$\vdash \Gamma, A$}
                     \end{prooftree}
-            \end{minipage}
-        That is, a proof tree provides, without context, a proof of its bottom statement.
+                \end{minipage}
+            \end{minipage}~\\
+            where $A, B, C$ are formulae and $\Gamma, \Delta, \Sigma$ are sequents.
+            A sequent proof provides, without context, a proof of its conclusion and each line of the proof represents a tautology.
         \end{definition}
 
         \begin{example*}
         \end{example*}
 
 
-        \begin{lemma}
-            \textit{Additive linear logic} rules may be encoded within \textit{multiplicative linear logic} and vice versa.
-        \end{lemma}
+        \begin{remark}
+            Within the context of weakening and contraction, \textit{additive} and \textit{multiplicative} rules are inter-derivable.
+        \end{remark}
 
 
-        \begin{definition}{Subproofs\\}
-            A \textit{subproof} is a set of \textit{tops} $\Gamma_1 \ldots \Gamma_n$ and a singleton \textit{bottom} $\Delta$ such that the tree provides a proof of $\Gamma_1 \ldots \Gamma_n \implies \Delta$.
+        \begin{definition}{Derivations\\}
+            A \textit{derivation} is a proof tree where the leaves need not necessarily be proven.
+            Given \textit{tops} $\Gamma_1 \ldots \Gamma_n$ for the sequent proof $\vdash \Delta$, the tree essentially provides a proof of $\Gamma_1 \ldots \Gamma_n \implies \Delta$.\\
+
+            A derivation is written as:
+            \begin{prooftree}
+                \AxiomC{$\vdash \Gamma_1$}
+                \AxiomC{$\ldots$}
+                \AxiomC{$\vdash \Gamma_n$}
+                \RightLabel{\textit{[label]}}
+                \doubleLine\TrinaryInfC{$\vdash \Delta$}
+            \end{prooftree}
+            where the \textit{label} describes which rules may be used within the derivation.
         \end{definition}
 
-        \begin{corollary}{Proof Tree Equivalence\\}
-            Equivalence of subproofs is defined up to equivalence of tops and bottoms.
-            Subsequently, proof trees may be manipulated by substituting equivalent subproofs.
+        \begin{corollary}{Derivation Equivalence\\}
+            A sequent proof is a derivation where all leaves of the tree are $\top$ or $a, \neg a$.
+            Equivalence of derivations may be weakly defined up to equivalence of leaves and conclusion.
         \end{corollary}
-        
+
         \begin{example*}
         \end{example*}
 
@@ -149,23 +167,16 @@
             A proof tree is said to be \textit{additively stratified} if $\vdash A$ is structured as follows:
             \begin{prooftree}
                 \AxiomC{}
-                \UnaryInfC{$\vdash \top$}
-                \LeftLabel{$w*$}
-                \DeduceC{}
-                \UnaryInfC{$\vdash \Gamma_1$}
-                \LeftLabel{$\wedge*, \vee*$}
-                \ddotsDeduce\DeduceC{}
+                \RightLabel{$ax, w$}
+                \doubleLine\UnaryInfC{$\vdash \Gamma_1$}
+                \AxiomC{\ldots}
                 \AxiomC{}
-                \UnaryInfC{$\vdash a, \neg\, a$}
-                \RightLabel{$w*$}
-                \DeduceC{}
-                \UnaryInfC{$\vdash \Gamma_n$}
-                \RightLabel{$\wedge*, \vee*$}
-                \dotsdDeduce\DeduceC{}
-                \BinaryInfC{$\vdash \Delta \ldots \Delta$}
-                \RightLabel{$c*$}
-                \DeduceC{}
-                \UnaryInfC{$\vdash A$}
+                \RightLabel{$ax, w$}
+                \doubleLine\UnaryInfC{$\vdash \Gamma_n$}
+                \RightLabel{$\wedge, \vee$}
+                \doubleLine\TrinaryInfC{$\vdash A \ldots A$}
+                \RightLabel{$c$}
+                \doubleLine\UnaryInfC{$\vdash A$}
             \end{prooftree}
             That is, the deductions made in an additively stratified proof are strictly ordered by:
             \setlist{nolistsep}
@@ -215,10 +226,11 @@
         \end{theorem}
 
         \begin{proof}
+            By relation of:
             \begin{itemize}
-                \item $c$R $\equiv$ dimensionality
-                \item $a$R $\equiv$ 2-D token initialisation
-                \item $w$R $\equiv$ n-D extension of tokens
+                \item $c$ $\iff$ dimensionality
+                \item $ax$ $\iff$ 2-D token initialisation
+                \item $w$ $\iff$ n-D extension of tokens
                 \item $\wedge$R, $\vee$R $\equiv$ petri net firing
             \end{itemize}
         \end{proof}
