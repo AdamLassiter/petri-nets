@@ -5,46 +5,46 @@ RBTreeNode *rbtree_node_alloc() {
     return (RBTreeNode *) malloc(sizeof(RBTreeNode));
 }
 
-RBTreeNode *rbtree_node_init(RBTreeNode *tree, void *value) {
-    if (tree) {
-        tree->red = 1;
-        tree->link[0] = tree->link[1] = NULL;
-        tree->value = value;
+RBTreeNode *rbtree_node_init(RBTreeNode *node, void *value) {
+    if (node) {
+        node->red = 1;
+        node->link[0] = node->link[1] = NULL;
+        node->value = value;
     }
-    return tree;
+    return node;
 }
 
 RBTreeNode *rbtree_node_create(void *value) {
     return rbtree_node_init(rbtree_node_alloc(), value);
 }
 
-void rbtree_node_dealloc(RBTreeNode *tree) {
-    if (tree) {
-        free(tree);
+void rbtree_node_dealloc(RBTreeNode *node) {
+    if (node) {
+        free(node);
     }
 }
 
-bool rbtree_node_is_red(const RBTreeNode *tree) {
-    return tree ? tree->red : false;
+bool rbtree_node_is_red(const RBTreeNode *node) {
+    return node ? node->red : false;
 }
 
-RBTreeNode *rbtree_node_rotate(RBTreeNode *tree, int dir) {
+RBTreeNode *rbtree_node_rotate(RBTreeNode *node, int dir) {
     RBTreeNode *result = NULL;
-    if (tree) {
-        result = tree->link[!dir];
-        tree->link[!dir] = result->link[dir];
-        result->link[dir] = tree;
-        tree->red = 1;
+    if (node) {
+        result = node->link[!dir];
+        node->link[!dir] = result->link[dir];
+        result->link[dir] = node;
+        node->red = 1;
         result->red = 0;
     }
     return result;
 }
 
-RBTreeNode *rbtree_node_rotate2(RBTreeNode *tree, int dir) {
+RBTreeNode *rbtree_node_rotate2(RBTreeNode *node, int dir) {
     RBTreeNode *result = NULL;
-    if (tree) {
-        tree->link[!dir] = rbtree_node_rotate(tree->link[!dir], !dir);
-        result = rbtree_node_rotate(tree, dir);
+    if (node) {
+        node->link[!dir] = rbtree_node_rotate(node->link[!dir], !dir);
+        result = rbtree_node_rotate(node, dir);
     }
     return result;
 }
@@ -54,11 +54,16 @@ int rbtree_node_cmp_ptr_cb(RBTree *tree, RBTreeNode *a, RBTreeNode *b) {
     return (a->value > b->value) - (a->value < b->value);
 }
 
+void rbtree_node_ptr_dealloc_cb (RBTree *tree, RBTreeNode *node) {
+    if (tree && node) {
+        free(node->value);
+        rbtree_node_dealloc(node);
+    }
+}
+
 void rbtree_node_dealloc_cb (RBTree *tree, RBTreeNode *node) {
-    if (tree) {
-        if (node) {
-            rbtree_node_dealloc(node);
-        }
+    if (tree && node) {
+        rbtree_node_dealloc(node);
     }
 }
 
@@ -307,7 +312,108 @@ bool rbtree_remove_with_cb(RBTree *tree, void *value, rbtree_node_f node_cb) {
 bool rbtree_remove(RBTree *tree, void *value) {
     bool result = false;
     if (tree) {
-        result = rbtree_remove_with_cb(tree, value, rbtree_node_dealloc_cb);
+        result = rbtree_remove_with_cb(tree, value, rbtree_node_ptr_dealloc_cb);
     }
     return result;
 }
+
+
+void rbtree_print(RBTree *tree, void (*print)(void *)) {
+    RBTreeIter *iter = rbtree_iter_new();
+    for (void *elem = rbtree_iter_first(iter, tree); elem; elem = rbtree_iter_next(iter)) {
+        print(elem);
+    }
+    rbtree_iter_free(iter);
+}
+
+
+
+RBTreeIter *rbtree_iter_alloc() {
+    return (RBTreeIter *) malloc(sizeof(RBTreeIter));
+}
+
+RBTreeIter *rbtree_iter_init(RBTreeIter *self) {
+    if (self) {
+        self->tree = NULL;
+        self->node = NULL;
+        self->top = 0;
+    }
+    return self;
+}
+
+RBTreeIter *rbtree_iter_new() {
+    return rbtree_iter_init(rbtree_iter_alloc());
+}
+
+void rbtree_iter_free(RBTreeIter *self) {
+    if (self) {
+        free(self);
+    }
+}
+
+
+// Internal function, init traversal object, dir determines whether
+// to begin traversal at the smallest or largest valued node.
+void *rbtree_iter_start(RBTreeIter *self, RBTree *tree, int dir) {
+    void *result = NULL;
+    if (self) {
+        self->tree = tree;
+        self->node = tree->root;
+        self->top = 0;
+
+        // Save the path for later traversal
+        if (self->node != NULL) {
+            while (self->node->link[dir] != NULL) {
+                self->path[self->top++] = self->node;
+                self->node = self->node->link[dir];
+            }
+        }
+
+        result = self->node == NULL ? NULL : self->node->value;
+    }
+    return result;
+}
+
+// Traverse a red black tree in the user-specified direction (0 asc, 1 desc)
+void *rbtree_iter_move(RBTreeIter *self, int dir) {
+    if (self->node->link[dir] != NULL) {
+
+        // Continue down this branch
+        self->path[self->top++] = self->node;
+        self->node = self->node->link[dir];
+        while ( self->node->link[!dir] != NULL ) {
+            self->path[self->top++] = self->node;
+            self->node = self->node->link[!dir];
+        }
+    } else {
+
+        // Move to the next branch
+        RBTreeNode *last = NULL;
+        do {
+            if (self->top == 0) {
+                self->node = NULL;
+                break;
+            }
+            last = self->node;
+            self->node = self->path[--self->top];
+        } while (last == self->node->link[dir]);
+    }
+    return self->node == NULL ? NULL : self->node->value;
+}
+
+void *rbtree_iter_first(RBTreeIter *self, RBTree *tree) {
+    return rbtree_iter_start(self, tree, 0);
+}
+
+void *rbtree_iter_last(RBTreeIter *self, RBTree *tree) {
+    return rbtree_iter_start(self, tree, 1);
+}
+
+void *rbtree_iter_next(RBTreeIter *self) {
+    return rbtree_iter_move(self, 1);
+}
+
+void *rbtree_iter_prev(RBTreeIter *self) {
+    return rbtree_iter_move(self, 0);
+}
+

@@ -47,7 +47,26 @@ void *ndarray_elem(NdArray *array, size_t index[]) {
 // Prettyprint in n dimensions... oh boy
 void ndarray_print(NdArray *array) {
     // dude, pls
-    printf("N-dimensional array...");
+    printf("%d-dimensional array [", (int) array->n);
+    for (size_t i = 0; i < array->n; i++) {
+        printf("%d", (int) array->dims[i]);
+        if (i < array->n - 1) printf(" ");
+    }
+    printf("]");
+    if (array->n == 2) {
+        printf("\n");
+        for (size_t i = 0; i < array->dims[0]; i++) {
+            for (size_t j = 0; j < array->dims[1]; j++) {
+                size_t index[] = {i, j};
+                if (i <= j)
+                    printf("%d ", *(char *) ndarray_elem(array, index));
+                else
+                    printf("  ");
+            }
+            if (i < array->dims[0] - 1)
+                printf("\n");
+        }
+    }
 }
 
 
