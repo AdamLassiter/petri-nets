@@ -16,6 +16,10 @@ NdArray *ndarray_new(size_t n, size_t dims[], size_t s) {
         .dims = (size_t *) malloc(d_size),
         .size = s
     };
+    if (array->array == NULL) {
+        fprintf(stderr, "Error allocating array: out of memory\n");
+        exit(1);
+    }
     memcpy(array->dims, dims, d_size);
 
     return array;
