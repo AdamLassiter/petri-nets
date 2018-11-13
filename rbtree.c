@@ -376,8 +376,8 @@ void *rbtree_iter_start(RBTreeIter *self, RBTree *tree, int dir) {
 
 // Traverse a red black tree in the user-specified direction (0 asc, 1 desc)
 void *rbtree_iter_move(RBTreeIter *self, int dir) {
+    // Valgrind hates this... how to iterate and allow deletion
     if (self->node->link[dir] != NULL) {
-
         // Continue down this branch
         self->path[self->top++] = self->node;
         self->node = self->node->link[dir];
@@ -385,8 +385,8 @@ void *rbtree_iter_move(RBTreeIter *self, int dir) {
             self->path[self->top++] = self->node;
             self->node = self->node->link[!dir];
         }
-    } else {
 
+    } else {
         // Move to the next branch
         RBTreeNode *last = NULL;
         do {
