@@ -38,7 +38,7 @@ LListNode *llist_get_node(LList *l, int i) {
 void llist_from_empty(LList *l, void *o) {
     LListNode *n = (LListNode *) malloc(sizeof(*n));
     *n = (LListNode) {
-        .element = o,
+        .value = o,
         .prev = NULL,
         .next = NULL
     };
@@ -49,13 +49,13 @@ void llist_from_empty(LList *l, void *o) {
     };
 }
 
-// Get the i'th element of a linked list
+// Get the i'th value of a linked list
 void *llist_get(LList *l, int i) {
-    return llist_get_node(l, i)->element;
+    return llist_get_node(l, i)->value;
 }
 
 
-// Delete the head element off a llist
+// Delete the head value off a llist
 void llist_remove_head(LList *l) {
     if (l == NULL) return;
     LListNode *t = l->head;
@@ -98,7 +98,7 @@ void llist_remove(LList *l, int i) {
 }
 
 
-// Append an element to the head of a llist
+// Append an value to the head of a llist
 void llist_prepend(LList *l, void *o) {
     if (l == NULL) return;
     if (l->len == 0) {
@@ -106,7 +106,7 @@ void llist_prepend(LList *l, void *o) {
     } else {
         LListNode *n = (LListNode *) malloc(sizeof(*n));
         *n = (LListNode) {
-            .element = o,
+            .value = o,
             .next = l->head,
             .prev = l->head->prev
         };
@@ -129,7 +129,7 @@ void llist_append_node(LList *l, LListNode *n) {
     l->tail = n;
 }
 
-// Append an element to the tail of a llist
+// Append an value to the tail of a llist
 void llist_append(LList *l, void *o) {
     if (l == NULL) return;
     if (l->len == 0) {
@@ -137,7 +137,7 @@ void llist_append(LList *l, void *o) {
     } else {
         LListNode *n = (LListNode *) malloc(sizeof(*n));
         *n = (LListNode) {
-            .element = o,
+            .value = o,
             .prev = l->tail,
             .next = l->tail->next
         };
@@ -145,7 +145,7 @@ void llist_append(LList *l, void *o) {
     }
 }
 
-// Insert an element at the i'th position of a llist
+// Insert an value at the i'th position of a llist
 void llist_insert(LList *l, void *o, int i) {
     if (l == NULL) return;
     if (i == 0) {
@@ -155,28 +155,28 @@ void llist_insert(LList *l, void *o, int i) {
     } else {
         LListNode *n = (LListNode *) malloc(sizeof(*n)),
         *m = llist_get_node(l, i);
-        n->element = o; n->prev = m->prev; n->next = m;
+        n->value = o; n->prev = m->prev; n->next = m;
         m->prev = n;
         l->len++;
     }
 }
 
 
-// Is an element in a given llist
+// Is an value in a given llist
 bool llist_contains(LList *l, void *o) {
     if (l == NULL) return false;
     for (LListNode *n = l->head; n != NULL; n = n->next)
-        if (n->element == o)
+        if (n->value == o)
             return true;
     return false;
 }
 
-// Get the index of a given element
+// Get the index of a given value
 int llist_indexof(LList *l, void *o) {
     if (l == NULL) return -1;
     int i = 0;
     for (LListNode *n = l->head; n != NULL; n = n->next)
-        if (n->element == o)
+        if (n->value == o)
             return i;
         else
             i++;
@@ -188,5 +188,5 @@ int llist_indexof(LList *l, void *o) {
 void llist_print(LList *l) {
     if (l != NULL)
         for (LListNode *n = l->head; n != NULL; n = n->next)
-            printf("%d ", *(int *) n->element);
+            printf("%d ", *(int *) n->value);
 }

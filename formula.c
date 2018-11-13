@@ -120,7 +120,7 @@ Formula **formula_flatten(Formula *formula) {
 
     LListNode *node = list->head;
     for (int i = 0; i < list->len; i++) {
-        array[i] = (Formula *) node->element;
+        array[i] = (Formula *) node->value;
         node = node->next;
     }
 

@@ -8,7 +8,7 @@
 typedef struct LListNode {
     struct LListNode *next;
     struct LListNode *prev;
-    void *element;
+    void *value;
 } LListNode;
 
 typedef struct LList {
