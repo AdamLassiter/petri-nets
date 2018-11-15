@@ -80,43 +80,47 @@ Formula *formula_parse(char **string) {
 
 // Free a dynamically-allocated formula
 void formula_free(Formula *formula) {
-    if (formula->left != NULL) {
+    if (formula != NULL) {
         formula_free(formula->left);
-    }
-    if (formula->right != NULL) {
         formula_free(formula->right);
+        free(formula);
     }
-    free(formula);
 }
 
+
+// Reindex a formula tree
+size_t formula_index(Formula *formula, size_t i) {
+    if (formula->type == Or || formula->type == And) {
+        i = formula_index(formula->left, i);
+        formula->i = i;
+        return formula_index(formula->right, ++i);
+    } else {
+        formula->i = i;
+        return ++i;
+    }
+}
 
 // Get the length of a formula
 size_t formula_length(Formula *formula) {
-    if (formula->type == Atom || formula->type == NotAtom) {
-        return 1;
-    } else {
-        return 1 + formula_length(formula->left) + formula_length(formula->right);
-    }
+    return formula_index(formula, 0); 
 }
 
 // Performs a recursive walk on the tree with no initals nor conversion of llist
-int formula_symbol_walk(Formula *formula, LList *list, size_t i) {
+void formula_symbol_walk(Formula *formula, LList *list) {
     if (formula->type == Or || formula->type == And) {
-        i = formula_symbol_walk(formula->left, list, i);
-        formula->i = i;
+        formula_symbol_walk(formula->left, list);
         llist_append(list, formula);
-        return formula_symbol_walk(formula->right, list, i+1);
+        formula_symbol_walk(formula->right, list);
     } else {
-        formula->i = i;
         llist_append(list, formula);
-        return i+1;
     }
 }
 
 // Given a formula tree, return a left->right walk of nodes
 Formula **formula_flatten(Formula *formula) {
     LList *list = llist_new();
-    Formula **array = (Formula **) calloc(sizeof(*array), formula_symbol_walk(formula, list, 0));
+    formula_symbol_walk(formula, list);
+    Formula **array = (Formula **) calloc(sizeof(*array), formula_length(formula));
 
     LListNode *node = list->head;
     for (int i = 0; i < list->len; i++) {

@@ -1,7 +1,7 @@
 # c compiler:
 CC       = gcc
 # compiler flags:
-CFLAGS   = -g -Wall
+CFLAGS   = -g -Wall -fbounds-check
 # linker flags
 LDFLAGS  = 
 # obj file includes

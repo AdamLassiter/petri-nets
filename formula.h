@@ -22,6 +22,7 @@ typedef struct Formula {
 Formula *formula_parse(char **);
 void formula_free(Formula *);
 
+size_t formula_index(Formula *, size_t);
 size_t formula_length(Formula *);
 Formula **formula_flatten(Formula *);
 
