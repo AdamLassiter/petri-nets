@@ -10,7 +10,7 @@ The following do not represent minimum requirements, but those used in developme
 git clone https://gitlab.com/adamlassiter/petri-nets.git
 cd petri-nets
 make
-./petri-net
+./petri_net
 ```
 
 ## Contributing
