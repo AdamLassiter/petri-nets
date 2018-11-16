@@ -20,6 +20,11 @@ Formula *formula_parse(char **string) {
                     formula->symbol = *string[0];
                     formula->type = (Grammar) *string[0];
                 break;
+                case Implies:
+                    formula->symbol = Or;
+                    formula->type = Or;
+                    formula_negate(formula->left);
+                break;
                 default:
                     fprintf(stderr,
                             "Error parsing string: unexpected %c, expected %c,%c\n",
@@ -37,12 +42,6 @@ Formula *formula_parse(char **string) {
                     exit(1);
             }
         break;
-        case Or:
-        case And:
-            fprintf(stderr,
-                    "Error parsing string: unexpected %c, expected %c,%c,a,%ca\n",
-                    *string[0], Top, Bottom, NotAtom);
-            exit(1);
         case Top:
         case Bottom:
             formula->symbol = *string[0];
@@ -50,25 +49,22 @@ Formula *formula_parse(char **string) {
         break;
         case NotAtom:
             *string += sizeof(char);
-            switch (*string[0]) {
-                case '(':
-                case ')':
-                case Or:
-                case And:
-                case Top:
-                case Bottom:
-                case NotAtom:
-                    fprintf(stderr,
-                            "Error parsing string: unexpected %c, expected a\n",
-                            *string[0]);
-                    exit(1);
-                break;
-                default:
-                    formula->symbol = *string[0];
-                    formula->type = NotAtom;
-                break;
+            if (*string[0] == '(') {
+                free(formula);
+                formula = formula_parse(string);
+                formula_negate(formula);
+            } else {
+                formula->symbol = *string[0];
+                formula->type = NotAtom;
             }
         break;
+        case Or:
+        case And:
+        case Implies:
+            fprintf(stderr,
+                    "Error parsing string: unexpected %c, expected %c,%c,a,%ca\n",
+                    *string[0], Top, Bottom, NotAtom);
+            exit(1);
         default:
             formula->symbol = *string[0];
             formula->type = Atom;
@@ -133,6 +129,35 @@ Formula **formula_flatten(Formula *formula) {
 }
 
 
+// Given a formula, produce the logical inverse
+void formula_negate(Formula *formula) {
+    switch(formula->type) {
+        case And:
+            formula->type = Or;
+            formula_negate(formula->left);
+            formula_negate(formula->right);
+        break;
+        case Or:
+            formula->type = And;
+            formula_negate(formula->left);
+            formula_negate(formula->right);
+        break;
+        case Atom:
+            formula->type = NotAtom;
+        break;
+        case NotAtom:
+            formula->type = Atom;
+        break;
+        case Top:
+            formula->type = Bottom;
+        break;
+        case Bottom:
+            formula->type = Top;
+        break;
+    }
+}
+
+
 // Prettyprint a formula
 void formula_print(Formula *formula) {
     switch (formula->type) {
@@ -163,8 +188,8 @@ void formula_print(Formula *formula) {
 int formula_main(int argc, char *argv[]) {
 //int main(int argc, char *argv[]) {
     if (argc == 2) {
-        char **string = &argv[1];
-        Formula *formula = formula_parse(string);
+        char *string = argv[1];
+        Formula *formula = formula_parse(&string);
         formula_print(formula);
     } else {
         fprintf(stderr, "Error running formula: incorrect number of args\n");

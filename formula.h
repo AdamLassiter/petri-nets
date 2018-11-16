@@ -8,8 +8,12 @@
 
 
 typedef enum Grammar {
-    Top = 'T', Bottom = 'F', Atom = 'a', NotAtom = '~', Or = 'v', And = '^'
+    Top = 'T', Bottom = 'F', Atom = 'a', NotAtom = '~', Or = 'v', And = '^',
 } Grammar;
+
+typedef enum ExtraGrammar {
+    Implies = '>'
+} ExtraGrammar;
 
 typedef struct Formula {
     struct Formula *parent, *left, *right;
@@ -25,5 +29,7 @@ void formula_free(Formula *);
 size_t formula_index(Formula *, size_t);
 size_t formula_length(Formula *);
 Formula **formula_flatten(Formula *);
+
+void formula_negate(Formula *);
 
 void formula_print(Formula *);
