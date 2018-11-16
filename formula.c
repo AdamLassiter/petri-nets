@@ -35,7 +35,7 @@ Formula *formula_parse(char **string) {
             *string += sizeof(char);
             formula->right = formula_parse(string);
             formula->right->parent = formula;
-            if (*string[0] != ')') { 
+            if (*string[0] != ')') {
                     fprintf(stderr,
                             "Error parsing string: unexpected %c, expected )\n",
                             *string[0]);
@@ -53,6 +53,7 @@ Formula *formula_parse(char **string) {
                 free(formula);
                 formula = formula_parse(string);
                 formula_negate(formula);
+                *string -= sizeof(char);
             } else {
                 formula->symbol = *string[0];
                 formula->type = NotAtom;
@@ -134,11 +135,13 @@ void formula_negate(Formula *formula) {
     switch(formula->type) {
         case And:
             formula->type = Or;
+            formula->symbol = Or;
             formula_negate(formula->left);
             formula_negate(formula->right);
         break;
         case Or:
             formula->type = And;
+            formula->symbol = And;
             formula_negate(formula->left);
             formula_negate(formula->right);
         break;
@@ -150,9 +153,11 @@ void formula_negate(Formula *formula) {
         break;
         case Top:
             formula->type = Bottom;
+            formula->symbol = Bottom;
         break;
         case Bottom:
             formula->type = Top;
+            formula->symbol = Top;
         break;
     }
 }
