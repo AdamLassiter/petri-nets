@@ -1,7 +1,9 @@
 #include "petri_net.h"
 
 // TODO: Expand matrix on dimension increase rather than copy
-// TODO: Substitute any absolute proofs of subformulae for T
+// TODO: Store only upper half of matrix
+// TODO: Prettyprint nice proofs?
+// TODO: 1-bit boolean types
 
 
 size_t global_fn_dimn;
@@ -125,9 +127,6 @@ bool petri_net_1d_coalescence(PetriNet *net, size_t dimn, size_t *place) {
                     break;
             } else {
                 Formula *sibling = (parent_sym->left == this_sym) ? parent_sym->right : parent_sym->left;
-                if (sibling->i > 100) {
-                    formula_print(this_sym); printf(" is fucked\n");
-                }
                 memcpy(place, token, sizeof(*place) * n);
                 place[dimn] = sibling->i;
                 petri_net_token_sort(place, n);
@@ -284,8 +283,6 @@ Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
 size_t petri_net_coalescence(Formula *f, bool top_opt) {
     for (size_t n = 2; n < formula_length(f); n++) {
 
-        if (n > 2) {printf(" =>\n");} formula_print(f); printf(" in %luD ", n);
-        
         // Fire an n-dimensional net exhaustively
         PetriNet *net = petri_net_exhaustive_fire(f, n);
         Formula *f_next = petri_net_substitute_top(net, f);
@@ -350,11 +347,20 @@ int main(int argc, char *argv[]) {
     char *string = argv[optind];
     Formula *formula = formula_parse(&string);
     
+    /* 3, 2, 1, Go... */
+    clock_t start = clock(), diff;
+
     int n = petri_net_coalescence(formula, top_optimise);
     if (n)
-        printf("\nSolution in %d dimensions.\n", n);
+        printf("Solution in %d dimensions.\n", n);
     else
         printf("\nNo solution found.\n");
+    
+    diff = clock() - start;
+    /* Finish */
+
+    int msec = diff * 1000 / CLOCKS_PER_SEC;
+    printf("Time taken: %d seconds %d milliseconds", msec / 1000, msec % 1000);
     
     return n? 0: -1;
 }
