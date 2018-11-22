@@ -4,27 +4,68 @@
 // Create and initialise a dynamically-allocated formula tree from a string
 Formula *formula_parse(char **string) {
     Formula *formula = (Formula *) malloc(sizeof *formula);
+    char *op, *left_bt, *right_bt, op_bt;
+
     *formula = (Formula) {
         .parent = NULL,
         .left = NULL,
         .right = NULL
     };
+
     switch (*string[0]) {
+        // Binary Operators
         case '(':
+            left_bt = *string;
+            right_bt = *string;
+
             *string += sizeof(char);
             formula->left = formula_parse(string);
             formula->left->parent = formula;
-            switch(*string[0]) {
+
+            op = *string;
+
+            *string += sizeof(char);
+            formula->right = formula_parse(string);
+            formula->right->parent = formula;
+
+            switch (*op) {
+                // Binary And/Or
                 case Or:
                 case And:
-                    formula->symbol = *string[0];
-                    formula->type = (Grammar) *string[0];
+                    formula->symbol = *op;
+                    formula->type = (Grammar) *op;
                 break;
+                
+                // Implies / Implied by (¬a v b) / (a v ¬b)
                 case Implies:
+                case Implied:
                     formula->symbol = Or;
                     formula->type = Or;
-                    formula_negate(formula->left);
+                    formula_negate(*op == Implies? formula->left : formula->right);
                 break;
+                
+                // Equivalence by (a -> b) ^ (a <- b)
+                case NotEquivalent:
+                case Equivalent:
+                    op_bt = *op;
+                    // Top-level construction
+                    formula->symbol = And;
+                    formula->type = And;
+                    // Left ->
+                    *op = Implies;
+                    formula_free(formula->left);
+                    formula->left = formula_parse(&left_bt);
+                    formula->left->parent = formula;
+                    // Right <-
+                    *op = Implied;
+                    formula_free(formula->right);
+                    formula->right = formula_parse(&right_bt);
+                    formula->right->parent = formula;
+                    // Fix what was mangled
+                    *op = op_bt;
+                    if (*op == NotEquivalent) formula_negate(formula);
+                break;
+
                 default:
                     fprintf(stderr,
                             "Error parsing string: unexpected %c, expected %c,%c\n",
@@ -32,21 +73,15 @@ Formula *formula_parse(char **string) {
                     exit(1);
                 break;
             }
-            *string += sizeof(char);
-            formula->right = formula_parse(string);
-            formula->right->parent = formula;
             if (*string[0] != ')') {
-                    fprintf(stderr,
-                            "Error parsing string: unexpected %c, expected )\n",
-                            *string[0]);
-                    exit(1);
+                fprintf(stderr,
+                        "Error parsing string: unexpected %c, expected )\n",
+                        *string[0]);
+                exit(1);
             }
         break;
-        case Top:
-        case Bottom:
-            formula->symbol = *string[0];
-            formula->type = (Grammar) *string[0];
-        break;
+        
+        // Unary Not
         case NotAtom:
             *string += sizeof(char);
             if (*string[0] == '(') {
@@ -59,13 +94,27 @@ Formula *formula_parse(char **string) {
                 formula->type = NotAtom;
             }
         break;
+        
+        // Out-of-place Binary Operator
         case Or:
         case And:
         case Implies:
+        case Implied:
+        case Equivalent:
             fprintf(stderr,
                     "Error parsing string: unexpected %c, expected %c,%c,a,%ca\n",
                     *string[0], Top, Bottom, NotAtom);
             exit(1);
+        break;
+        
+        // Top/Bottom
+        case Top:
+        case Bottom:
+            formula->symbol = *string[0];
+            formula->type = (Grammar) *string[0];
+        break;
+        
+        // Atom
         default:
             formula->symbol = *string[0];
             formula->type = Atom;

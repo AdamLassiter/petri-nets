@@ -284,7 +284,7 @@ Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
 size_t petri_net_coalescence(Formula *f, bool top_opt) {
     for (size_t n = 2; n < formula_length(f); n++) {
 
-        if (n > 2) printf(" =>\n");formula_print(f);printf(" in %luD ", n);
+        if (n > 2) {printf(" =>\n");} formula_print(f); printf(" in %luD ", n);
         
         // Fire an n-dimensional net exhaustively
         PetriNet *net = petri_net_exhaustive_fire(f, n);

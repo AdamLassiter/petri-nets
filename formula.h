@@ -12,7 +12,7 @@ typedef enum Grammar {
 } Grammar;
 
 typedef enum ExtraGrammar {
-    Implies = '>'
+    Implies = '>', Implied = '<', Equivalent = '=', NotEquivalent = '#'
 } ExtraGrammar;
 
 typedef struct Formula {
