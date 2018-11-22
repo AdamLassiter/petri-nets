@@ -1,9 +1,44 @@
 #include "petri_net.h"
 
-// TODO: Expand matrix on dimension increase rather than copy
-// TODO: Store only upper half of matrix
-// TODO: Prettyprint nice proofs?
-// TODO: 1-bit boolean types
+/* List of things to think about...
+ *
+ * TODO: Expand matrix on dimension increase rather than copy
+ *       - Does this provide much benefeit?
+ *
+ * TODO: Store only upper half of matrix
+ *       - Approx half memory usage
+ *
+ * TODO: Prettyprint nice proofs?
+ *       - In LaTeX?
+ *       - Which parts to include?
+ *         > Dijkstra from root until all connected axioms are reached?
+ *         > Is this just a graph span?
+ *
+ * TODO: 1-bit boolean types
+ *       - Approx eigth memory usage
+ *         > What is a cache :P
+ * 
+ * TODO: Testing and Useful Examples
+ *       - Formal
+ *         > Correctness
+ *         > Consistency
+ *         > Dimensionality
+ *       - Informal
+ *         > Time Efficiency
+ *         > Space Efficiency
+ *         > What expressions are quick, what are slow
+ *         > What optimisations help 
+ *           * Token sort and rbtree
+ *           * P v ¬P -> T
+ *           * 1-bit bools
+ *           * etc...
+ * 
+ * TODO: Check converse statement as halt condition
+ *       - Approx twice time and memory
+ * 
+ * TODO: Writeup!!
+ * */
+
 
 
 size_t global_fn_dimn;
