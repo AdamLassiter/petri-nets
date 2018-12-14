@@ -3,17 +3,21 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
+
+typedef unsigned char byte;
 
 typedef struct NdArray {
     size_t n, *dims, size;
-    unsigned char *array;
+    byte *array;
 } NdArray;
 
 
 NdArray *ndarray_new(size_t, size_t [], size_t);
 void ndarray_free(NdArray *);
 
-void *ndarray_elem(NdArray *, size_t []);
+bool ndarray_get(NdArray *, size_t []);
+void ndarray_set(NdArray *, size_t [], bool);
 
 void ndarray_print(NdArray *);

@@ -10,9 +10,6 @@
  *
  * TODO: Prettyprint nice proofs?
  *       - In LaTeX?
- *       - Which parts to include?
- *         > Dijkstra from root until all connected axioms are reached?
- *         > Is this just a graph span?
  *
  * TODO: 1-bit boolean types
  *       - Approx eigth memory usage
@@ -37,6 +34,7 @@
  *       - Approx twice time and memory
  * 
  * TODO: Writeup!!
+ *       - Differentiate between CL, ALL, MLL
  * */
 
 
@@ -108,7 +106,7 @@ bool petri_net_remove_redundant(PetriNet *net, size_t *child, size_t *place) {
             memcpy(place, child, sizeof(*place) * n);
             place[dimn_check] = parent_sym_check->i;
             petri_net_token_sort(place, n);
-            check &= *(bool *) ndarray_elem(net->places, place);
+            check &= ndarray_get(net->places, place);
         }
     }
     
@@ -122,11 +120,11 @@ bool petri_net_fire(PetriNet *net, Formula *from, size_t *from_tk, Formula *to, 
     size_t n = net->places->n;
     // Remove node from tree but maintain token
     // Perform the transition if the sibling exists or if performing Or
-    if ((*(bool *) ndarray_elem(net->places, to_tk)) || to->type == Or) {
+    if ((ndarray_get(net->places, to_tk)) || to->type == Or) {
         rbtree_remove_with_cb(net->tokens, from_tk, rbtree_node_dealloc_cb);
         from_tk[dimn] = to->i;
         petri_net_token_sort(from_tk, n);
-        *(bool *) ndarray_elem(net->places, from_tk) = true;
+        ndarray_set(net->places, from_tk, true);
         rbtree_insert(net->tokens, from_tk);
         return true;
     } else {
@@ -157,7 +155,7 @@ bool petri_net_1d_coalescence(PetriNet *net, size_t dimn, size_t *place) {
             place[dimn] = parent_sym->i;
             petri_net_token_sort(place, n);
             
-            if (*(bool *) ndarray_elem(net->places, place)) {
+            if (ndarray_get(net->places, place)) {
                 if ((fired |= petri_net_remove_redundant(net, token, place)))
                     break;
             } else {
@@ -254,7 +252,7 @@ PetriNet *petri_net_exhaustive_fire(Formula *f, size_t n) {
     // and then populate grid with tokens
     RBTreeIter *iter = rbtree_iter_new();
     for (size_t *tk = (size_t *) rbtree_iter_first(iter, net->tokens); tk; tk = (size_t *) rbtree_iter_next(iter)) {
-        *(bool *) ndarray_elem(net->places, tk) = true;
+        ndarray_set(net->places, tk, true);
     }
     rbtree_iter_free(iter);
 
@@ -285,7 +283,7 @@ Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
         place[i] = root->i;
     
     if ((root->type == And) || (root->type == Or)) {
-        if (*(bool *) ndarray_elem(net->places, place)) {
+        if (ndarray_get(net->places, place)) {
             *f = (Formula) {
                 .type = Top,
                 .symbol = Top,
@@ -310,6 +308,7 @@ Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
         };
     }
     
+    free(place); 
     formula_index(f, 0);
     return f;
 }
@@ -323,8 +322,11 @@ size_t petri_net_coalescence(Formula *f, bool top_opt) {
         Formula *f_next = petri_net_substitute_top(net, f);
 
         // Check if we have reached the root
-        if (f_next->type == Top)
+        if (f_next->type == Top) {
+            petri_net_free(net);
+            formula_free(f_next);
             return n;
+        }
         
         // Optimise by substituting proofs of subformulae for T
         if (top_opt) {
@@ -389,13 +391,14 @@ int main(int argc, char *argv[]) {
     if (n)
         printf("Solution in %d dimensions.\n", n);
     else
-        printf("\nNo solution found.\n");
+        printf("No solution found.\n");
     
     diff = clock() - start;
     /* Finish */
 
     int msec = diff * 1000 / CLOCKS_PER_SEC;
-    printf("Time taken: %d seconds %d milliseconds", msec / 1000, msec % 1000);
+    printf("Time taken: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
     
-    return n? 0: -1;
+    formula_free(formula);
+    return n > 0 ? n : -1;
 }

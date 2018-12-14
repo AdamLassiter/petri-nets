@@ -11,7 +11,7 @@ NdArray *ndarray_new(size_t n, size_t dims[], size_t s) {
 
     NdArray *array = (NdArray *) malloc(sizeof(*array));
     *array = (NdArray) {
-        .array = (unsigned char *) calloc(size, s),
+        .array = (byte *) calloc(size * s / 8 + 1, 1),
         .n = n,
         .dims = (size_t *) malloc(d_size),
         .size = s
@@ -44,7 +44,22 @@ void *ndarray_elem(NdArray *array, size_t index[]) {
         scalar_index = scalar_index * array->dims[n] + index[n];
     }
 
-    return array->array + scalar_index * array->size;
+    return array->array + scalar_index * array->size / 8;
+}
+
+byte MASKS[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+void ndarray_set(NdArray *array, size_t index[], bool val) {
+    byte offset = index[array->n - 1] % 8;
+    if (val)
+        *(byte *) ndarray_elem(array, index) |= MASKS[offset];
+    else
+        *(byte *) ndarray_elem(array, index) &= ~MASKS[offset];
+}
+
+bool ndarray_get(NdArray *array, size_t index[]) {
+    byte offset = index[array->n - 1] % 8;
+    byte val = *(byte *) ndarray_elem(array, index);
+    return (val & MASKS[offset]) >> offset;
 }
 
 
