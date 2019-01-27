@@ -3,18 +3,14 @@
 /* List of things to think about...
  *
  * TODO: Expand matrix on dimension increase rather than copy
- *       - Does this provide much benefeit?
+ *       - Does this provide much benefeit? l^(n) vs l^(n+1) or l*(n) vs l*(n+1)
  *
- * TODO: Store only upper half of matrix
+ * TODO: Store only upper triangular matrix
  *       - Approx half memory usage
  *
  * TODO: Prettyprint nice proofs?
  *       - In LaTeX?
  *
- * TODO: 1-bit boolean types
- *       - Approx eigth memory usage
- *         > What is a cache :P
- * 
  * TODO: Testing and Useful Examples
  *       - Formal
  *         > Correctness
