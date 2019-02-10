@@ -51,7 +51,7 @@ int lex_arr_cmp(RBTree *tree, RBTreeNode *left, RBTreeNode *right) {
     return 0;
 }
 
-void print_arr(void *arr){
+static void print_arr(void *arr){
     printf("[");
     for (size_t i = 0; i < global_fn_dimn; i++) {
         printf("%lu", ((size_t *) arr)[i]);
@@ -66,7 +66,7 @@ int size_t_cmp_f(const void * a, const void * b) {
     return ca > cb ? 1 : ca < cb ? -1 : 0;
 }
 
-void petri_net_token_sort(size_t *arr, size_t n) {
+static void petri_net_token_sort(size_t *arr, size_t n) {
     qsort(arr, n, sizeof(*arr), size_t_cmp_f);
 }
 
@@ -92,7 +92,7 @@ void petri_net_free(PetriNet *net) {
 }
 
 
-bool petri_net_remove_redundant(PetriNet *net, size_t *child, size_t *place) {
+static bool petri_net_remove_redundant(PetriNet *net, size_t *child, size_t *place) {
     size_t n = net->places->n;
     // Delete if the parent has been spawned already
     Formula *this_sym_check, *parent_sym_check;
@@ -115,7 +115,7 @@ bool petri_net_remove_redundant(PetriNet *net, size_t *child, size_t *place) {
     return check;
 }
 
-bool petri_net_fire(PetriNet *net, Formula *from, size_t *from_tk, Formula *to, size_t *to_tk, size_t dimn) {
+static bool petri_net_fire(PetriNet *net, Formula *from, size_t *from_tk, Formula *to, size_t *to_tk, size_t dimn) {
     size_t n = net->places->n;
     // Remove node from tree but maintain token
     // Perform the transition if the sibling exists or if performing Or
@@ -132,7 +132,7 @@ bool petri_net_fire(PetriNet *net, Formula *from, size_t *from_tk, Formula *to, 
 }
 
 // Perform coalescence algorithm along a single dimension axis
-bool petri_net_1d_coalescence(PetriNet *net, size_t dimn, size_t *place) {
+static bool petri_net_1d_coalescence(PetriNet *net, size_t dimn, size_t *place) {
     // size_t *place is a n-large swapspace for storing place coords in
     bool fired = false;
     size_t *token, n = net->places->n;
@@ -174,7 +174,7 @@ bool petri_net_1d_coalescence(PetriNet *net, size_t dimn, size_t *place) {
 
 
 // Given a petri net with tokens in n dims, extend to n+1 dims
-RBTree *petri_net_nd_extrapolate(PetriNet *net, size_t n) {
+static RBTree *petri_net_nd_extrapolate(PetriNet *net, size_t n) {
     RBTree *new_tokens = rbtree_new(lex_arr_cmp);
     size_t *old_tk, *new_tk;
     // Extrapolate old tokens 'sideways' into new dimension
@@ -197,7 +197,7 @@ RBTree *petri_net_nd_extrapolate(PetriNet *net, size_t n) {
 }
 
 // Given a petri net, create tokens for a 2D case
-RBTree *petri_net_2d_spawn(PetriNet *net) {
+static RBTree *petri_net_2d_spawn(PetriNet *net) {
     RBTree *new_tokens = rbtree_new(lex_arr_cmp);
     Formula *symbolA, *symbolB;
     size_t *new_tk;
@@ -225,7 +225,7 @@ RBTree *petri_net_2d_spawn(PetriNet *net) {
 
 
 // Given a formula f, create a net and try to solve in n dimensions
-PetriNet *petri_net_exhaustive_fire(Formula *f, size_t n) {
+static PetriNet *petri_net_exhaustive_fire(Formula *f, size_t n) {
     size_t *dims = (size_t *) calloc(sizeof(*dims), n),
            *place = (size_t *) calloc(sizeof(*place), n),
            *root = (size_t *) calloc(sizeof(*root), n);
@@ -273,7 +273,7 @@ PetriNet *petri_net_exhaustive_fire(Formula *f, size_t n) {
 }
 
 // Given an (exhaustively) fired net, search for proofs of subformulae
-Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
+static Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
     Formula *f = (Formula *) malloc(sizeof *f);
     size_t n = net->places->n;
     
@@ -361,7 +361,6 @@ void petri_net_print(PetriNet *net) {
 }
 
 
-//int petri_net_main(int argc, char *argv[]) {
 int main(int argc, char *argv[]) {
     bool top_optimise = false;
     int c;

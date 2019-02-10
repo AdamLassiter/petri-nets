@@ -34,7 +34,7 @@ void ndarray_free(NdArray *array){
 
 
 // Return a pointer into the array at a given index
-void *ndarray_elem(NdArray *array, size_t index[]) {
+static void *ndarray_elem(NdArray *array, size_t index[]) {
     if (array->n == 0) {
         return array->array;
     }
@@ -90,7 +90,7 @@ void ndarray_print(NdArray *array) {
 
 
 // Test for nd-array class, fill an array as sums of indices, print the diagonal 
-int ndarray_main(int argc, char *argv[]) {
+static int ndarray_main(int argc, char *argv[]) {
     size_t n = 4;
     size_t d[4] = {3, 3, 3, 3};
     NdArray *array = ndarray_new(n, d, sizeof(int));

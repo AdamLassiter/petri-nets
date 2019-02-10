@@ -152,7 +152,7 @@ size_t formula_length(Formula *formula) {
 }
 
 // Performs a recursive walk on the tree with no initials nor conversion of llist
-void formula_symbol_walk(Formula *formula, LList *list) {
+static void formula_symbol_walk(Formula *formula, LList *list) {
     if (formula->type == Or || formula->type == And) {
         formula_symbol_walk(formula->left, list);
         llist_append(list, formula);
@@ -259,7 +259,7 @@ void formula_print(Formula *formula) {
 
 
 // Test for formula class, take a string input, convert it to a formula, print it
-int formula_main(int argc, char *argv[]) {
+static int formula_main(int argc, char *argv[]) {
 //int main(int argc, char *argv[]) {
     if (argc == 2) {
         char *string = argv[1];

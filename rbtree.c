@@ -1,11 +1,11 @@
 #include "rbtree.h"
 
 
-RBTreeNode *rbtree_node_alloc() {
+static RBTreeNode *rbtree_node_alloc() {
     return (RBTreeNode *) malloc(sizeof(RBTreeNode));
 }
 
-RBTreeNode *rbtree_node_init(RBTreeNode *node, void *value) {
+static RBTreeNode *rbtree_node_init(RBTreeNode *node, void *value) {
     if (node) {
         node->red = 1;
         node->link[0] = node->link[1] = NULL;
@@ -14,21 +14,21 @@ RBTreeNode *rbtree_node_init(RBTreeNode *node, void *value) {
     return node;
 }
 
-RBTreeNode *rbtree_node_create(void *value) {
+static RBTreeNode *rbtree_node_create(void *value) {
     return rbtree_node_init(rbtree_node_alloc(), value);
 }
 
-void rbtree_node_dealloc(RBTreeNode *node) {
+static void rbtree_node_dealloc(RBTreeNode *node) {
     if (node) {
         free(node);
     }
 }
 
-bool rbtree_node_is_red(const RBTreeNode *node) {
+static bool rbtree_node_is_red(const RBTreeNode *node) {
     return node ? node->red : false;
 }
 
-RBTreeNode *rbtree_node_rotate(RBTreeNode *node, int dir) {
+static RBTreeNode *rbtree_node_rotate(RBTreeNode *node, int dir) {
     RBTreeNode *result = NULL;
     if (node) {
         result = node->link[!dir];
@@ -40,7 +40,7 @@ RBTreeNode *rbtree_node_rotate(RBTreeNode *node, int dir) {
     return result;
 }
 
-RBTreeNode *rbtree_node_rotate2(RBTreeNode *node, int dir) {
+static RBTreeNode *rbtree_node_rotate2(RBTreeNode *node, int dir) {
     RBTreeNode *result = NULL;
     if (node) {
         node->link[!dir] = rbtree_node_rotate(node->link[!dir], !dir);
@@ -54,25 +54,25 @@ int rbtree_node_cmp_ptr_cb(RBTree *tree, RBTreeNode *a, RBTreeNode *b) {
     return (a->value > b->value) - (a->value < b->value);
 }
 
-void rbtree_node_ptr_dealloc_cb (RBTree *tree, RBTreeNode *node) {
+void rbtree_node_ptr_dealloc_cb(RBTree *tree, RBTreeNode *node) {
     if (tree && node) {
         free(node->value);
         rbtree_node_dealloc(node);
     }
 }
 
-void rbtree_node_dealloc_cb (RBTree *tree, RBTreeNode *node) {
+void rbtree_node_dealloc_cb(RBTree *tree, RBTreeNode *node) {
     if (tree && node) {
         rbtree_node_dealloc(node);
     }
 }
 
 
-RBTree *rbtree_alloc() {
+static RBTree *rbtree_alloc() {
     return (RBTree *) malloc(sizeof(RBTree));
 }
 
-RBTree *rbtree_init (RBTree *tree, rbtree_node_cmp_f node_cmp_cb) {
+static RBTree *rbtree_init(RBTree *tree, rbtree_node_cmp_f node_cmp_cb) {
     if (tree) {
         tree->root = NULL;
         tree->size = 0;
@@ -145,7 +145,7 @@ void *rbtree_find(RBTree *tree, void *value) {
 }
 
 
-bool rbtree_insert_node(RBTree *tree, RBTreeNode *node) {
+static bool rbtree_insert_node(RBTree *tree, RBTreeNode *node) {
     bool result = false;
     if (tree && node) {
         if (tree->root == NULL) {
@@ -328,11 +328,11 @@ void rbtree_print(RBTree *tree, void (*print)(void *)) {
 
 
 
-RBTreeIter *rbtree_iter_alloc() {
+static RBTreeIter *rbtree_iter_alloc() {
     return (RBTreeIter *) malloc(sizeof(RBTreeIter));
 }
 
-RBTreeIter *rbtree_iter_init(RBTreeIter *self) {
+static RBTreeIter *rbtree_iter_init(RBTreeIter *self) {
     if (self) {
         self->tree = NULL;
         self->node = NULL;
@@ -354,7 +354,7 @@ void rbtree_iter_free(RBTreeIter *self) {
 
 // Internal function, init traversal object, dir determines whether
 // to begin traversal at the smallest or largest valued node.
-void *rbtree_iter_start(RBTreeIter *self, RBTree *tree, int dir) {
+static void *rbtiree_iter_start(RBTreeIter *self, RBTree *tree, int dir) {
     void *result = NULL;
     if (self) {
         self->tree = tree;
@@ -375,7 +375,7 @@ void *rbtree_iter_start(RBTreeIter *self, RBTree *tree, int dir) {
 }
 
 // Traverse a red black tree in the user-specified direction (0 asc, 1 desc)
-void *rbtree_iter_move(RBTreeIter *self, int dir) {
+static void *rbtree_iter_move(RBTreeIter *self, int dir) {
     // Valgrind hates this... how to iterate and allow deletion
     if (self->node->link[dir] != NULL) {
         // Continue down this branch

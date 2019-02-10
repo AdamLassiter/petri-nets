@@ -35,7 +35,7 @@ LListNode *llist_get_node(LList *l, int i) {
 }
 
 // Create a singleton llist from a given object
-void llist_from_empty(LList *l, void *o) {
+static void llist_from_empty(LList *l, void *o) {
     LListNode *n = (LListNode *) malloc(sizeof(*n));
     *n = (LListNode) {
         .value = o,
