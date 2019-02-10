@@ -151,7 +151,7 @@ size_t formula_length(Formula *formula) {
     return formula_index(formula, 0); 
 }
 
-// Performs a recursive walk on the tree with no initals nor conversion of llist
+// Performs a recursive walk on the tree with no initials nor conversion of llist
 void formula_symbol_walk(Formula *formula, LList *list) {
     if (formula->type == Or || formula->type == And) {
         formula_symbol_walk(formula->left, list);
@@ -209,6 +209,26 @@ void formula_negate(Formula *formula) {
             formula->symbol = Top;
         break;
     }
+}
+
+
+// Given a formula, return the number of free names
+size_t formula_n_free_names(Formula *formula) {
+    bool free_chars[128] = {0};
+    size_t free_chars_tot = 0;
+    
+    Formula **nodes = formula_flatten(formula);
+    for (size_t i = 0; i < formula_length(formula); i++)
+        if (nodes[i]->type == Atom || nodes[i]->type == NotAtom)
+            free_chars[(size_t) (char) nodes[i]->symbol] = true;
+    free(nodes);
+
+    for (size_t i = 0; i < 128; i++)
+        if (free_chars[i]) {
+            free_chars_tot++;
+        }
+    
+    return free_chars_tot;
 }
 
 

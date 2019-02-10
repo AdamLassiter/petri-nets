@@ -8,6 +8,9 @@
  * TODO: Store only upper triangular matrix
  *       - Approx half memory usage
  *
+ * TODO: Store a boolean n-tuple for tokens as (1, 1, 2) ~= (1, 2, 2)
+ *      - Approx one eigth memory usage
+ *
  * TODO: Prettyprint nice proofs?
  *       - In LaTeX?
  *
@@ -26,7 +29,7 @@
  *           * 1-bit bools
  *           * etc...
  * 
- * TODO: Check converse statement as halt condition
+ * TODO: Check converse statement as early halt condition
  *       - Approx twice time and memory
  * 
  * TODO: Writeup!!
@@ -311,8 +314,9 @@ Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
 
 // Perform coalescence algorithm in all dimensions until halt or out-of-memory error
 size_t petri_net_coalescence(Formula *f, bool top_opt) {
-    for (size_t n = 2; n < formula_length(f); n++) {
-
+    formula_print(f); printf("\n");
+    
+    for (size_t n = 2; n <= formula_n_free_names(f) + 1; n++) {
         // Fire an n-dimensional net exhaustively
         PetriNet *net = petri_net_exhaustive_fire(f, n);
         Formula *f_next = petri_net_substitute_top(net, f);
@@ -376,7 +380,7 @@ int main(int argc, char *argv[]) {
             default:
                 abort();
       }
-
+    
     char *string = argv[optind];
     Formula *formula = formula_parse(&string);
     
@@ -384,10 +388,8 @@ int main(int argc, char *argv[]) {
     clock_t start = clock(), diff;
 
     int n = petri_net_coalescence(formula, top_optimise);
-    if (n)
-        printf("Solution in %d dimensions.\n", n);
-    else
-        printf("No solution found.\n");
+    
+    printf(n ? "Solution in %d dimensions.\n" : "No solution found (up to %d dimensions).\n", n);
     
     diff = clock() - start;
     /* Finish */
