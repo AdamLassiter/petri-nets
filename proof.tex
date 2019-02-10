@@ -86,8 +86,8 @@
         \begin{definition}[Formulae]
             A \textit{formula} within classical logic is constructed as follows:
             \begin{align*}
-                \quad A, B, C                &\defeq \bot \,|\, \top \,|\, a \,|\, \neg\, a \,|\, A \vee B \,|\, A \wedge B \\
-                \quad \Gamma, \Delta, \Sigma &\defeq A_1 \ldots A_n
+                A, B, C                \quad &\defeq \quad \top \,|\, \bot \,|\, a \,|\, \neg\, a \,|\, A \vee B \,|\, A \wedge B \\
+                \Gamma, \Delta, \Sigma \quad &\defeq \quad A \,|\, A,B \,|\, A,B,C \ldots
             \end{align*}
             where $\vee, \wedge$ are additive linear logic disjunction and conjunction respectively and $\Gamma, \Delta, \Sigma$ are contexts..
         \end{definition}
@@ -374,7 +374,7 @@
         \end{example*}
 
         \begin{remark}
-            Implementing fireable petri nets is straightforward using an $n$-dimensional boolean array of places visited and a collection of $n$-tuples representing tokens.
+            Implementing firable petri nets is straightforward using an $n$-dimensional boolean array of places visited and a collection of $n$-tuples representing tokens.
         \end{remark}
 
         
@@ -421,17 +421,18 @@
             Given $\vdash P$, its dimensionality is defined $\dim(P) \defeq n$.
         \end{definition}
 
-        \begin{proposition}[Deducing Dimensionality]
-            Given formulae $P, Q$ such that $\exists \vdash P$ with $\dim(P) = n$ and $\exists \vdash Q$ with $\dim(Q) = m$, then:
-            \begin{align*}
-                \dim(P \vee Q) &= \min(n, m) \\
-                \dim(P \wedge Q) &= \max(n, m)
-            \end{align*}
-        \end{proposition}
+        \begin{examples}
+        \end{examples}
 
-        \begin{proof}
-            Omitted
-        \end{proof}
+
+        \begin{definition}[Classes of Formulae]
+            Let $A^i$ be the subclasses of formulae defined as:
+            \begin{align*}
+                A^1 \quad &\defeq \quad \top \,|\, \bot \,|\, A^1 \wedge A^1 \,|\, A^* \vee A^1 \\
+                A^2 \quad &\defeq \quad A^1 \,|\, \textit{Additive Linear Logic} \,|\, A^* \vee A_2 \,|\, P \vee \neg P
+            \end{align*}
+            where $P \in A^*$, such that $A^n$ is the class of all formulae provable in n dimensions.
+        \end{definition}
 
 
         \begin{remark*}[Satisfiability vs Provability]
