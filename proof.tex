@@ -416,16 +416,16 @@
         
         \begin{definition}[Dimensionality]
             Given a formula $P$, the coalescence proof search produces a proof in an $n$ dimensional petri net.
-            The dimensionality of $P$ is then defined $dim(P) \defeq n$.
+            The dimensionality of $P$ is then defined $\dim(P) \defeq n$.
             Equivalently, an additively stratified sequent proof requires $n - 1$ contractions at the bottom of the proof.
-            Given $\vdash P$, its dimensionality is defined $dim(P) \defeq n$.
+            Given $\vdash P$, its dimensionality is defined $\dim(P) \defeq n$.
         \end{definition}
 
         \begin{proposition}[Deducing Dimensionality]
-            Given formulae $P, Q$ such that $\exists \vdash P$ with $dim(P) = n$ and $\exists \vdash Q$ with $dim(Q) = m$, then:
+            Given formulae $P, Q$ such that $\exists \vdash P$ with $\dim(P) = n$ and $\exists \vdash Q$ with $\dim(Q) = m$, then:
             \begin{align*}
-                dim(P \vee Q) &= min(n, m) \\
-                dim(P \wedge Q) &= max(n, m)
+                \dim(P \vee Q) &= \min(n, m) \\
+                \dim(P \wedge Q) &= \max(n, m)
             \end{align*}
         \end{proposition}
 
@@ -444,10 +444,10 @@
         \begin{definition}[Dimensionality when not Provable]
             Given a formula $P$ such that there does not exist $\vdash P$, for all formulae $Q$ such that there does exist $\vdash Q$, the dimensionality of $P$ is defined as the least $n$ such that:
             \begin{equation*}
-                dim(P) \defeq n \implies 
+                \dim(P) \defeq n \implies 
                 \begin{cases}
-                    \exists \vdash (P \vee Q) \implies dim(P \vee Q) = min(n, dim(Q)) \\
-                    \exists \vdash (P \wedge Q) \implies dim(P \wedge Q) = max(n, dim(Q))
+                    \exists \vdash (P \vee Q) \implies \dim(P \vee Q) = \min(n, \dim(Q)) \\
+                    \exists \vdash (P \wedge Q) \implies \dim(P \wedge Q) = \max(n, \dim(Q))
                 \end{cases}
             \end{equation*}
         \end{definition}
@@ -465,8 +465,8 @@
 
         \begin{proposition}[$\vee$-Bound on Dimensionality]
             \begin{align*}
-                dim(P) &\leq 1 + \#\{\vee \in P\} \\
-                dim(P) &\leq 1 + max\{\#\{\vee \in path\} \, \forall \, path \in tree(P)\}
+                \dim(P) &\leq 1 + \#\{\vee \in P\} \\
+                \dim(P) &\leq 1 + \max\{\#\{\vee \in path\} \, \forall \, path \in tree(P)\}
             \end{align*}
         \end{proposition}
 
@@ -477,17 +477,17 @@
 
         \begin{proposition}[$ax$-Bound on Dimensionality]
             \begin{align*}
-                dim(P) &\leq 1 + \#\{ax\textit{-Rule} \in \,\, \vdash P\} \\
-                dim(P) &\leq 1 + \#\{vars \in P\}
+                \dim(P) &\leq 1 + \#\{ax\textit{-Rule} \in \,\, \vdash P\} \\
+                \dim(P) &\leq 1 + \#\{vars \in P\}
             \end{align*}
         \end{proposition}
 
         \begin{proof}
             The first case is trivial.
-            Given a formula $P$ and a constructed sequent proof $\vdash P$ through coalescence, additive stratification ensures that $dim(P) = n \implies leaves(P) \geq n$.
+            Given a formula $P$ and a constructed sequent proof $\vdash P$ through coalescence, additive stratification ensures that $\dim(P) = n \implies leaves(P) \geq n$.
             As each of the $n$ branches of the tree moves `upwards', they must either terminate at an $ax$-rule or branch, leaving $n + 1$ branches total.
-            Subsequently, for each $ax$-rule forming a leaf of the tree, $dim(P)$ increases by no more than one.
-            Finally, consider a base case such as $P \seteq \vdash a \vee \neg a$ where $dim(P) = 2 \leq 1 + \#\{ax-Rule \in \vdash P\}$ (in this case, it is equal).
+            Subsequently, for each $ax$-rule forming a leaf of the tree, $\dim(P)$ increases by no more than one.
+            Finally, consider a base case such as $P \seteq \vdash a \vee \neg a$ where $\dim(P) = 2 \leq 1 + \#\{ax-Rule \in \vdash P\}$ (in this case, it is equal).
             
             Second case omitted
         \end{proof}
