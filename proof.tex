@@ -1,5 +1,4 @@
 \documentclass{article}
-%[twocolumn]
 
 % ~~~~~~~~~~~~~~~~~~~~~~~ Preamble ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -18,12 +17,16 @@
 %  {\normalfont\scshape}{\thesection}{1em}{}
 
 % no paragraph indent
-\setlength{\parindent}{0pt}
-\setlength{\columnsep}{2em}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+%\setlength{\columnsep}{2em}
 
 % delta-equals (unused)
 \def\deltaeq{\mathrel{\ensurestackMath{\stackon[1pt]{=}{\scriptstyle\Delta}}}}
+% define-equals
 \def\defeq{::=}
+% set-to-equals
+\def\seteq{:=}
 
 
 % indented definitions, lemmas etc
@@ -31,20 +34,19 @@
 \newtheoremstyle{indented}
     {5pt}% space before
     {5pt}% space after
-    {\addtolength{\@totalleftmargin}{1em}
-     \addtolength{\linewidth}{-2em}
-     \parshape 1 1em \linewidth}% body font
-    {-1em}% indent
+    {\addtolength{\@totalleftmargin}{0em}
+     \addtolength{\linewidth}{-0em}
+     \parshape 1 0em \linewidth}% body font
+    {-0em}% indent
     {\bfseries}% header font
     {.}% punctuation
-    {.5em}% after theorem header
+    {\newline}% after theorem header
     {}% header specification (empty for default)
 \makeatother
 
 % theorems with global counter
 \theoremstyle{indented}
 \newtheorem{sec-ctr}{???}[section]
-\newtheorem{theorem}[sec-ctr]{Theorem}
 \newtheorem{definition}[sec-ctr]{Definition}
 \newtheorem*{definition*}{Definition}
 \newtheorem{proposition}[sec-ctr]{Proposition}
@@ -69,14 +71,19 @@
 \date{\today}
 
 \begin{document}
+
     \maketitle
     \begin{abstract}
-        \textbf{We investigate a natural algorithm for proof search within classical logic.}
+        \textbf{We investigate a natural algorithm for proof search within classical logic and prove bounds on the complexity class of such a search.}
     \end{abstract}
+
+
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
     \section{Classical Logic}
 
-        \begin{definition}{Formulae\\}
+        \begin{definition}[Formulae]
             A \textit{formula} within classical logic is constructed as follows:
             \begin{align*}
                 \quad A, B, C                &\defeq \bot \,|\, \top \,|\, a \,|\, \neg\, a \,|\, A \vee B \,|\, A \wedge B \\
@@ -89,8 +96,9 @@
         \end{example*}
 
 
-        \begin{definition}{Sequent Proofs\\}
-            Within \textit{classical logic}, a \textit{sequent proof} is constructed from the following rules:\\
+        \begin{definition}[Sequent Proofs]
+            Within \textit{classical logic}, a \textit{sequent proof} is constructed from the following rules:
+
             \begin{minipage}[H]{\linewidth}
                 \centering
                 \begin{minipage}[H]{.3\linewidth}
@@ -130,7 +138,7 @@
                         \UnaryInfC{$\vdash \Gamma, A$}
                     \end{prooftree}
                 \end{minipage}
-            \end{minipage}~\\
+            \end{minipage}~\par
             where $A, B, C$ are formulae and $\Gamma, \Delta, \Sigma$ are sequents.
             A sequent proof provides, without context, a proof of its conclusion and each line of the proof represents a tautology.
         \end{definition}
@@ -144,8 +152,8 @@
         \end{remark}
 
 
-        \begin{definition}{Derivations\\}
-            Given \textit{tops} $\Gamma_1 \ldots \Gamma_n$ for the sequent proof $\vdash \Delta$, a \textit{derivation} is a tree providing a proof of $\Gamma_1 \ldots \Gamma_n \implies \Delta$.\\
+        \begin{definition}[Derivations]
+            Given \textit{tops} $\Gamma_1 \ldots \Gamma_n$ for the sequent proof $\vdash \Delta$, a \textit{derivation} is a tree providing a proof of $\Gamma_1 \ldots \Gamma_n \implies \Delta$.
 
             A derivation is written as:
             \begin{prooftree}
@@ -157,7 +165,7 @@
             where the \textit{label} describes which rules may be used within the derivation.
         \end{definition}
 
-        \begin{corollary}{Derivation Equivalence\\}
+        \begin{corollary}[Derivation Equivalence]
             A sequent proof is a derivation where all top derivations of the tree are $=\joinrel= \top, ax$.
             Equivalence of derivations may be weakly defined up to equivalence of leaves and conclusion.
         \end{corollary}
@@ -166,7 +174,7 @@
         \end{example*}
 
 
-        \begin{definition}{Additive Stratification\\}
+        \begin{definition}[Additive Stratification]
             A proof tree is said to be \textit{additively stratified} if $\vdash P$ is structured as follows:
             \begin{prooftree}
                 \AxiomC{}
@@ -191,14 +199,17 @@
         
         \begin{example*}
         \end{example*}
-        \begin{theorem}{Stratification Equivalence\\}
+
+
+        \begin{proposition}[Stratification Equivalence]
             Given $\vdash A$, there exists an additively stratified proof of $A$.
-        \end{theorem}
+        \end{proposition}
         \begin{proof}
-            For each instance of a weakening below another inference, there exists an equivalent subproof that is additively stratified:\\~\\
+            For each instance of a weakening below another inference, there exists an equivalent subproof that is additively stratified:
+
             \begin{minipage}[H]{\linewidth}
                 \centering
-                \begin{minipage}[H]{0.3\linewidth}
+                \begin{minipage}[H]{0.4\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma, A, B$}
                         \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B$}
@@ -206,18 +217,18 @@
                     \end{prooftree}
                 \end{minipage}
                 $\leadsto$
-                \begin{minipage}[H]{0.3\linewidth}
+                \begin{minipage}[H]{0.4\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma, A, B$}
                         \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, B, C$}
                         \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B$, C}
                     \end{prooftree}
                 \end{minipage}
-            \end{minipage}\\~\\
+            \end{minipage}
             
             \begin{minipage}[H]{\linewidth}
                 \centering
-                \begin{minipage}[H]{0.3\linewidth}
+                \begin{minipage}[H]{0.4\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma, A$}
                         \AxiomC{$\vdash \Gamma, B$}
@@ -226,7 +237,7 @@
                     \end{prooftree}
                 \end{minipage}
                 $\leadsto\quad$
-                \begin{minipage}[H]{0.3\linewidth}
+                \begin{minipage}[H]{0.4\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma, A$}
                         \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, C$}
@@ -235,11 +246,11 @@
                         \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A \wedge B, C$}
                     \end{prooftree}
                 \end{minipage}
-            \end{minipage}\\~\\
+            \end{minipage}
 
             \begin{minipage}[H]{\linewidth}
                 \centering
-                \begin{minipage}[H]{0.3\linewidth}
+                \begin{minipage}[H]{0.4\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma, A, A$}
                         \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A$}
@@ -247,19 +258,20 @@
                     \end{prooftree}
                 \end{minipage}
                 $\leadsto\quad$
-                \begin{minipage}[H]{0.3\linewidth}
+                \begin{minipage}[H]{0.4\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma, A, A$}
                         \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, A, B$}
                         \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A, B$}
                     \end{prooftree}
                 \end{minipage}
-            \end{minipage}\\~\\
+            \end{minipage}
 
-            Similarly, for each instance of a contraction above another inference, there exists an equivalent subproof that is additively stratified:\\
+            Similarly, for each instance of a contraction above another inference, there exists an equivalent subproof that is additively stratified:
+
             \begin{minipage}[H]{\linewidth}
                 \centering
-                \begin{minipage}[H]{0.3\linewidth}
+                \begin{minipage}[H]{0.4\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma, A, A, B$}
                         \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A, B$}
@@ -267,7 +279,7 @@
                     \end{prooftree}
                 \end{minipage}
                 $\leadsto$
-                \begin{minipage}[H]{0.3\linewidth}
+                \begin{minipage}[H]{0.4\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma, A, A, B$}
                         \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, A, B, B$}
@@ -276,7 +288,7 @@
                         \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A \vee B$}
                     \end{prooftree}
                 \end{minipage}
-            \end{minipage}\\~\\
+            \end{minipage}
 
             \begin{minipage}[H]{\linewidth}
                 \centering
@@ -289,7 +301,7 @@
                     \end{prooftree}
                 \end{minipage}
                 $\leadsto\quad$
-                \begin{minipage}[H]{0.5\linewidth}
+                \begin{minipage}[H]{0.6\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash \Gamma, A, A$}
                         \AxiomC{$\vdash \Gamma, B$}
@@ -301,7 +313,7 @@
                         \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A \wedge B$}
                     \end{prooftree}
                 \end{minipage}
-            \end{minipage}\\~\\
+            \end{minipage}
             
             By induction from the leaves downwards on a finite height tree, apply the associated rule to each pair of inferences of the form ($c$ above \textit{inf}).
             Any given $\vdash P$ may be rewritten:
@@ -331,6 +343,9 @@
             \end{prooftree}
 
         \end{proof}
+
+        \begin{example*}
+        \end{example*}
  
 
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -338,7 +353,7 @@
 
     \section{Coalescence}
         
-        \begin{definition}{Petri Nets\\}
+        \begin{definition}[Petri Nets]
             For the purposes required here, a \textit{petri net} $\mathcal{N}$ is $(\mathcal{P, F})$ where $f \in \mathcal{F} : \mathcal{P}^m \times \mathcal{P}$.
             In particular, $\mathcal{P}$ is a set of places and $\mathcal{F}$ a set of flows.
             A \textit{configuration} is a set $\mathcal{C} \subset \mathcal{P}$ of tokens in places.
@@ -348,7 +363,7 @@
         \end{example*}
 
 
-        \begin{definition}{Firing Petri Nets\\}
+        \begin{definition}[Firing Petri Nets]
             Given a petri net $\mathcal{N}$ and configuration $\mathcal{C}$, a \textit{firing} of the net $\mathcal{N}$ is a new configuration generated by application of a transition $f \in \mathcal{F}$ on $m$ tokens $c_1 \ldots c_n \in \mathcal{C}$.
             In particular, $(\mathcal{N = (P, F), C}) \mapsto (\mathcal{N, C} \cup f_{right} \setminus f_{left})$ for some $f = (f_{left}, f_{right}) \in \mathcal{F}$
             
@@ -363,25 +378,28 @@
         \end{remark}
 
         
-        \begin{definition}{Coalescence\\}
+        \begin{definition}[Coalescence]
             Given a formula $P$, the coalescence algorithm is as follows:
             \begin{enumerate}[noitemsep]
-                \item Set  $n := 1$
+                \item Set  $n \seteq 1$
                 \item Construct a $n$-dimensional petri net $\mathcal{N}$ from $P$ where each subformula is a place, each conjunction and disjunction a flow
                 \item Construct a configuration $C$ with a token at each place $p = (\ldots, a, \ldots, \neg a, \ldots)$ the intersection of a pair of tautological atoms
                 \item Exhaustively fire the petri net $\mathcal{N}$ using the \textit{spawning} method.
                 \item If there exists a token in the configuration $\mathcal{C^*}$ at the root of the formula $P$, halt and return $n$
-                \item Otherwise, set $n := n + 1$ and go to step 2
+                \item Otherwise, increment $n \seteq n + 1$ and go to step 2
             \end{enumerate}
         \end{definition}
 
+        \begin{example*}
+        \end{example*}
 
-        \begin{proposition}{Coalescence Proof Search\\}
+
+        \begin{proposition}[Coalescence Proof Search]
             The coalescence algorithm on $P$ is exactly a proof search on $P$.
         \end{proposition}
 
         \begin{proof}
-            In particular, consider the additively stratified $\vdash P$ with $n - 1$ contractions.
+            In particular, consider the additively stratified $\vdash P$ with $n - 1$ contractions (should such a proof exist).
             The first configuration of tokens is precisely a proof all possible combinations of the \textit{axiom} rule with $n - 3$ other terms through the \textit{weakening}.
             Each flow transition followed when fired is an application of either the $\vee$ or $\wedge$ rule.
             Finally, a token at the root of the formula is $\vdash P \ldots P$, with the \textit{contraction} rule applied implicitly.
@@ -396,14 +414,14 @@
 
     \section{Dimensionality}
         
-        \begin{definition}{Dimensionality\\}
-            Coalescence proof search produces a proof in $n$ dimensions.
+        \begin{definition}[Dimensionality]
+            Given a formula $P$, the coalescence proof search produces a proof in an $n$ dimensional petri net.
+            The dimensionality of $P$ is then defined $dim(P) \defeq n$.
             Equivalently, an additively stratified sequent proof requires $n - 1$ contractions at the bottom of the proof.
             Given $\vdash P$, its dimensionality is defined $dim(P) \defeq n$.
         \end{definition}
 
-
-        \begin{proposition}{Deducing Dimensionality\\}
+        \begin{proposition}[Deducing Dimensionality]
             Given formulae $P, Q$ such that $\exists \vdash P$ with $dim(P) = n$ and $\exists \vdash Q$ with $dim(Q) = m$, then:
             \begin{align*}
                 dim(P \vee Q) &= min(n, m) \\
@@ -416,29 +434,63 @@
         \end{proof}
 
 
-        \begin{definition}{Satisfiability vs Proveability\\}
-            Coalescence $O(l^n)$ vs SAT $O(n$!$)$
-        \end{definition}
+        \begin{remark*}[Satisfiability vs Provability]
+            For any formula $P$, there exist four distinct classes: \textit{true, false, satisfiably true, satisfiably false}, where satisfiable differs by finding a particular assignment of values to each variable.
+            Coalescence searches for a proof of $P$ in \textit{true}, whereas the SAT problem addresses a proof of $P$ in \textit{true}.
+            In particular, \textit{true} is the complement class to \textit{satisfiably false} and \textit{false} complement to \textit{satisfiably true}. % TODO: Is this true?
+        \end{remark*}
         
         
-        \begin{definition}{Dimensionality when not Proveable\\}
-            $dim(P) \defeq$ dimension when a token last moved up the tree
+        \begin{definition}[Dimensionality when not Provable]
+            Given a formula $P$ such that there does not exist $\vdash P$, for all formulae $Q$ such that there does exist $\vdash Q$, the dimensionality of $P$ is defined as the least $n$ such that:
+            \begin{equation*}
+                dim(P) \defeq n \implies 
+                \begin{cases}
+                    \exists \vdash (P \vee Q) \implies dim(P \vee Q) = min(n, dim(Q)) \\
+                    \exists \vdash (P \wedge Q) \implies dim(P \wedge Q) = max(n, dim(Q))
+                \end{cases}
+            \end{equation*}
         \end{definition}
 
 
-        \begin{definition}{Paths in a Tree\\}
-            Path from root to any leaf
+        \begin{remark*}
+            This definition of a `partial dimensionality' amounts to finding the highest dimension in coalescence proof search that some useful deduction was made, outside of trivial cases.
+        \end{remark*}
+
+
+        \begin{definition}[Paths in a Tree]
+            Path from root to any leaf (effectively iterating leaves, but tracing parents)
         \end{definition}
 
 
-        \begin{theorem}{Bounds on Coalescence Dimensionality\\}
-            $dim(P) \leq \#\{\vee \in P\}$ \\
-            $dim(P) \leq max\{\#\{\vee \in path\} \, \forall \, path \in tree(P)\}$
-
-        \end{theorem}
+        \begin{proposition}[$\vee$-Bound on Dimensionality]
+            \begin{align*}
+                dim(P) &\leq 1 + \#\{\vee \in P\} \\
+                dim(P) &\leq 1 + max\{\#\{\vee \in path\} \, \forall \, path \in tree(P)\}
+            \end{align*}
+        \end{proposition}
 
         \begin{proof}
+            Omitted
         \end{proof}
 
 
+        \begin{proposition}[$ax$-Bound on Dimensionality]
+            \begin{align*}
+                dim(P) &\leq 1 + \#\{ax\textit{-Rule} \in \,\, \vdash P\} \\
+                dim(P) &\leq 1 + \#\{vars \in P\}
+            \end{align*}
+        \end{proposition}
+
+        \begin{proof}
+            The first case is trivial.
+            Given a formula $P$ and a constructed sequent proof $\vdash P$ through coalescence, additive stratification ensures that $dim(P) = n \implies leaves(P) \geq n$.
+            As each of the $n$ branches of the tree moves `upwards', they must either terminate at an $ax$-rule or branch, leaving $n + 1$ branches total.
+            Subsequently, for each $ax$-rule forming a leaf of the tree, $dim(P)$ increases by no more than one.
+            Finally, consider a base case such as $P \seteq \vdash a \vee \neg a$ where $dim(P) = 2 \leq 1 + \#\{ax-Rule \in \vdash P\}$ (in this case, it is equal).
+            
+            Second case omitted
+        \end{proof}
+
+    
 \end{document}
