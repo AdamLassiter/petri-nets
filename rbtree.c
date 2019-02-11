@@ -354,7 +354,7 @@ void rbtree_iter_free(RBTreeIter *self) {
 
 // Internal function, init traversal object, dir determines whether
 // to begin traversal at the smallest or largest valued node.
-static void *rbtiree_iter_start(RBTreeIter *self, RBTree *tree, int dir) {
+static void *rbtree_iter_start(RBTreeIter *self, RBTree *tree, int dir) {
     void *result = NULL;
     if (self) {
         self->tree = tree;

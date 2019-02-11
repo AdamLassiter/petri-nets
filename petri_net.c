@@ -313,10 +313,11 @@ static Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
 }
 
 // Perform coalescence algorithm in all dimensions until halt or out-of-memory error
-size_t petri_net_coalescence(Formula *f, bool top_opt) {
+int petri_net_coalescence(Formula *f, bool top_opt) {
     formula_print(f); printf("\n");
+    int n;
     
-    for (size_t n = 2; n <= formula_n_free_names(f) + 1; n++) {
+    for (n = 2; n <= formula_n_free_names(f) + 1; n++) {
         // Fire an n-dimensional net exhaustively
         PetriNet *net = petri_net_exhaustive_fire(f, n);
         Formula *f_next = petri_net_substitute_top(net, f);
@@ -338,7 +339,7 @@ size_t petri_net_coalescence(Formula *f, bool top_opt) {
         petri_net_free(net);
     }
 
-    return 0;
+    return 1 - n;
 }
 
 
@@ -388,7 +389,7 @@ int main(int argc, char *argv[]) {
 
     int n = petri_net_coalescence(formula, top_optimise);
     
-    printf(n ? "Solution in %d dimensions.\n" : "No solution found (up to %d dimensions).\n", n);
+    printf(n > 0 ? "Solution in %d dimensions.\n" : "No solution found (up to %d dimensions).\n", abs(n));
     
     diff = clock() - start;
     /* Finish */

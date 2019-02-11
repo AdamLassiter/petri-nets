@@ -23,6 +23,6 @@ typedef struct PetriNet {
 PetriNet *petri_net_new(Formula *);
 void petri_net_free(PetriNet *);
 
-size_t petri_net_coalescence(Formula *, bool);
+int petri_net_coalescence(Formula *, bool);
 
 void petri_net_print(PetriNet *);
