@@ -1,0 +1,267 @@
+\section{Classical Logic}
+
+    \begin{definition}[Formulae]
+        A \textit{formula} within classical logic is constructed as follows:
+        \begin{align*}
+            A, B, C                \quad &\defeq \quad \top \,|\, \bot \,|\, a \,|\, \neg\, a \,|\, A \vee B \,|\, A \wedge B \\
+            \Gamma, \Delta, \Sigma \quad &\defeq \quad A \,|\, A,B \,|\, A,B,C \ldots
+        \end{align*}
+        where $\vee, \wedge$ are additive linear logic disjunction and conjunction respectively and $\Gamma, \Delta, \Sigma$ are contexts.
+    \end{definition}
+
+    \begin{example}
+        \begin{equation*}
+            A \seteq a \vee b \quad B \seteq \neg b \vee c \quad C \seteq A \wedge B \equiv (a \vee b) \wedge (\neg b \vee c)
+        \end{equation*}
+    \end{example}
+
+
+    \begin{definition}[Sequent Proofs]
+        Within \textit{classical logic}, a \textit{sequent proof} is constructed from the following rules:
+
+        \begin{minipage}[H]{\linewidth}
+            \centering
+            \begin{minipage}[H]{.3\linewidth}
+                \begin{prooftree}
+                    \AxiomC{~}
+                    \RightLabel{$\top$}
+                    \UnaryInfC{$\vdash \top$}
+                \end{prooftree}
+                \begin{prooftree}
+                    \AxiomC{~}
+                    \RightLabel{$ax$}
+                    \UnaryInfC{$\vdash a, \neg\, a$}
+                \end{prooftree}
+            \end{minipage}
+            \begin{minipage}[H]{.3\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A$}
+                    \RightLabel{$\vee$R}
+                    \UnaryInfC{$\vdash \Gamma, A \vee B$}
+                \end{prooftree}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A$}
+                    \AxiomC{$\vdash \Gamma, B$}
+                    \RightLabel{$\wedge$R}
+                    \BinaryInfC{$\vdash \Gamma, A \wedge B$}
+                \end{prooftree}
+            \end{minipage}
+            \begin{minipage}[H]{.3\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma$}
+                    \RightLabel{$w$}
+                    \UnaryInfC{$\vdash \Gamma, A$}
+                \end{prooftree}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A, A$}
+                    \RightLabel{$c$}
+                    \UnaryInfC{$\vdash \Gamma, A$}
+                \end{prooftree}
+            \end{minipage}
+        \end{minipage}~\par
+        where $A, B, C$ are formulae and $\Gamma, \Delta, \Sigma$ are sequents.
+        A sequent proof provides, without context, a proof of its conclusion and each line of the proof represents a tautology.
+    \end{definition}
+
+    \begin{example}
+    \end{example}
+
+
+    \begin{remark}
+        Within the context of weakening and contraction, \textit{additive} and \textit{multiplicative} rules are inter-derivable.
+    \end{remark}
+
+
+    \begin{definition}[Derivations]
+        Given \textit{tops} $\Gamma_1 \ldots \Gamma_n$ for the sequent proof $\vdash \Delta$, a \textit{derivation} is a tree providing a proof of $\Gamma_1 \ldots \Gamma_n \implies \Delta$.
+
+        A derivation is written as:
+        \begin{prooftree}
+            \AxiomC{$\vdash \Gamma_1$}
+            \AxiomC{$\ldots$}
+            \AxiomC{$\vdash \Gamma_n$}
+            \RightLabel{\textit{[label]}} \doubleLine\TrinaryInfC{$\vdash \Delta$}
+        \end{prooftree}
+        where the \textit{label} describes which rules may be used within the derivation.
+    \end{definition}
+
+    \begin{corollary}[Derivation Equivalence]
+        A sequent proof is a derivation where all top derivations of the tree are $=\joinrel= \top, ax$.
+        Equivalence of derivations may be weakly defined up to equivalence of leaves and conclusion.
+    \end{corollary}
+
+    \begin{example}
+    \end{example}
+
+
+    \begin{definition}[Additive Stratification]
+        A proof tree is said to be \textit{additively stratified} if $\vdash P$ is structured as follows:
+        \begin{prooftree}
+            \AxiomC{}
+            \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_1$}
+            \RightLabel{$w$}\doubleLine\UnaryInfC{$\vdash \Gamma_1$}
+            \AxiomC{\ldots}
+            \AxiomC{}
+            \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_n$}
+            \RightLabel{$w$}\doubleLine\UnaryInfC{$\vdash \Gamma_n$}
+            \RightLabel{$\wedge, \vee$}\doubleLine\TrinaryInfC{$\vdash P \ldots P$}
+            \RightLabel{$c$}\doubleLine\UnaryInfC{$\vdash P$}
+        \end{prooftree}
+        That is, the inferences made in an additively stratified proof are strictly ordered by:
+        \begin{enumerate}[nosep]
+            \item Top/Axiomatic
+            \item Weakening
+            \item Conjunction/Disjunction
+            \item Contraction
+        \end{enumerate}
+    \end{definition}
+    
+    \begin{example}
+    \end{example}
+
+
+    \begin{proposition}[Stratification Equivalence]
+        Given $\vdash A$, there exists an additively stratified proof of $A$.
+    \end{proposition}
+    \begin{proof}
+        For each instance of a weakening below another inference, there exists an equivalent subproof that is additively stratified:
+
+        \begin{minipage}[H]{\linewidth}
+            \centering
+            \begin{minipage}[H]{0.4\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A, B$}
+                    \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B$}
+                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A \vee B$, C}
+                \end{prooftree}
+            \end{minipage}
+            $\leadsto$
+            \begin{minipage}[H]{0.4\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A, B$}
+                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, B, C$}
+                    \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B$, C}
+                \end{prooftree}
+            \end{minipage}
+        \end{minipage}
+        
+        \begin{minipage}[H]{\linewidth}
+            \centering
+            \begin{minipage}[H]{0.4\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A$}
+                    \AxiomC{$\vdash \Gamma, B$}
+                    \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A \wedge B$}
+                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A \wedge B, C$}
+                \end{prooftree}
+            \end{minipage}
+            $\leadsto\quad$
+            \begin{minipage}[H]{0.4\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A$}
+                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, C$}
+                    \AxiomC{$\vdash \Gamma, B$}
+                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, B, C$}
+                    \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A \wedge B, C$}
+                \end{prooftree}
+            \end{minipage}
+        \end{minipage}
+
+        \begin{minipage}[H]{\linewidth}
+            \centering
+            \begin{minipage}[H]{0.4\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A, A$}
+                    \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A$}
+                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, B$}
+                \end{prooftree}
+            \end{minipage}
+            $\leadsto\quad$
+            \begin{minipage}[H]{0.4\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A, A$}
+                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, A, B$}
+                    \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A, B$}
+                \end{prooftree}
+            \end{minipage}
+        \end{minipage}
+
+        Similarly, for each instance of a contraction above another inference, there exists an equivalent subproof that is additively stratified:
+
+        \begin{minipage}[H]{\linewidth}
+            \centering
+            \begin{minipage}[H]{0.4\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A, A, B$}
+                    \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A, B$}
+                    \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B$}
+                \end{prooftree}
+            \end{minipage}
+            $\leadsto$
+            \begin{minipage}[H]{0.4\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A, A, B$}
+                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, A, B, B$}
+                    \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B, A, B$}
+                    \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B, A \vee B$}
+                    \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A \vee B$}
+                \end{prooftree}
+            \end{minipage}
+        \end{minipage}
+
+        \begin{minipage}[H]{\linewidth}
+            \centering
+            \begin{minipage}[H]{0.3\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A, A$}
+                    \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A$}
+                    \AxiomC{$\vdash \Gamma, B$}
+                    \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A \wedge B$}
+                \end{prooftree}
+            \end{minipage}
+            $\leadsto\quad$
+            \begin{minipage}[H]{0.6\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A, A$}
+                    \AxiomC{$\vdash \Gamma, B$}
+                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, B$}
+                    \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A, A \wedge B$}
+                    \AxiomC{$\vdash \Gamma, B$}
+                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, B, A \wedge B$}
+                    \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A \wedge B, A \wedge B$}
+                    \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A \wedge B$}
+                \end{prooftree}
+            \end{minipage}
+        \end{minipage}
+        
+        By induction from the leaves downwards on a finite height tree, apply the associated rule to each pair of inferences of the form ($c$ above \textit{inf}).
+        Any given $\vdash P$ may be rewritten:
+        \begin{prooftree}
+            \AxiomC{}
+            \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_1$}
+            \RightLabel{$\wedge, \vee, w$}\doubleLine\UnaryInfC{$\vdash \Gamma_1$}
+            \AxiomC{\ldots}
+            \AxiomC{}
+            \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_n$}
+            \RightLabel{$\wedge, \vee, w$}\doubleLine\UnaryInfC{$\vdash \Gamma_n$}
+            \RightLabel{$c$}\doubleLine\TrinaryInfC{$\vdash P$}
+        \end{prooftree}
+        
+        Again, by induction from the root upwards on this partially stratified tree, apply the associated rule to each pair of inferences of the form ($w$ below \textit{inf}).
+        $\vdash P$ may then be further rewritten:
+        \begin{prooftree}
+            \AxiomC{}
+            \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_1$}
+            \RightLabel{$w$}\doubleLine\UnaryInfC{$\vdash \Gamma_1$}
+            \AxiomC{\ldots}
+            \AxiomC{}
+            \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_n$}
+            \RightLabel{$w$}\doubleLine\UnaryInfC{$\vdash \Gamma_n$}
+            \RightLabel{$\wedge, \vee$}\doubleLine\TrinaryInfC{$\vdash P \ldots P$}
+            \RightLabel{$c$}\doubleLine\UnaryInfC{$\vdash P$}
+        \end{prooftree}
+
+    \end{proof}
+
+    \begin{example}
+    \end{example}

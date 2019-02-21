@@ -1,0 +1,117 @@
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.3\linewidth}
+        \begin{tikzpicture}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
+            % nodes
+            % top
+            \node[anchor=center, label=left:{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
+            \node[right=1cm of aa, label=above:{$\vee$}](av){};
+            \node[right=1cm of av, label=above:{$\neg a$}](ana){};
+            % middle
+            \node[below=1cm of aa, label=left:{$\wedge$}](va){};
+            \node[right=1cm of va](vv){};
+            \node[right=1cm of vv](vna){};
+            % bottom
+            \node[below=1cm of va, label=left:{$a$}](naa){};
+            \node[right=1cm of naa](nav){};
+            \node[right=1cm of nav, style={color=black!100}](nana){};
+            % disjunction helpers
+            \coordinate[right=0.28cm of va](da);
+            \coordinate[right=0.28cm of vv](dv);
+            \coordinate[right=0.28cm of vna](dna);
+
+            % edges
+            % horizontal
+            \draw[-arr] (aa) to [bend left] (av);
+            \draw[-arr] (ana) to [bend right] (av);
+            \draw[-arr] (va) to [bend left] (vv);
+            \draw[-arr] (vna) to [bend right] (vv);
+            \draw[-arr] (naa) to [bend left] (nav);
+            \draw[-arr] (nana) to [bend right] (nav);
+            % vertical
+            \draw[-] (aa) to [bend left] (naa);
+            \draw[-arr] (da) to (va);
+            \draw[-] (av) to [bend left] (nav);
+            \draw[-arr] (dv) to (vv);
+            \draw[-] (ana) to [bend left] (nana);
+            \draw[-arr] (dna) to (vna);
+        \end{tikzpicture}
+    \end{subfigure}
+    $\leadsto$
+    \begin{subfigure}{0.3\linewidth}
+        \begin{tikzpicture}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
+            % nodes
+            % top
+            \node[anchor=center, label=left:{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
+            \node[right=1cm of aa, label=above:{$\vee$}, style={color=black!100}](av){};
+            \node[right=1cm of av, label=above:{$\neg a$}](ana){};
+            % middle
+            \node[below=1cm of aa, label=left:{$\wedge$}](va){};
+            \node[right=1cm of va](vv){};
+            \node[right=1cm of vv](vna){};
+            % bottom
+            \node[below=1cm of va, label=left:{$a$}](naa){};
+            \node[right=1cm of naa, style={color=black!100}](nav){};
+            \node[right=1cm of nav, style={color=black!100}](nana){};
+            % disjunction helpers
+            \coordinate[right=0.28cm of va](da);
+            \coordinate[right=0.28cm of vv](dv);
+            \coordinate[right=0.28cm of vna](dna);
+
+            % edges
+            % horizontal
+            \draw[-arr, style={color=black!100}] (aa) to [bend left] (av);
+            \draw[-arr] (ana) to [bend right] (av);
+            \draw[-arr] (va) to [bend left] (vv);
+            \draw[-arr] (vna) to [bend right] (vv);
+            \draw[-arr] (naa) to [bend left] (nav);
+            \draw[-arr, style={color=black!100}] (nana) to [bend right] (nav);
+            % vertical
+            \draw[-] (aa) to [bend left] (naa);
+            \draw[-arr] (da) to (va);
+            \draw[-] (av) to [bend left] (nav);
+            \draw[-arr] (dv) to (vv);
+            \draw[-] (ana) to [bend left] (nana);
+            \draw[-arr] (dna) to (vna);
+        \end{tikzpicture}
+    \end{subfigure}
+    $\leadsto$
+    \begin{subfigure}{0.3\linewidth}
+        \begin{tikzpicture}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
+            % nodes
+            % top
+            \node[anchor=center, label=left:{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
+            \node[right=1cm of aa, label=above:{$\vee$}, style={color=black!100}](av){};
+            \node[right=1cm of av, label=above:{$\neg a$}](ana){};
+            % middle
+            \node[below=1cm of aa, label=left:{$\wedge$}](va){};
+            \node[right=1cm of va, style={color=black!100}](vv){};
+            \node[right=1cm of vv](vna){};
+            % bottom
+            \node[below=1cm of va, label=left:{$a$}](naa){};
+            \node[right=1cm of naa, style={color=black!100}](nav){};
+            \node[right=1cm of nav, style={color=black!100}](nana){};
+            % disjunction helpers
+            \coordinate[right=0.28cm of va](da);
+            \coordinate[right=0.28cm of vv](dv);
+            \coordinate[right=0.28cm of vna](dna);
+
+            % edges
+            % horizontal
+            \draw[-arr, style={color=black!100}] (aa) to [bend left] (av);
+            \draw[-arr] (ana) to [bend right] (av);
+            \draw[-arr] (va) to [bend left] (vv);
+            \draw[-arr] (vna) to [bend right] (vv);
+            \draw[-arr] (naa) to [bend left] (nav);
+            \draw[-arr, style={color=black!100}] (nana) to [bend right] (nav);
+            % vertical
+            \draw[-] (aa) to [bend left] (naa);
+            \draw[-arr] (da) to (va);
+            \draw[-, style={color=black!100}] (av) to [bend left] (nav);
+            \draw[-arr, style={color=black!100}] (dv) to (vv);
+            \draw[-] (ana) to [bend left] (nana);
+            \draw[-arr] (dna) to (vna);
+        \end{tikzpicture}
+    \end{subfigure}
+\end{figure}
+

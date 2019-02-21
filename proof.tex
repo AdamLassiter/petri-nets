@@ -11,6 +11,25 @@
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{latexsym}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+
+% tikz things
+\usetikzlibrary{petri, topaths, positioning}
+
+\pgfarrowsdeclare{arr}{arr}{
+  \setlength{\arrowsize}{0.6pt}
+  \addtolength{\arrowsize}{.5\pgflinewidth}
+  \pgfarrowsrightextend{0}
+  \pgfarrowsleftextend{-5\arrowsize}
+}{
+  \setlength{\arrowsize}{0.6pt}
+  \addtolength{\arrowsize}{.5\pgflinewidth}
+  \pgfpathmoveto{\pgfpoint{-5\arrowsize}{4\arrowsize}}
+  \pgfpathlineto{\pgfpointorigin}
+  \pgfpathlineto{\pgfpoint{-5\arrowsize}{-4\arrowsize}}
+  \pgfusepathqstroke
+}
 
 
 %\titleformat{\section}
@@ -44,6 +63,7 @@
     {}% header specification (empty for default)
 \makeatother
 
+
 % theorems with global counter
 \theoremstyle{indented}
 \newtheorem{sec-ctr}{???}[section]
@@ -53,13 +73,11 @@
 \newtheorem*{proposition*}{Proposition}
 \newtheorem{lemma}[sec-ctr]{Lemma}
 \newtheorem*{lemma*}{Lemma}
-\newtheorem{example}[sec-ctr]{Example}
-\newtheorem*{example*}{Example}
+\newtheorem*{example}{Example}
 \newtheorem*{examples}{Examples}
 \newtheorem{corollary}[sec-ctr]{Corollary}
 \newtheorem*{corollary*}{Corollary}
-\newtheorem{remark}[sec-ctr]{Remark}
-\newtheorem*{remark*}{Remark}
+\newtheorem*{remark}{Remark}
 \newtheorem*{remarks}{Remarks}
 
 
@@ -77,421 +95,11 @@
         \textbf{We investigate a natural algorithm for proof search within classical logic and prove bounds on the complexity class of such a search.}
     \end{abstract}
 
-
-% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-    \section{Classical Logic}
-
-        \begin{definition}[Formulae]
-            A \textit{formula} within classical logic is constructed as follows:
-            \begin{align*}
-                A, B, C                \quad &\defeq \quad \top \,|\, \bot \,|\, a \,|\, \neg\, a \,|\, A \vee B \,|\, A \wedge B \\
-                \Gamma, \Delta, \Sigma \quad &\defeq \quad A \,|\, A,B \,|\, A,B,C \ldots
-            \end{align*}
-            where $\vee, \wedge$ are additive linear logic disjunction and conjunction respectively and $\Gamma, \Delta, \Sigma$ are contexts..
-        \end{definition}
-
-        \begin{example*}
-        \end{example*}
-
-
-        \begin{definition}[Sequent Proofs]
-            Within \textit{classical logic}, a \textit{sequent proof} is constructed from the following rules:
-
-            \begin{minipage}[H]{\linewidth}
-                \centering
-                \begin{minipage}[H]{.3\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{~}
-                        \RightLabel{$\top$}
-                        \UnaryInfC{$\vdash \top$}
-                    \end{prooftree}
-                    \begin{prooftree}
-                        \AxiomC{~}
-                        \RightLabel{$ax$}
-                        \UnaryInfC{$\vdash a, \neg\, a$}
-                    \end{prooftree}
-                \end{minipage}
-                \begin{minipage}[H]{.3\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A$}
-                        \RightLabel{$\vee$R}
-                        \UnaryInfC{$\vdash \Gamma, A \vee B$}
-                    \end{prooftree}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A$}
-                        \AxiomC{$\vdash \Gamma, B$}
-                        \RightLabel{$\wedge$R}
-                        \BinaryInfC{$\vdash \Gamma, A \wedge B$}
-                    \end{prooftree}
-                \end{minipage}
-                \begin{minipage}[H]{.3\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma$}
-                        \RightLabel{$w$}
-                        \UnaryInfC{$\vdash \Gamma, A$}
-                    \end{prooftree}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A, A$}
-                        \RightLabel{$c$}
-                        \UnaryInfC{$\vdash \Gamma, A$}
-                    \end{prooftree}
-                \end{minipage}
-            \end{minipage}~\par
-            where $A, B, C$ are formulae and $\Gamma, \Delta, \Sigma$ are sequents.
-            A sequent proof provides, without context, a proof of its conclusion and each line of the proof represents a tautology.
-        \end{definition}
-
-        \begin{example*}
-        \end{example*}
-
-
-        \begin{remark}
-            Within the context of weakening and contraction, \textit{additive} and \textit{multiplicative} rules are inter-derivable.
-        \end{remark}
-
-
-        \begin{definition}[Derivations]
-            Given \textit{tops} $\Gamma_1 \ldots \Gamma_n$ for the sequent proof $\vdash \Delta$, a \textit{derivation} is a tree providing a proof of $\Gamma_1 \ldots \Gamma_n \implies \Delta$.
-
-            A derivation is written as:
-            \begin{prooftree}
-                \AxiomC{$\vdash \Gamma_1$}
-                \AxiomC{$\ldots$}
-                \AxiomC{$\vdash \Gamma_n$}
-                \RightLabel{\textit{[label]}} \doubleLine\TrinaryInfC{$\vdash \Delta$}
-            \end{prooftree}
-            where the \textit{label} describes which rules may be used within the derivation.
-        \end{definition}
-
-        \begin{corollary}[Derivation Equivalence]
-            A sequent proof is a derivation where all top derivations of the tree are $=\joinrel= \top, ax$.
-            Equivalence of derivations may be weakly defined up to equivalence of leaves and conclusion.
-        \end{corollary}
-
-        \begin{example*}
-        \end{example*}
-
-
-        \begin{definition}[Additive Stratification]
-            A proof tree is said to be \textit{additively stratified} if $\vdash P$ is structured as follows:
-            \begin{prooftree}
-                \AxiomC{}
-                \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_1$}
-                \RightLabel{$w$}\doubleLine\UnaryInfC{$\vdash \Gamma_1$}
-                \AxiomC{\ldots}
-                \AxiomC{}
-                \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_n$}
-                \RightLabel{$w$}\doubleLine\UnaryInfC{$\vdash \Gamma_n$}
-                \RightLabel{$\wedge, \vee$}\doubleLine\TrinaryInfC{$\vdash P \ldots P$}
-                \RightLabel{$c$}\doubleLine\UnaryInfC{$\vdash P$}
-            \end{prooftree}
-            That is, the inferences made in an additively stratified proof are strictly ordered by:
-            \setlist{nolistsep}
-            \begin{enumerate}[noitemsep]
-                \item Top/Axiomatic
-                \item Weakening
-                \item Conjunction/Disjunction
-                \item Contraction
-            \end{enumerate}
-        \end{definition}
-        
-        \begin{example*}
-        \end{example*}
-
-
-        \begin{proposition}[Stratification Equivalence]
-            Given $\vdash A$, there exists an additively stratified proof of $A$.
-        \end{proposition}
-        \begin{proof}
-            For each instance of a weakening below another inference, there exists an equivalent subproof that is additively stratified:
-
-            \begin{minipage}[H]{\linewidth}
-                \centering
-                \begin{minipage}[H]{0.4\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A, B$}
-                        \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B$}
-                        \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A \vee B$, C}
-                    \end{prooftree}
-                \end{minipage}
-                $\leadsto$
-                \begin{minipage}[H]{0.4\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A, B$}
-                        \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, B, C$}
-                        \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B$, C}
-                    \end{prooftree}
-                \end{minipage}
-            \end{minipage}
-            
-            \begin{minipage}[H]{\linewidth}
-                \centering
-                \begin{minipage}[H]{0.4\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A$}
-                        \AxiomC{$\vdash \Gamma, B$}
-                        \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A \wedge B$}
-                        \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A \wedge B, C$}
-                    \end{prooftree}
-                \end{minipage}
-                $\leadsto\quad$
-                \begin{minipage}[H]{0.4\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A$}
-                        \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, C$}
-                        \AxiomC{$\vdash \Gamma, B$}
-                        \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, B, C$}
-                        \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A \wedge B, C$}
-                    \end{prooftree}
-                \end{minipage}
-            \end{minipage}
-
-            \begin{minipage}[H]{\linewidth}
-                \centering
-                \begin{minipage}[H]{0.4\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A, A$}
-                        \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A$}
-                        \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, B$}
-                    \end{prooftree}
-                \end{minipage}
-                $\leadsto\quad$
-                \begin{minipage}[H]{0.4\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A, A$}
-                        \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, A, B$}
-                        \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A, B$}
-                    \end{prooftree}
-                \end{minipage}
-            \end{minipage}
-
-            Similarly, for each instance of a contraction above another inference, there exists an equivalent subproof that is additively stratified:
-
-            \begin{minipage}[H]{\linewidth}
-                \centering
-                \begin{minipage}[H]{0.4\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A, A, B$}
-                        \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A, B$}
-                        \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B$}
-                    \end{prooftree}
-                \end{minipage}
-                $\leadsto$
-                \begin{minipage}[H]{0.4\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A, A, B$}
-                        \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, A, B, B$}
-                        \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B, A, B$}
-                        \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B, A \vee B$}
-                        \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A \vee B$}
-                    \end{prooftree}
-                \end{minipage}
-            \end{minipage}
-
-            \begin{minipage}[H]{\linewidth}
-                \centering
-                \begin{minipage}[H]{0.3\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A, A$}
-                        \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A$}
-                        \AxiomC{$\vdash \Gamma, B$}
-                        \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A \wedge B$}
-                    \end{prooftree}
-                \end{minipage}
-                $\leadsto\quad$
-                \begin{minipage}[H]{0.6\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash \Gamma, A, A$}
-                        \AxiomC{$\vdash \Gamma, B$}
-                        \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, B$}
-                        \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A, A \wedge B$}
-                        \AxiomC{$\vdash \Gamma, B$}
-                        \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, B, A \wedge B$}
-                        \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A \wedge B, A \wedge B$}
-                        \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A \wedge B$}
-                    \end{prooftree}
-                \end{minipage}
-            \end{minipage}
-            
-            By induction from the leaves downwards on a finite height tree, apply the associated rule to each pair of inferences of the form ($c$ above \textit{inf}).
-            Any given $\vdash P$ may be rewritten:
-            \begin{prooftree}
-                \AxiomC{}
-                \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_1$}
-                \RightLabel{$\wedge, \vee, w$}\doubleLine\UnaryInfC{$\vdash \Gamma_1$}
-                \AxiomC{\ldots}
-                \AxiomC{}
-                \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_n$}
-                \RightLabel{$\wedge, \vee, w$}\doubleLine\UnaryInfC{$\vdash \Gamma_n$}
-                \RightLabel{$c$}\doubleLine\TrinaryInfC{$\vdash P$}
-            \end{prooftree}
-            
-            Again, by induction from the root upwards on this partially stratified tree, apply the associated rule to each pair of inferences of the form ($w$ below \textit{inf}).
-            $\vdash P$ may then be further rewritten:
-            \begin{prooftree}
-                \AxiomC{}
-                \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_1$}
-                \RightLabel{$w$}\doubleLine\UnaryInfC{$\vdash \Gamma_1$}
-                \AxiomC{\ldots}
-                \AxiomC{}
-                \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_n$}
-                \RightLabel{$w$}\doubleLine\UnaryInfC{$\vdash \Gamma_n$}
-                \RightLabel{$\wedge, \vee$}\doubleLine\TrinaryInfC{$\vdash P \ldots P$}
-                \RightLabel{$c$}\doubleLine\UnaryInfC{$\vdash P$}
-            \end{prooftree}
-
-        \end{proof}
-
-        \begin{example*}
-        \end{example*}
+    \input{classical-logic}
  
+    \input{coalescence}
 
-    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-    \section{Coalescence}
-        
-        \begin{definition}[Petri Nets]
-            For the purposes required here, a \textit{petri net} $\mathcal{N}$ is $(\mathcal{P, F})$ where $f \in \mathcal{F} : \mathcal{P}^m \times \mathcal{P}$.
-            In particular, $\mathcal{P}$ is a set of places and $\mathcal{F}$ a set of flows.
-            A \textit{configuration} is a set $\mathcal{C} \subset \mathcal{P}$ of tokens in places.
-        \end{definition}
-
-        \begin{example*}
-        \end{example*}
-
-
-        \begin{definition}[Firing Petri Nets]
-            Given a petri net $\mathcal{N}$ and configuration $\mathcal{C}$, a \textit{firing} of the net $\mathcal{N}$ is a new configuration generated by application of a transition $f \in \mathcal{F}$ on $m$ tokens $c_1 \ldots c_n \in \mathcal{C}$.
-            In particular, $(\mathcal{N = (P, F), C}) \mapsto (\mathcal{N, C} \cup f_{right} \setminus f_{left})$ for some $f = (f_{left}, f_{right}) \in \mathcal{F}$
-            
-            A petri net is said to be \textit{exhaustively fired} if it is fired until there does not exist any such $f \in \mathcal{F}$ to fire.
-        \end{definition}
-
-        \begin{example*}
-        \end{example*}
-
-        \begin{remark}
-            Implementing firable petri nets is straightforward using an $n$-dimensional boolean array of places visited and a collection of $n$-tuples representing tokens.
-        \end{remark}
-
-        
-        \begin{definition}[Coalescence]
-            Given a formula $P$, the coalescence algorithm is as follows:
-            \begin{enumerate}[noitemsep]
-                \item Set  $n \seteq 1$
-                \item Construct a $n$-dimensional petri net $\mathcal{N}$ from $P$ where each subformula is a place, each conjunction and disjunction a flow
-                \item Construct a configuration $C$ with a token at each place $p = (\ldots, a, \ldots, \neg a, \ldots)$ the intersection of a pair of tautological atoms
-                \item Exhaustively fire the petri net $\mathcal{N}$ using the \textit{spawning} method.
-                \item If there exists a token in the configuration $\mathcal{C^*}$ at the root of the formula $P$, halt and return $n$
-                \item Otherwise, increment $n \seteq n + 1$ and go to step 2
-            \end{enumerate}
-        \end{definition}
-
-        \begin{example*}
-        \end{example*}
-
-
-        \begin{proposition}[Coalescence Proof Search]
-            The coalescence algorithm on $P$ is exactly a proof search on $P$.
-        \end{proposition}
-
-        \begin{proof}
-            In particular, consider the additively stratified $\vdash P$ with $n - 1$ contractions (should such a proof exist).
-            The first configuration of tokens is precisely a proof all possible combinations of the \textit{axiom} rule with $n - 3$ other terms through the \textit{weakening}.
-            Each flow transition followed when fired is an application of either the $\vee$ or $\wedge$ rule.
-            Finally, a token at the root of the formula is $\vdash P \ldots P$, with the \textit{contraction} rule applied implicitly.
-
-            If there exists an additively stratified proof of $P$, the coalescence algorithm will find it.
-            Since for every proof there exists an additively stratified proof, coalescence is precisely proof search.
-        \end{proof}
- 
-
-    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-    \section{Dimensionality}
-        
-        \begin{definition}[Dimensionality]
-            Given a formula $P$, the coalescence proof search produces a proof in an $n$ dimensional petri net.
-            The dimensionality of $P$ is then defined $\dim(P) \defeq n$.
-            Equivalently, an additively stratified sequent proof requires $n - 1$ contractions at the bottom of the proof.
-            Given $\vdash P$, its dimensionality is defined $\dim(P) \defeq n$.
-        \end{definition}
-
-        \begin{examples}
-        \end{examples}
-
-
-        \begin{definition}[Classes of Formulae]
-            Let $A^i$ be the subclasses of formulae defined as:
-            \begin{align*}
-                A^1 \quad &\defeq \quad \top \,|\, \bot \,|\, A^1 \wedge A^1 \,|\, A^* \vee A^1 \\
-                A^2 \quad &\defeq \quad A^1 \,|\, \textit{Additive Linear Logic} \,|\, A^* \vee A^2 \,|\, P \vee \neg P
-            \end{align*}
-            where $P \in A^*$, such that $A^n$ is the class of all formulae provable in n dimensions.
-        \end{definition}
-
-
-        \begin{remark*}[Satisfiability vs Provability]
-            For any formula $P$, there exist four distinct classes: \textit{true, false, satisfiably true, satisfiably false}, where satisfiable differs by finding a particular assignment of values to each variable.
-            Coalescence searches for a proof of $P$ in \textit{true}, whereas the SAT problem addresses a proof of $P$ in \textit{true}.
-            In particular, \textit{true} is the complement class to \textit{satisfiably false} and \textit{false} complement to \textit{satisfiably true}. % TODO: Is this true?
-        \end{remark*}
-        
-        
-        \begin{definition}[Dimensionality when not Provable]
-            Given a formula $P$ such that there does not exist $\vdash P$, for all formulae $Q$ such that there does exist $\vdash Q$, the dimensionality of $P$ is defined as the least $n$ such that:
-            \begin{equation*}
-                \dim(P) \defeq n \implies 
-                \begin{cases}
-                    \exists \vdash (P \vee Q) \implies \dim(P \vee Q) = \min(n, \dim(Q)) \\
-                    \exists \vdash (P \wedge Q) \implies \dim(P \wedge Q) = \max(n, \dim(Q))
-                \end{cases}
-            \end{equation*}
-        \end{definition}
-
-
-        \begin{remark*}
-            This definition of a `partial dimensionality' amounts to finding the highest dimension in coalescence proof search that some useful deduction was made, outside of trivial cases.
-        \end{remark*}
-
-
-        \begin{definition}[Paths in a Tree]
-            Path from root to any leaf (effectively iterating leaves, but tracing parents)
-        \end{definition}
-
-
-        \begin{proposition}[$\vee$-Bound on Dimensionality]
-            \begin{align*}
-                \dim(P) &\leq 1 + \#\{\vee \in P\} \\
-                \dim(P) &\leq 1 + \max\{\#\{\vee \in path\} \, \forall \, path \in tree(P)\}
-            \end{align*}
-        \end{proposition}
-
-        \begin{proof}
-            Omitted
-        \end{proof}
-
-
-        \begin{proposition}[$ax$-Bound on Dimensionality]
-            \begin{align*}
-                \dim(P) &\leq 1 + \#\{ax\textit{-Rule} \in \,\, \vdash P\} \\
-                \dim(P) &\leq 1 + \#\{vars \in P\}
-            \end{align*}
-        \end{proposition}
-
-        \begin{proof}
-            The first case is trivial.
-            Given a formula $P$ and a constructed sequent proof $\vdash P$ through coalescence, additive stratification ensures that $\dim(P) = n \implies leaves(P) \geq n$.
-            As each of the $n$ branches of the tree moves `upwards', they must either terminate at an $ax$-rule or branch, leaving $n + 1$ branches total.
-            Subsequently, for each $ax$-rule forming a leaf of the tree, $\dim(P)$ increases by no more than one.
-            Finally, consider a base case such as $P \seteq \vdash a \vee \neg a$ where $\dim(P) = 2 \leq 1 + \#\{ax-Rule \in \vdash P\}$ (in this case, it is equal).
-            
-            Second case omitted
-        \end{proof}
+    \input{dimensionality}
 
     
 \end{document}
