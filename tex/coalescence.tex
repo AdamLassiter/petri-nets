@@ -43,8 +43,8 @@
         \input{coalescence-example-2}
         Note in the final step the pair of tokens required to perform the conjunction transition.
     \end{example}
-    
-    
+
+
     \begin{definition}[Coalescence]
         Given a formula $P$, the coalescence algorithm is as follows:
         \begin{enumerate}[nosep]
@@ -68,10 +68,15 @@
         In fact, this symmetry can be exploited in the general case, ignoring all tokens below (w.l.o.g.) the diagonal as they simply express the commutativity property $\vdash A, B \iff \vdash B, A$.
         If this is the case, the coalescence algorithm may halt early if the root of the formula is reached.
     \end{remark}
-    
+
     \begin{example}
+        Consider the petri net proof for the formula $(a \vee \neg a) \wedge (b \vee \neg b)$, with a solution for $n = 3$.
+        In an exhaustively fired net for $n = 2$, the proof looks as follows:
+        \input{coalescence-example-4}
+        The coalescence algorithm fails to find a solution in 2 dimensions due to the lack of tokens in upper-right or lower-left quadrants.
+        If there were tokens in such a place, the tree would be able to continue to grow towards the formula root at the centre of the net.
     \end{example}
-    
+
     \begin{remark}
         Implementing firable petri nets is straightforward using an $n$-dimensional boolean array of places visited and a collection of $n$-tuples representing tokens.
         Within the context of coalescence proof search, this can be optimised in many ways, in this case a upper-triangular n-dimensional boolean matrix of places visited and a red-black tree of n-dimensional boolean array tokens can be used.

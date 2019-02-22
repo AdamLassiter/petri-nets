@@ -4,15 +4,15 @@
         \begin{tikzpicture}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
             % nodes
             % top
-            \node[anchor=center, label=left:{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
+            \node[anchor=center, label=left:\rotatebox{-90}{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
             \node[right=1cm of aa, label=above:{$\vee$}](av){};
             \node[right=1cm of av, label=above:{$\neg a$}](ana){};
             % middle
-            \node[below=1cm of aa, label=left:{$\wedge$}](va){};
+            \node[below=1cm of aa, label=left:\rotatebox{-90}{$\wedge$}](va){};
             \node[right=1cm of va](vv){};
             \node[right=1cm of vv](vna){};
             % bottom
-            \node[below=1cm of va, label=left:{$a$}](naa){};
+            \node[below=1cm of va, label=left:\rotatebox{-90}{$a$}](naa){};
             \node[right=1cm of naa](nav){};
             \node[right=1cm of nav, style={color=black!100}](nana){};
             % disjunction helpers
@@ -42,15 +42,15 @@
         \begin{tikzpicture}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
             % nodes
             % top
-            \node[anchor=center, label=left:{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
+            \node[anchor=center, label=left:\rotatebox{-90}{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
             \node[right=1cm of aa, label=above:{$\vee$}, style={color=black!100}](av){};
             \node[right=1cm of av, label=above:{$\neg a$}](ana){};
             % middle
-            \node[below=1cm of aa, label=left:{$\wedge$}](va){};
+            \node[below=1cm of aa, label=left:\rotatebox{-90}{$\wedge$}](va){};
             \node[right=1cm of va](vv){};
             \node[right=1cm of vv](vna){};
             % bottom
-            \node[below=1cm of va, label=left:{$a$}](naa){};
+            \node[below=1cm of va, label=left:\rotatebox{-90}{$a$}](naa){};
             \node[right=1cm of naa, style={color=black!100}](nav){};
             \node[right=1cm of nav, style={color=black!100}](nana){};
             % disjunction helpers
@@ -80,15 +80,15 @@
         \begin{tikzpicture}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
             % nodes
             % top
-            \node[anchor=center, label=left:{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
+            \node[anchor=center, label=left:\rotatebox{-90}{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
             \node[right=1cm of aa, label=above:{$\vee$}, style={color=black!100}](av){};
             \node[right=1cm of av, label=above:{$\neg a$}](ana){};
             % middle
-            \node[below=1cm of aa, label=left:{$\wedge$}](va){};
+            \node[below=1cm of aa, label=left:\rotatebox{-90}{$\wedge$}](va){};
             \node[right=1cm of va, style={color=black!100}](vv){};
             \node[right=1cm of vv](vna){};
             % bottom
-            \node[below=1cm of va, label=left:{$a$}](naa){};
+            \node[below=1cm of va, label=left:\rotatebox{-90}{$a$}](naa){};
             \node[right=1cm of naa, style={color=black!100}](nav){};
             \node[right=1cm of nav, style={color=black!100}](nana){};
             % disjunction helpers

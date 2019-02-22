@@ -1,0 +1,412 @@
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.4\linewidth}
+        \begin{tikzpicture}
+            \begin{scope}[transform shape, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
+                % nodes
+                % a
+                \node[anchor=center    ](aa){};
+                \node[right=0.5cm of aa](av){};
+                \node[right=0.5cm of av, style={color=black!100}](ae){};
+                \node[right=0.5cm of ae](an){};
+                \node[right=0.5cm of an](ab){};
+                \node[right=0.5cm of ab](aw){};
+                \node[right=0.5cm of aw](ap){};
+                % v
+                \node[below=0.5cm of aa](va){};
+                \node[right=0.5cm of va](vv){};
+                \node[right=0.5cm of vv](ve){};
+                \node[right=0.5cm of ve](vn){};
+                \node[right=0.5cm of vn](vb){};
+                \node[right=0.5cm of vb](vw){};
+                \node[right=0.5cm of vw](vp){};
+                % ~a
+                \node[below=0.5cm of va, style={color=black!100}](ea){};
+                \node[right=0.5cm of ea](ev){};
+                \node[right=0.5cm of ev](ee){};
+                \node[right=0.5cm of ee](en){};
+                \node[right=0.5cm of en](eb){};
+                \node[right=0.5cm of eb](ew){};
+                \node[right=0.5cm of ew](ep){};
+                % ^
+                \node[below=0.5cm of ea](na){};
+                \node[right=0.5cm of na](nv){};
+                \node[right=0.5cm of nv](ne){};
+                \node[right=0.5cm of ne](nn){};
+                \node[right=0.5cm of nn](nb){};
+                \node[right=0.5cm of nb](nw){};
+                \node[right=0.5cm of nw](np){};
+                % b
+                \node[below=0.5cm of na](ba){};
+                \node[right=0.5cm of ba](bv){};
+                \node[right=0.5cm of bv](be){};
+                \node[right=0.5cm of be](bn){};
+                \node[right=0.5cm of bn](bb){};
+                \node[right=0.5cm of bb](bw){};
+                \node[right=0.5cm of bw, style={color=black!100}](bp){};
+                % v
+                \node[below=0.5cm of ba](wa){};
+                \node[right=0.5cm of wa](wv){};
+                \node[right=0.5cm of wv](we){};
+                \node[right=0.5cm of we](wn){};
+                \node[right=0.5cm of wn](wb){};
+                \node[right=0.5cm of wb](ww){};
+                \node[right=0.5cm of ww](wp){};
+                % ~b
+                \node[below=0.5cm of wa](pa){};
+                \node[right=0.5cm of pa](pv){};
+                \node[right=0.5cm of pv](pe){};
+                \node[right=0.5cm of pe](pn){};
+                \node[right=0.5cm of pn, style={color=black!100}](pb){};
+                \node[right=0.5cm of pb](pw){};
+                \node[right=0.5cm of pw](pp){};
+
+                % disjunction helpers
+                % horizontal
+                \coordinate[below=0.2cm of an](ad);
+                \coordinate[below=0.2cm of vn](vd);
+                \coordinate[below=0.2cm of en](ed);
+                \coordinate[below=0.2cm of nn](nd);
+                \coordinate[below=0.2cm of bn](bd);
+                \coordinate[below=0.2cm of wn](wd);
+                \coordinate[below=0.2cm of pn](pd);
+                % vertical
+                \coordinate[left=0.2cm of na](da);
+                \coordinate[left=0.2cm of nv](dv);
+                \coordinate[left=0.2cm of ne](de);
+                \coordinate[left=0.2cm of nn](dn);
+                \coordinate[left=0.2cm of nb](db);
+                \coordinate[left=0.2cm of nw](dw);
+                \coordinate[left=0.2cm of np](dp);
+
+
+                % edges
+                % horizontal
+                % a
+                \draw[-arr] (aa) to [bend left]     (av);
+                \draw[-arr] (ae) to [bend right]    (av);
+                \draw[-arr] (ab) to [bend left]     (aw);
+                \draw[-arr] (ap) to [bend right]    (aw);
+                \draw[-]    (av) to [bend right=20] (aw);
+                \draw[-arr] (ad) to                 (an);
+                % v
+                \draw[-arr] (va) to [bend left]     (vv);
+                \draw[-arr] (ve) to [bend right]    (vv);
+                \draw[-arr] (vb) to [bend left]     (vw);
+                \draw[-arr] (vp) to [bend right]    (vw);
+                \draw[-]    (vv) to [bend right=20] (vw);
+                \draw[-arr] (vd) to                 (vn);
+                % ~a
+                \draw[-arr] (ea) to [bend left]     (ev);
+                \draw[-arr] (ee) to [bend right]    (ev);
+                \draw[-arr] (eb) to [bend left]     (ew);
+                \draw[-arr] (ep) to [bend right]    (ew);
+                \draw[-]    (ev) to [bend right=20] (ew);
+                \draw[-arr] (ed) to                 (en);
+                % ^
+                \draw[-arr] (na) to [bend left]     (nv);
+                \draw[-arr] (ne) to [bend right]    (nv);
+                \draw[-arr] (nb) to [bend left]     (nw);
+                \draw[-arr] (np) to [bend right]    (nw);
+                \draw[-]    (nv) to [bend right=20] (nw);
+                \draw[-arr] (nd) to                 (nn);
+                % b
+                \draw[-arr] (ba) to [bend left]     (bv);
+                \draw[-arr] (be) to [bend right]    (bv);
+                \draw[-arr] (bb) to [bend left]     (bw);
+                \draw[-arr] (bp) to [bend right]    (bw);
+                \draw[-]    (bv) to [bend right=20] (bw);
+                \draw[-arr] (bd) to                 (bn);
+                % v
+                \draw[-arr] (wa) to [bend left]     (wv);
+                \draw[-arr] (we) to [bend right]    (wv);
+                \draw[-arr] (wb) to [bend left]     (ww);
+                \draw[-arr] (wp) to [bend right]    (ww);
+                \draw[-]    (wv) to [bend right=20] (ww);
+                \draw[-arr] (wd) to                 (wn);
+                % ~b
+                \draw[-arr] (pa) to [bend left]     (pv);
+                \draw[-arr] (pe) to [bend right]    (pv);
+                \draw[-arr] (pb) to [bend left]     (pw);
+                \draw[-arr] (pp) to [bend right]    (pw);
+                \draw[-]    (pv) to [bend right=20] (pw);
+                \draw[-arr] (pd) to                 (pn);
+                % vertical
+                % a
+                \draw[-arr] (aa) to [bend left]     (va);
+                \draw[-arr] (ea) to [bend right]    (va);
+                \draw[-arr] (ba) to [bend left]     (wa);
+                \draw[-arr] (pa) to [bend right]    (wa);
+                \draw[-]    (va) to [bend right=20] (wa);
+                \draw[-arr] (da) to                 (na);
+                % v                                    
+                \draw[-arr] (av) to [bend left]     (vv);
+                \draw[-arr] (ev) to [bend right]    (vv);
+                \draw[-arr] (bv) to [bend left]     (wv);
+                \draw[-arr] (pv) to [bend right]    (wv);
+                \draw[-]    (vv) to [bend right=20] (wv);
+                \draw[-arr] (dv) to                 (nv);
+                % ~a                                   
+                \draw[-arr] (ae) to [bend left]     (ve);
+                \draw[-arr] (ee) to [bend right]    (ve);
+                \draw[-arr] (be) to [bend left]     (we);
+                \draw[-arr] (pe) to [bend right]    (we);
+                \draw[-]    (ve) to [bend right=20] (we);
+                \draw[-arr] (de) to                 (ne);
+                % ^                                    
+                \draw[-arr] (an) to [bend left]     (vn);
+                \draw[-arr] (en) to [bend right]    (vn);
+                \draw[-arr] (bn) to [bend left]     (wn);
+                \draw[-arr] (pn) to [bend right]    (wn);
+                \draw[-]    (vn) to [bend right=20] (wn);
+                \draw[-arr] (dn) to                 (nn);
+                % b                                    
+                \draw[-arr] (ab) to [bend left]     (vb);
+                \draw[-arr] (eb) to [bend right]    (vb);
+                \draw[-arr] (bb) to [bend left]     (wb);
+                \draw[-arr] (pb) to [bend right]    (wb);
+                \draw[-]    (vb) to [bend right=20] (wb);
+                \draw[-arr] (db) to                 (nb);
+                % v                                    
+                \draw[-arr] (aw) to [bend left]     (vw);
+                \draw[-arr] (ew) to [bend right]    (vw);
+                \draw[-arr] (bw) to [bend left]     (ww);
+                \draw[-arr] (pw) to [bend right]    (ww);
+                \draw[-]    (vw) to [bend right=20] (ww);
+                \draw[-arr] (dw) to                 (nw);
+                % ~b                                   
+                \draw[-arr] (ap) to [bend left]     (vp);
+                \draw[-arr] (ep) to [bend right]    (vp);
+                \draw[-arr] (bp) to [bend left]     (wp);
+                \draw[-arr] (pp) to [bend right]    (wp);
+                \draw[-]    (vp) to [bend right=20] (wp);
+                \draw[-arr] (dp) to                 (np);
+            \end{scope}
+
+            % labels
+            % horizontal
+            \node[above=0.5cm of aa](la){\small $(a$};
+            \node[above=0.5cm of av](lv){\small $\vee$};
+            \node[above=0.5cm of ae](le){\small $\neg a)$};
+            \node[above=0.5cm of an](ln){\small $\wedge$};
+            \node[above=0.5cm of ab](lb){\small $(b$};
+            \node[above=0.5cm of aw](lw){\small $\vee$};
+            \node[above=0.5cm of ap](lp){\small $\neg b)$};
+            % vertical
+            \node[left=0.5cm of aa](al){\rotatebox{-90}{\small $(a$}};
+            \node[left=0.5cm of va](vl){\rotatebox{-90}{\small $\vee$}};
+            \node[left=0.5cm of ea](el){\rotatebox{-90}{\small $\neg a)$}};
+            \node[left=0.5cm of na](nl){\rotatebox{-90}{\small $\wedge$}};
+            \node[left=0.5cm of ba](bl){\rotatebox{-90}{\small $(b$}};
+            \node[left=0.5cm of wa](wl){\rotatebox{-90}{\small $\vee$}};
+            \node[left=0.5cm of pa](pl){\rotatebox{-90}{\small $\neg b)$}};
+
+        \end{tikzpicture}
+    \end{subfigure}
+    \begin{subfigure}{0.1\linewidth}
+        $\leadsto$
+    \end{subfigure}
+    \begin{subfigure}{0.4\linewidth}
+        \begin{tikzpicture}
+            \begin{scope}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
+                % nodes
+                % a
+                \node[anchor=center    ](aa){};
+                \node[right=0.5cm of aa, style={color=black!100}](av){};
+                \node[right=0.5cm of av, style={color=black!100}](ae){};
+                \node[right=0.5cm of ae](an){};
+                \node[right=0.5cm of an](ab){};
+                \node[right=0.5cm of ab](aw){};
+                \node[right=0.5cm of aw](ap){};
+                % v
+                \node[below=0.5cm of aa, style={color=black!100}](va){};
+                \node[right=0.5cm of va, style={color=black!100}](vv){};
+                \node[right=0.5cm of vv, style={color=black!100}](ve){};
+                \node[right=0.5cm of ve](vn){};
+                \node[right=0.5cm of vn](vb){};
+                \node[right=0.5cm of vb](vw){};
+                \node[right=0.5cm of vw](vp){};
+                % ~a
+                \node[below=0.5cm of va, style={color=black!100}](ea){};
+                \node[right=0.5cm of ea, style={color=black!100}](ev){};
+                \node[right=0.5cm of ev](ee){};
+                \node[right=0.5cm of ee](en){};
+                \node[right=0.5cm of en](eb){};
+                \node[right=0.5cm of eb](ew){};
+                \node[right=0.5cm of ew](ep){};
+                % ^
+                \node[below=0.5cm of ea](na){};
+                \node[right=0.5cm of na](nv){};
+                \node[right=0.5cm of nv](ne){};
+                \node[right=0.5cm of ne](nn){};
+                \node[right=0.5cm of nn](nb){};
+                \node[right=0.5cm of nb](nw){};
+                \node[right=0.5cm of nw](np){};
+                % b
+                \node[below=0.5cm of na](ba){};
+                \node[right=0.5cm of ba](bv){};
+                \node[right=0.5cm of bv](be){};
+                \node[right=0.5cm of be](bn){};
+                \node[right=0.5cm of bn](bb){};
+                \node[right=0.5cm of bb, style={color=black!100}](bw){};
+                \node[right=0.5cm of bw, style={color=black!100}](bp){};
+                % v
+                \node[below=0.5cm of ba](wa){};
+                \node[right=0.5cm of wa](wv){};
+                \node[right=0.5cm of wv](we){};
+                \node[right=0.5cm of we](wn){};
+                \node[right=0.5cm of wn, style={color=black!100}](wb){};
+                \node[right=0.5cm of wb, style={color=black!100}](ww){};
+                \node[right=0.5cm of ww, style={color=black!100}](wp){};
+                % ~b
+                \node[below=0.5cm of wa](pa){};
+                \node[right=0.5cm of pa](pv){};
+                \node[right=0.5cm of pv](pe){};
+                \node[right=0.5cm of pe](pn){};
+                \node[right=0.5cm of pn, style={color=black!100}](pb){};
+                \node[right=0.5cm of pb, style={color=black!100}](pw){};
+                \node[right=0.5cm of pw](pp){};
+
+                % disjunction helpers
+                % horizontal
+                \coordinate[below=0.2cm of an](ad);
+                \coordinate[below=0.2cm of vn](vd);
+                \coordinate[below=0.2cm of en](ed);
+                \coordinate[below=0.2cm of nn](nd);
+                \coordinate[below=0.2cm of bn](bd);
+                \coordinate[below=0.2cm of wn](wd);
+                \coordinate[below=0.2cm of pn](pd);
+                % vertical
+                \coordinate[left=0.2cm of na](da);
+                \coordinate[left=0.2cm of nv](dv);
+                \coordinate[left=0.2cm of ne](de);
+                \coordinate[left=0.2cm of nn](dn);
+                \coordinate[left=0.2cm of nb](db);
+                \coordinate[left=0.2cm of nw](dw);
+                \coordinate[left=0.2cm of np](dp);
+
+                % edges
+                % horizontal
+                % a
+                \draw[-arr] (aa) to [bend left]     (av);
+                \draw[-arr, style={color=black!100}] (ae) to [bend right]    (av);
+                \draw[-arr] (ab) to [bend left]     (aw);
+                \draw[-arr] (ap) to [bend right]    (aw);
+                \draw[-]    (av) to [bend right=20] (aw);
+                \draw[-arr] (ad) to                 (an);
+                % v
+                \draw[-arr, style={color=black!100}] (va) to [bend left]     (vv);
+                \draw[-arr, style={color=black!100}] (ve) to [bend right]    (vv);
+                \draw[-arr] (vb) to [bend left]     (vw);
+                \draw[-arr] (vp) to [bend right]    (vw);
+                \draw[-]    (vv) to [bend right=20] (vw);
+                \draw[-arr] (vd) to                 (vn);
+                % ~a
+                \draw[-arr, style={color=black!100}] (ea) to [bend left]     (ev);
+                \draw[-arr] (ee) to [bend right]    (ev);
+                \draw[-arr] (eb) to [bend left]     (ew);
+                \draw[-arr] (ep) to [bend right]    (ew);
+                \draw[-]    (ev) to [bend right=20] (ew);
+                \draw[-arr] (ed) to                 (en);
+                % ^
+                \draw[-arr] (na) to [bend left]     (nv);
+                \draw[-arr] (ne) to [bend right]    (nv);
+                \draw[-arr] (nb) to [bend left]     (nw);
+                \draw[-arr] (np) to [bend right]    (nw);
+                \draw[-]    (nv) to [bend right=20] (nw);
+                \draw[-arr] (nd) to                 (nn);
+                % b
+                \draw[-arr] (ba) to [bend left]     (bv);
+                \draw[-arr] (be) to [bend right]    (bv);
+                \draw[-arr] (bb) to [bend left]     (bw);
+                \draw[-arr, style={color=black!100}] (bp) to [bend right]    (bw);
+                \draw[-]    (bv) to [bend right=20] (bw);
+                \draw[-arr] (bd) to                 (bn);
+                % v
+                \draw[-arr] (wa) to [bend left]     (wv);
+                \draw[-arr] (we) to [bend right]    (wv);
+                \draw[-arr, style={color=black!100}] (wb) to [bend left]     (ww);
+                \draw[-arr, style={color=black!100}] (wp) to [bend right]    (ww);
+                \draw[-]    (wv) to [bend right=20] (ww);
+                \draw[-arr] (wd) to                 (wn);
+                % ~b
+                \draw[-arr] (pa) to [bend left]     (pv);
+                \draw[-arr] (pe) to [bend right]    (pv);
+                \draw[-arr, style={color=black!100}] (pb) to [bend left]     (pw);
+                \draw[-arr] (pp) to [bend right]    (pw);
+                \draw[-]    (pv) to [bend right=20] (pw);
+                \draw[-arr] (pd) to                 (pn);
+                % vertical
+                % a
+                \draw[-arr] (aa) to [bend left]     (va);
+                \draw[-arr, style={color=black!100}] (ea) to [bend right]    (va);
+                \draw[-arr] (ba) to [bend left]     (wa);
+                \draw[-arr] (pa) to [bend right]    (wa);
+                \draw[-]    (va) to [bend right=20] (wa);
+                \draw[-arr] (da) to                 (na);
+                % v                                    
+                \draw[-arr, style={color=black!100}] (av) to [bend left]     (vv);
+                \draw[-arr, style={color=black!100}] (ev) to [bend right]    (vv);
+                \draw[-arr] (bv) to [bend left]     (wv);
+                \draw[-arr] (pv) to [bend right]    (wv);
+                \draw[-]    (vv) to [bend right=20] (wv);
+                \draw[-arr] (dv) to                 (nv);
+                % ~a                                   
+                \draw[-arr, style={color=black!100}] (ae) to [bend left]     (ve);
+                \draw[-arr] (ee) to [bend right]    (ve);
+                \draw[-arr] (be) to [bend left]     (we);
+                \draw[-arr] (pe) to [bend right]    (we);
+                \draw[-]    (ve) to [bend right=20] (we);
+                \draw[-arr] (de) to                 (ne);
+                % ^                                    
+                \draw[-arr] (an) to [bend left]     (vn);
+                \draw[-arr] (en) to [bend right]    (vn);
+                \draw[-arr] (bn) to [bend left]     (wn);
+                \draw[-arr] (pn) to [bend right]    (wn);
+                \draw[-]    (vn) to [bend right=20] (wn);
+                \draw[-arr] (dn) to                 (nn);
+                % b                                    
+                \draw[-arr] (ab) to [bend left]     (vb);
+                \draw[-arr] (eb) to [bend right]    (vb);
+                \draw[-arr] (bb) to [bend left]     (wb);
+                \draw[-arr, style={color=black!100}] (pb) to [bend right]    (wb);
+                \draw[-]    (vb) to [bend right=20] (wb);
+                \draw[-arr] (db) to                 (nb);
+                % v                                    
+                \draw[-arr] (aw) to [bend left]     (vw);
+                \draw[-arr] (ew) to [bend right]    (vw);
+                \draw[-arr, style={color=black!100}] (bw) to [bend left]     (ww);
+                \draw[-arr, style={color=black!100}] (pw) to [bend right]    (ww);
+                \draw[-]    (vw) to [bend right=20] (ww);
+                \draw[-arr] (dw) to                 (nw);
+                % ~b                                   
+                \draw[-arr] (ap) to [bend left]     (vp);
+                \draw[-arr] (ep) to [bend right]    (vp);
+                \draw[-arr, style={color=black!100}] (bp) to [bend left]     (wp);
+                \draw[-arr] (pp) to [bend right]    (wp);
+                \draw[-]    (vp) to [bend right=20] (wp);
+                \draw[-arr] (dp) to                 (np);
+            \end{scope}
+
+            % labels
+            % horizontal
+            \node[above=0.5cm of aa](la){\small $(a$};
+            \node[above=0.5cm of av](lv){\small $\vee$};
+            \node[above=0.5cm of ae](le){\small $\neg a)$};
+            \node[above=0.5cm of an](ln){\small $\wedge$};
+            \node[above=0.5cm of ab](lb){\small $(b$};
+            \node[above=0.5cm of aw](lw){\small $\vee$};
+            \node[above=0.5cm of ap](lp){\small $\neg b)$};
+            % vertical
+            \node[left=0.5cm of aa](al){\rotatebox{-90}{\small $(a$}};
+            \node[left=0.5cm of va](vl){\rotatebox{-90}{\small $\vee$}};
+            \node[left=0.5cm of ea](el){\rotatebox{-90}{\small $\neg a)$}};
+            \node[left=0.5cm of na](nl){\rotatebox{-90}{\small $\wedge$}};
+            \node[left=0.5cm of ba](bl){\rotatebox{-90}{\small $(b$}};
+            \node[left=0.5cm of wa](wl){\rotatebox{-90}{\small $\vee$}};
+            \node[left=0.5cm of pa](pl){\rotatebox{-90}{\small $\neg b)$}};
+
+        \end{tikzpicture}
+    \end{subfigure}
+\end{figure}
+
