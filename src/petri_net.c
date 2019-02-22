@@ -1,42 +1,5 @@
 #include "petri_net.h"
 
-/* List of things to think about...
- *
- * TODO: Expand matrix on dimension increase rather than copy
- *       - Does this provide much benefeit? l^(n) vs l^(n+1) or l*(n) vs l*(n+1)
- *
- * TODO: Store only upper triangular matrix
- *       - Approx half memory usage
- *
- * TODO: Store a boolean n-tuple for tokens as (1, 1, 2) ~= (1, 2, 2)
- *      - Approx one eigth memory usage
- *
- * TODO: Prettyprint nice proofs?
- *       - In LaTeX?
- *
- * TODO: Testing and Useful Examples
- *       - Formal
- *         > Correctness
- *         > Consistency
- *         > Dimensionality
- *       - Informal
- *         > Time Efficiency
- *         > Space Efficiency
- *         > What expressions are quick, what are slow
- *         > What optimisations help 
- *           * Token sort and rbtree
- *           * P v ¬P -> T
- *           * 1-bit bools
- *           * etc...
- * 
- * TODO: Check converse statement as early halt condition
- *       - Approx twice time and memory
- * 
- * TODO: Writeup!!
- *       - Differentiate between CL, ALL, MLL
- * */
-
-
 
 size_t global_fn_dimn;
 int lex_arr_cmp(RBTree *tree, RBTreeNode *left, RBTreeNode *right) {
