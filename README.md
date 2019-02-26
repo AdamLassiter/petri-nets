@@ -6,11 +6,23 @@ The following do not represent minimum requirements, but those used in developme
 ~ Omitted ~
 
 ## Getting Started
+To download the repository:
 ```
 git clone https://gitlab.com/adamlassiter/petri-nets.git
-cd petri-nets
+```
+
+To compile and start using the solver:
+```
+cd petri-nets/src
+make clean
 make
-./petri_net
+./sequent (-s) (-t) <expr>
+```
+
+To compile the dissertation:
+```
+cd petri-nets/src
+latexmk -pdf dissertation.tex
 ```
 
 ## Contributing
