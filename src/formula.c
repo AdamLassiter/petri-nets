@@ -232,6 +232,31 @@ size_t formula_n_free_names(Formula *formula) {
 }
 
 
+// Print a latex-compatible formula
+void formula_latex(Formula *formula) {
+    switch (formula->type) {
+        case NotAtom:
+            printf("\\neg "); // Allow fallthrough
+        case Top:
+        case Bottom:
+        case Atom:
+            printf("%c ", formula->symbol);
+        break;
+        case And:
+        case Or:
+           printf("( ");
+           formula_latex(formula->left);
+           printf(formula->symbol == Or ? "\\vee " : "\\wedge ");
+           formula_latex(formula->right);
+           printf(") ");
+        break;
+        default:
+            fprintf(stderr, "Error traversing formula: malformed formula\n");
+            exit(1);
+        break;
+    }
+}
+
 // Prettyprint a formula
 void formula_print(Formula *formula) {
     switch (formula->type) {

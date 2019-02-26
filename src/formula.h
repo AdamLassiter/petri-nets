@@ -33,4 +33,5 @@ Formula **formula_flatten(Formula *);
 void formula_negate(Formula *);
 size_t formula_n_free_names(Formula *);
 
+void formula_latex(Formula *);
 void formula_print(Formula *);
