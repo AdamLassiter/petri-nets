@@ -3,7 +3,13 @@ This forms the submission for XX40211 Dissertation, MComp Comp.Sci. w/ Maths. fo
 
 ## Prerequisites
 The following do not represent minimum requirements, but those used in development and testing.  
-~ Omitted ~
+### LaTeX  
+* latexmk 4.59  
+* bpextra (from bussproofs)  
+* tikz  
+
+### C
+* gnu90-compatible cc
 
 ## Getting Started
 To download the repository:
