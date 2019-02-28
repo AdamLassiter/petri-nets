@@ -23,9 +23,9 @@ void sequent_proof_free(SequentProof *proof) {
 
 // Perform coalescence algorithm in all dimensions until halt or out-of-memory error
 PetriNet *sequent_coalescence(Formula *f, bool top_opt, bool partial_print) {
-    int n;
+    size_t n_free = formula_n_free_names(f);
     
-    for (n = 2; n <= formula_n_free_names(f) + 1; n++) {
+    for (size_t n = 2; n <= n_free + 1; n++) {
         if (partial_print) {formula_print(f); printf("\n");}
 
         // Fire an n-dimensional net exhaustively
@@ -147,7 +147,7 @@ void sequent_proof_print(SequentProof *proof) {
 
 void sequent_proof_latex(SequentProof *proof) {
     printf("Proof of $ ");
-    formula_latex(proof->sequents->head->value);
+    formula_latex((Formula *) proof->sequents->head->value);
     printf("$\n\\par\n");
 
     printf("\\begin{prooftree}\n");
@@ -188,7 +188,7 @@ int main(int argc, char *argv[]) {
     clock_t diff = clock() - start;
     /* Finish */
 
-    size_t n = net->places->n;
+    size_t n = net != NULL ? net->places->n : 0;
     
     if (print_sequent) {
         printf("\\documentclass{standalone}\n\\usepackage{bpextra}\n");
