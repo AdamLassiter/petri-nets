@@ -1,13 +1,15 @@
 # c compiler:
 CC       = gcc
+# main definition
+MAINDEF = NO_MAIN
 # compiler flags:
-CFLAGS   = -g -Wall -fbounds-check
+CFLAGS   = -g -Wall -D$(MAINDEF)
 # linker flags
-LDFLAGS  = 
+LDFLAGS  =
 # obj file includes
 OBJFILES = llist.o rbtree.o ndarray.o formula.o petri_net.o sequent.o
 # build target executable:
-TARGET   = sequent
+TARGET   = proof
 
 # default to build target
 all: $(TARGET)

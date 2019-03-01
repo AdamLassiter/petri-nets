@@ -89,25 +89,10 @@ void ndarray_print(NdArray *array) {
 }
 
 
-// Test for nd-array class, fill an array as sums of indices, print the diagonal 
+#ifdef NDARRAY_MAIN
+int main(int argc, char *argv[]) {
+#else
 static int ndarray_main(int argc, char *argv[]) {
-    size_t n = 4;
-    size_t d[4] = {3, 3, 3, 3};
-    NdArray *array = ndarray_new(n, d, sizeof(int));
-    int *elem;
-    size_t index[4];
-    for (index[0] = 0; index[0] < 3; index[0]++)
-        for (index[1] = 0; index[1] < 3; index[1]++)
-            for (index[2] = 0; index[2] < 3; index[2]++)
-                for (index[3] = 0; index[3] < 3; index[3]++) {
-                    elem = (int *) ndarray_elem(array, index);
-                    *elem = index[0] + index[1] + index[2] + index[3];
-                }
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++)
-            index[j] = i;
-        printf("%d ", *(int *) ndarray_elem(array, index));
-    }
-    printf("\n");
+#endif
     return 0;
 }

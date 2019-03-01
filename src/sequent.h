@@ -19,3 +19,6 @@ void sequent_proof_free(SequentProof *);
 
 SequentProof *sequent_backtrack(PetriNet *, size_t *);
 PetriNet *sequent_coalescence(Formula *, bool, bool);
+
+void sequent_proof_latex(SequentProof *);
+void sequent_proof_print(SequentProof *);

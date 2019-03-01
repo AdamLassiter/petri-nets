@@ -283,9 +283,11 @@ void formula_print(Formula *formula) {
 }
 
 
-// Test for formula class, take a string input, convert it to a formula, print it
+#ifdef FORMULA_MAIN
+int main(int argc, char *argv[]) {
+#else
 static int formula_main(int argc, char *argv[]) {
-//int main(int argc, char *argv[]) {
+#endif
     if (argc == 2) {
         char *string = argv[1];
         Formula *formula = formula_parse(&string);
