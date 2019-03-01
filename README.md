@@ -21,8 +21,8 @@ To compile and start using the solver:
 ```
 cd petri-nets/src
 make clean
-make
-./sequent (-s) (-t) <expr>
+make MAINDEF=SEQUENT_PROOF_MAIN
+./proof (-s) (-t) <expr>
 ```
 
 To compile the dissertation:
