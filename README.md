@@ -9,7 +9,7 @@ The following do not represent minimum requirements, but those used in developme
 * tikz  
 
 ### C
-* gnu90-compatible cc
+* gcc 8.2.0
 
 ## Getting Started
 To download the repository:
