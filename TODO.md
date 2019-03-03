@@ -1,11 +1,9 @@
 # List of things to think about...
 
-## Features
-* Prettyprint sequent proofs?
-    * In LaTeX?
-
 
 ## Optimisations
+* Bottom-substitution optimisation?
+    * Early restart at tops of trees for dimension increases?
 * Expand matrix on dimension increase rather than copy
     * Does this provide much benefeit? l^(n) vs l^(n+1) or l*(n) vs l*(n+1)
 * Store only upper triangular matrix
@@ -28,7 +26,7 @@
         * What expressions are quick, what are slow
         * What optimisations help 
             * Token sort and rbtree
-            * P v ¬P -> T
+            * |- P in Q -> Substitute Q[T\P]
             * 1-bit bools
             * etc...
 * Differentiate carefully between CL, ALL, MLL
