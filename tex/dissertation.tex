@@ -77,7 +77,7 @@
 \newtheorem*{examples}{Examples}
 \newtheorem{corollary}[sec-ctr]{Corollary}
 \newtheorem*{corollary*}{Corollary}
-\newtheorem*{remark}{Remark}
+\newtheorem{remark}[sec-ctr]{Remark}
 \newtheorem*{remarks}{Remarks}
 
 
@@ -92,7 +92,10 @@
 
     \maketitle
     \begin{abstract}
-        \textbf{We investigate a natural algorithm for proof search within classical logic and prove bounds on the complexity class of such a search.}
+        \textbf{
+            We investigate a natural algorithm for proof search within classical logic and prove bounds on the complexity class of such a search.
+            We further examine natural optimisations to this algorithm and how they affect complexity bounds.
+        }
     \end{abstract}
 
     \input{classical-logic}

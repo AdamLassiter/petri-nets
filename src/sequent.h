@@ -22,3 +22,5 @@ PetriNet *sequent_coalescence(Formula *, bool, bool);
 
 void sequent_proof_latex(SequentProof *);
 void sequent_proof_print(SequentProof *);
+
+static int sequent_recurse(Formula *, bool, bool);

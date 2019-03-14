@@ -1,9 +1,23 @@
 \section{Optimisation}
 
-    \subsection{Memory}
-        Exploiting symmetricality
+    There are of course many gains to still be made in the optimisation of the coalescence algorithm, but the following describe some of those considered in implementation.
 
-    \subsection{Speed}
-        $\top$-substitution
+    \subsection{Token Collections}
+        As the algorithm runs, a collection of tokens is maintained representing the leading edge of what is proven.
+        Per iteration, tokens must be iterated over, added and removed.
+        For this reason, rapid lookup and mutability of the tokens' container is important to performance.
+        Initial considerations included usage of a \texttt{Set} implemented like a \texttt{Hashtable}, but iteration over the collection was decided to be non-optimal and incurs a considerable storage overhead.
+        Instead, a red-black tree was used, allowing $\mathcal{O}(\log n)$ addition, removal and lookup with $\mathcal{O}(n)$ iteration.
+
+    \subsection{N-Dimensional Arrays}
+        Due to C language implementation limitations, \texttt{bool} values take up 8 bits or 1 byte.
+        Instead, eight consecutive \texttt{bool} values are packed into each byte.
+
+        Furthermore, as mentioned in~\ref{sec-ctr:symmetry}, the symmetry of the nets may be exploited through the commutative equivalence of sequents.
+        Each net is symmetrical along its diagonals, so only half of the array is stored and tokens are sorted on their numeric entries before being looked up.
+
+    \subsection{Token Storage}
+
+    \subsection{$\top$-substitution}
 
 

@@ -21,6 +21,54 @@ void sequent_proof_free(SequentProof *proof) {
 }
 
 
+// Given an (exhaustively) fired net, search for proofs of subformulae, with recursive sequent printing
+static Formula *sequent_substitute_top(PetriNet *net, Formula *root, char *sub_char, bool hide_sequent) {
+    Formula *f = (Formula *) malloc(sizeof *f);
+    size_t n = net->places->n;
+    
+    size_t *place = (size_t *) calloc(sizeof *place, n);
+    for (size_t i = 0; i < n; i++)
+        place[i] = root->i;
+    
+    if ((root->type == And) || (root->type == Or)) {
+        if (ndarray_get(net->places, place)) {
+            if (!hide_sequent) {
+                printf("$ %c := ", *sub_char); formula_latex(root); printf("$\\newline\n");
+                Formula *tmp_parent = root->parent;
+                root->parent = NULL;
+                sequent_recurse(root, true, true);
+                root->parent = tmp_parent;
+            }
+            *f = (Formula) {
+                .type = Top,
+                .symbol = *sub_char,
+                .parent = NULL
+            };
+            *sub_char += 1;
+        } else {
+            *f = (Formula) {
+                .left = sequent_substitute_top(net, root->left, sub_char, hide_sequent),
+                .right = sequent_substitute_top(net, root->right, sub_char, hide_sequent),
+                .type = root->type,
+                .symbol = root->symbol,
+                .parent = NULL
+            };
+            f->left->parent = f;
+            f->right->parent = f;
+        }
+    } else {
+        *f = (Formula) {
+            .type = root->type,
+            .symbol = root->symbol,
+            .parent = NULL
+        };
+    }
+    
+    free(place); 
+    formula_index(f, 0);
+    return f;
+}
+
 // Given a proven petri net, backtrack to build a sequent proof
 SequentProof *sequent_backtrack(PetriNet *net, size_t *place) {
     bool backtracked = false;
@@ -92,7 +140,7 @@ void sequent_proof_print(SequentProof *proof) {
     // Count number of children to deduce inference type
     size_t n_children = 0;
 
-    // Print leaves above
+    // Print leaves abovebo
     for (LListNode *n = proof->branches->head; n != NULL; n = n->next) {
         SequentProof *q = (SequentProof *) n->value;
         sequent_proof_print(q);
@@ -118,13 +166,44 @@ void sequent_proof_print(SequentProof *proof) {
 void sequent_proof_latex(SequentProof *proof) {
     printf("Proof of $ ");
     formula_latex((Formula *) proof->sequents->head->value);
-    printf("$\n\\par\n");
+    printf("$\\\\\n");
 
-    printf("\\begin{prooftree}\n");
+    printf("\\fbox{\\begin{varwidth}{45\\linewidth}\\begin{prooftree}\n");
     sequent_proof_print(proof);
-    printf("\\end{prooftree}\n\\par\n");
+    printf("\\end{prooftree}\\end{varwidth}\n}\\\\\n");
 }
 
+
+static int sequent_recurse(Formula *formula, bool top_optimise, bool print_sequent) {
+    /* 3, 2, 1, Go... */
+    clock_t start = clock();
+    CoalescenceResult r = petri_net_coalescence(formula, top_optimise, !print_sequent, sequent_substitute_top);
+    clock_t diff = clock() - start;
+    /* Finish */
+
+    // Print a latex-suitable sequent proof
+    if (print_sequent && r.n > 0) {
+        // Generate a token for the root node
+        size_t *root = (size_t *) calloc(sizeof *root, r.n);
+        for (size_t i = 0; i < r.n; i++) {
+            root[i] = r.root;
+        }
+
+        // Print the proof of the formula root
+        SequentProof *p = sequent_backtrack(r.net, root);
+        sequent_proof_latex(p);
+
+        free(root);
+    }
+
+    int msec = diff * 1000 / CLOCKS_PER_SEC;
+    printf(r.n > 0 ? "Solution in %d dimensions. " : "No solution found (up to %d dimensions). ", r.n);
+    printf("Time taken: %d seconds %d milliseconds. ", msec / 1000, msec % 1000);
+
+    if (print_sequent) printf("\\\\");
+
+    return r.n;
+}
 
 #ifdef SEQUENT_PROOF_MAIN
 int main(int argc, char *argv[]) {
@@ -156,38 +235,9 @@ static int sequent_proof_main(int argc, char *argv[]) {
     char *string = argv[optind];
     Formula *formula = formula_parse(&string);
     
-    /* 3, 2, 1, Go... */
-    clock_t start = clock();
-    CoalescenceResult r = petri_net_coalescence(formula, top_optimise, !print_sequent);
-    clock_t diff = clock() - start;
-    /* Finish */
-
-    if (print_sequent) {
-        printf("\\documentclass{standalone}\n\\usepackage{bpextra}\n");
-        printf("\\begin{document}\n\\begin{minipage}{1\\linewidth} %%%% CHANGEME!\n");
-    }
-
-    // Print a latex-suitable sequent proof
-    if (print_sequent && r.n > 0) {
-        // Generate a token for the root node
-        size_t *root = (size_t *) calloc(sizeof *root, r.n);
-        for (size_t i = 0; i < r.n; i++) {
-            root[i] = formula->i;
-        }
-        
-        // Print the proof of the formula root
-        SequentProof *p = sequent_backtrack(r.net, root);
-        sequent_proof_latex(p);
-
-        free(root);
-    }
-
-    int msec = diff * 1000 / CLOCKS_PER_SEC;
-    printf(r.n > 0 ? "Solution in %d dimensions.\n" : "No solution found (up to %d dimensions).\n", r.n);
-    printf("Time taken: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
-
-    if (print_sequent) printf("\\end{minipage}\n\\end{document}\n");
+    if (print_sequent) printf("\\documentclass[border=1in]{standalone}\n\\usepackage{bpextra,varwidth}\n\\begin{document}\n\\begin{tabular}{@{}l@{}}\n");
+    int ret = sequent_recurse(formula, top_optimise, print_sequent);
+    if (print_sequent) printf("\\end{tabular}\n\\end{document}\n");
     
-    formula_free(formula);
-    return r.n > 0 ? r.n : -1;
+    return ret > 0 ? ret : -1;
 }

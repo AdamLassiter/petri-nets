@@ -236,7 +236,7 @@ static PetriNet *petri_net_exhaustive_fire(Formula *f, size_t n) {
 }
 
 // Given an (exhaustively) fired net, search for proofs of subformulae
-static Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
+static Formula *petri_net_substitute_top(PetriNet *net, Formula *root, char *sub_char, bool partial_print) {
     Formula *f = (Formula *) malloc(sizeof *f);
     size_t n = net->places->n;
     
@@ -246,15 +246,19 @@ static Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
     
     if ((root->type == And) || (root->type == Or)) {
         if (ndarray_get(net->places, place)) {
+            if (partial_print) {
+                printf("%c := ", *sub_char); formula_print(root); printf("\n");
+            }
             *f = (Formula) {
                 .type = Top,
-                .symbol = Top,
+                .symbol = *sub_char,
                 .parent = NULL
             };
+            *sub_char += 1;
         } else {
             *f = (Formula) {
-                .left = petri_net_substitute_top(net, root->left),
-                .right = petri_net_substitute_top(net, root->right),
+                .left = petri_net_substitute_top(net, root->left, sub_char, partial_print),
+                .right = petri_net_substitute_top(net, root->right, sub_char, partial_print),
                 .type = root->type,
                 .symbol = root->symbol,
                 .parent = NULL
@@ -276,24 +280,33 @@ static Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
 }
 
 // Perform coalescence algorithm in all dimensions until halt or out-of-memory error
- CoalescenceResult petri_net_coalescence(Formula *f, bool top_opt, bool partial_print) {
+ CoalescenceResult petri_net_coalescence(Formula *f, bool top_opt, bool partial_print, SubTopFn substitute_top) {
     size_t n_free = formula_n_free_names(f);
-    size_t n;
+    size_t n, twoN;
+    char *sub_char = (char *) malloc(sizeof *sub_char);
+    *sub_char = 'A';
     
-    for (n = 2; n <= n_free + 1; n++) {
+    for (twoN = 4; twoN / 2 <= n_free + 1; twoN++) {
+        n = twoN / 2;
         if (partial_print) {formula_print(f); printf("\n");}
 
         // Fire an n-dimensional net exhaustively
         PetriNet *net = petri_net_exhaustive_fire(f, n);
-        Formula *f_next = petri_net_substitute_top(net, f);
+        // TODO: Substitute top before firing, subtract one if root Top'ed
+        char sub_char_tmp = *sub_char;
+        Formula *f_next = (*substitute_top)(net, f, sub_char, true);
 
         // Check if we have reached the root
         if (f_next->type == Top) {
             formula_free(f_next);
             return (CoalescenceResult) {
                 .net = net,
-                .n = (int) n
+                .n = (int) n,
+                .root = (int) f->i
             };
+        } else {
+            *sub_char = sub_char_tmp;
+            formula_free((*substitute_top)(net, f, sub_char, false));
         }
         
         // Optimise by substituting proofs of subformulae for T
@@ -306,9 +319,12 @@ static Formula *petri_net_substitute_top(PetriNet *net, Formula *root) {
         petri_net_free(net);
     }
 
+    free(sub_char);
+
     return (CoalescenceResult) {
         .net = NULL,
-        .n = 1 - (int) n
+        .n = 1 - (int) n,
+        .root = -1
     };
 }
 
@@ -360,7 +376,7 @@ static int petri_net_main(int argc, char *argv[]) {
     
     /* 3, 2, 1, Go... */
     clock_t start = clock();
-    CoalescenceResult r = petri_net_coalescence(formula, top_optimise, true);
+    CoalescenceResult r = petri_net_coalescence(formula, top_optimise, true, petri_net_substitute_top);
     clock_t diff = clock() - start;
     /* Finish */
     
@@ -368,7 +384,6 @@ static int petri_net_main(int argc, char *argv[]) {
     printf(r.n > 0 ? "Solution in %d dimensions.\n" : "No solution found (up to %d dimensions).\n", abs(r.n));
     printf("Time taken: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
     
-    formula_free(formula);
     return r.n > 0 ? r.n : -1;
 }
 
