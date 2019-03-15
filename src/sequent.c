@@ -185,10 +185,11 @@ void sequent_proof_latex(SequentProof *proof) {
 
 
 static int sequent_recurse(Formula *formula, bool top_optimise, bool print_sequent) {
+    struct timeval start, stop;
     /* 3, 2, 1, Go... */
-    clock_t start = clock();
+    gettimeofday(&start, NULL);
     CoalescenceResult r = petri_net_coalescence(formula, top_optimise, !print_sequent, sequent_substitute_top);
-    clock_t diff = clock() - start;
+    gettimeofday(&stop, NULL);
     /* Finish */
 
     // Print a latex-suitable sequent proof
@@ -205,10 +206,11 @@ static int sequent_recurse(Formula *formula, bool top_optimise, bool print_seque
 
         free(root);
     }
-
-    int msec = diff * 1000 / CLOCKS_PER_SEC;
-    printf(r.n > 0 ? "Solution in %d dimensions. " : "No solution found (up to %d dimensions). ", r.n);
-    printf("Time taken: %d seconds %d milliseconds. ", msec / 1000, msec % 1000);
+    
+    time_t diff_sec = stop.tv_sec - start.tv_sec,
+           diff_usec = stop.tv_usec - start.tv_usec;
+    printf(r.n > 0 ? "Solution in %d dimensions.\n" : "No solution found (up to %d dimensions).\n", abs(r.n));
+    printf("Time taken: %li sec, %li msec, %li usec\n", diff_sec, diff_usec / 1000, diff_usec % 1000);
 
     if (print_sequent) printf("\\\\");
 

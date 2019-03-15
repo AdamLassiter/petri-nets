@@ -386,15 +386,17 @@ static int petri_net_main(int argc, char *argv[]) {
     char *string = argv[optind];
     Formula *formula = formula_parse(&string);
     
+    struct timeval start, stop;
     /* 3, 2, 1, Go... */
-    clock_t start = clock();
+    gettimeofday(&start, NULL);
     CoalescenceResult r = petri_net_coalescence(formula, top_optimise, true, petri_net_substitute_top);
-    clock_t diff = clock() - start;
+    gettimeofday(&stop, NULL);
     /* Finish */
     
-    int msec = diff * 1000 / CLOCKS_PER_SEC;
+    time_t diff_sec = stop.tv_sec - start.tv_sec,
+           diff_usec = stop.tv_usec - start.tv_usec;
     printf(r.n > 0 ? "Solution in %d dimensions.\n" : "No solution found (up to %d dimensions).\n", abs(r.n));
-    printf("Time taken: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
+    printf("Time taken: %li sec, %li msec, %li usec\n", diff_sec, diff_usec / 1000, diff_usec % 1000);
     
     return r.n > 0 ? r.n : -1;
 }
