@@ -25,7 +25,13 @@ typedef struct CoalescenceResult {
     int root;
 } CoalescenceResult;
 
-typedef Formula *(*SubTopFn)(PetriNet *, Formula *, char *, bool);
+typedef struct SubstitutionResult {
+    Formula *formula;
+    bool substituted;
+    char free_var;
+} SubstitutionResult;
+
+typedef SubstitutionResult (*SubTopFn)(PetriNet *, Formula *, char, bool);
 
 
 void petri_net_token_sort(size_t *, size_t);

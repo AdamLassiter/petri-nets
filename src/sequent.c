@@ -22,9 +22,10 @@ void sequent_proof_free(SequentProof *proof) {
 
 
 // Given an (exhaustively) fired net, search for proofs of subformulae, with recursive sequent printing
-static Formula *sequent_substitute_top(PetriNet *net, Formula *root, char *sub_char, bool hide_sequent) {
+static SubstitutionResult sequent_substitute_top(PetriNet *net, Formula *root, char free_var, bool hide_sequent) {
     Formula *f = (Formula *) malloc(sizeof *f);
     size_t n = net->places->n;
+    bool substituted = false;
     
     size_t *place = (size_t *) calloc(sizeof *place, n);
     for (size_t i = 0; i < n; i++)
@@ -33,7 +34,7 @@ static Formula *sequent_substitute_top(PetriNet *net, Formula *root, char *sub_c
     if ((root->type == And) || (root->type == Or)) {
         if (ndarray_get(net->places, place)) {
             if (!hide_sequent) {
-                printf("$ %c := ", *sub_char); formula_latex(root); printf("$\\newline\n");
+                printf("$ %c := ", free_var); formula_latex(root); printf("$\\newline\n");
                 Formula *tmp_parent = root->parent;
                 root->parent = NULL;
                 sequent_recurse(root, true, true);
@@ -41,14 +42,19 @@ static Formula *sequent_substitute_top(PetriNet *net, Formula *root, char *sub_c
             }
             *f = (Formula) {
                 .type = Top,
-                .symbol = *sub_char,
+                .symbol = free_var,
                 .parent = NULL
             };
-            *sub_char += 1;
+            free_var += 1;
         } else {
+            SubstitutionResult left = sequent_substitute_top(net, root->left, free_var, hide_sequent),
+                               right = sequent_substitute_top(net, root->right, left.free_var, hide_sequent);
+            free_var = right.free_var;
+            substituted |= left.substituted || right.substituted;
+
             *f = (Formula) {
-                .left = sequent_substitute_top(net, root->left, sub_char, hide_sequent),
-                .right = sequent_substitute_top(net, root->right, sub_char, hide_sequent),
+                .left = left.formula,
+                .right = right.formula,
                 .type = root->type,
                 .symbol = root->symbol,
                 .parent = NULL
@@ -66,7 +72,11 @@ static Formula *sequent_substitute_top(PetriNet *net, Formula *root, char *sub_c
     
     free(place); 
     formula_index(f, 0);
-    return f;
+    return (SubstitutionResult) {
+        .formula = f,
+        .substituted = substituted,
+        .free_var = free_var
+    };
 }
 
 // Given a proven petri net, backtrack to build a sequent proof

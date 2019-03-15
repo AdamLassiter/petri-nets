@@ -236,9 +236,10 @@ static PetriNet *petri_net_exhaustive_fire(Formula *f, size_t n) {
 }
 
 // Given an (exhaustively) fired net, search for proofs of subformulae
-static Formula *petri_net_substitute_top(PetriNet *net, Formula *root, char *sub_char, bool partial_print) {
+static SubstitutionResult petri_net_substitute_top(PetriNet *net, Formula *root, char free_var, bool partial_print) {
     Formula *f = (Formula *) malloc(sizeof *f);
     size_t n = net->places->n;
+    bool substituted = false;
     
     size_t *place = (size_t *) calloc(sizeof *place, n);
     for (size_t i = 0; i < n; i++)
@@ -247,18 +248,25 @@ static Formula *petri_net_substitute_top(PetriNet *net, Formula *root, char *sub
     if ((root->type == And) || (root->type == Or)) {
         if (ndarray_get(net->places, place)) {
             if (partial_print) {
-                printf("%c := ", *sub_char); formula_print(root); printf("\n");
+                printf("%c := ", free_var); formula_print(root); printf("\n");
             }
+            substituted = true;
+
             *f = (Formula) {
                 .type = Top,
-                .symbol = *sub_char,
+                .symbol = free_var,
                 .parent = NULL
             };
-            *sub_char += 1;
+            free_var += 1;
         } else {
+            SubstitutionResult left = petri_net_substitute_top(net, root->left, free_var, partial_print),
+                               right = petri_net_substitute_top(net, root->right, left.free_var, partial_print);
+            free_var = right.free_var;
+            substituted |= left.substituted || right.substituted;
+
             *f = (Formula) {
-                .left = petri_net_substitute_top(net, root->left, sub_char, partial_print),
-                .right = petri_net_substitute_top(net, root->right, sub_char, partial_print),
+                .left = left.formula,
+                .right = right.formula,
                 .type = root->type,
                 .symbol = root->symbol,
                 .parent = NULL
@@ -276,25 +284,29 @@ static Formula *petri_net_substitute_top(PetriNet *net, Formula *root, char *sub
     
     free(place); 
     formula_index(f, 0);
-    return f;
+    return (SubstitutionResult) {
+        .formula = f,
+        .substituted = substituted,
+        .free_var = free_var
+    };
 }
 
 // Perform coalescence algorithm in all dimensions until halt or out-of-memory error
  CoalescenceResult petri_net_coalescence(Formula *f, bool top_opt, bool partial_print, SubTopFn substitute_top) {
     size_t n_free = formula_n_free_names(f);
-    size_t n, twoN;
-    char *sub_char = (char *) malloc(sizeof *sub_char);
-    *sub_char = 'A';
+    size_t n;
+    char substituted = 0;
+    char free_var = 'A';
     
-    for (twoN = 4; twoN / 2 <= n_free + 1; twoN++) {
-        n = twoN / 2;
+    for (n = 2; n <= n_free + 1; (!substituted) ? n++ : substituted--) {
         if (partial_print) {formula_print(f); printf("\n");}
 
         // Fire an n-dimensional net exhaustively
         PetriNet *net = petri_net_exhaustive_fire(f, n);
-        // TODO: Substitute top before firing, subtract one if root Top'ed
-        char sub_char_tmp = *sub_char;
-        Formula *f_next = (*substitute_top)(net, f, sub_char, true);
+        
+        // Check for substitutions, in particular root for Top
+        SubstitutionResult res = (*substitute_top)(net, f, free_var, true);
+        Formula *f_next = res.formula;
 
         // Check if we have reached the root
         if (f_next->type == Top) {
@@ -304,9 +316,11 @@ static Formula *petri_net_substitute_top(PetriNet *net, Formula *root, char *sub
                 .n = (int) n,
                 .root = (int) f->i
             };
-        } else {
-            *sub_char = sub_char_tmp;
-            formula_free((*substitute_top)(net, f, sub_char, false));
+        } else if (res.substituted) {
+            SubstitutionResult print = (*substitute_top)(net, f, free_var, false);
+            free_var = print.free_var;
+            substituted = (char) print.substituted;
+            formula_free(print.formula);
         }
         
         // Optimise by substituting proofs of subformulae for T
@@ -318,8 +332,6 @@ static Formula *petri_net_substitute_top(PetriNet *net, Formula *root, char *sub
         }
         petri_net_free(net);
     }
-
-    free(sub_char);
 
     return (CoalescenceResult) {
         .net = NULL,
