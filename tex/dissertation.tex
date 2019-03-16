@@ -2,17 +2,19 @@
 
 % ~~~~~~~~~~~~~~~~~~~~~~~ Preamble ~~~~~~~~~~~~~~~~~~~~~~~
 
-\usepackage{bpextra}
-\usepackage[margin=1.5in]{geometry}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{amsthm}
-\usepackage{subcaption}
-\usepackage{float}
+\usepackage{bpextra}
 \usepackage{enumitem}
-\usepackage{titlesec}
+\usepackage{float}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{hyperref}
 \usepackage{latexsym}
+\usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{tkz-berge}
+\usepackage{titlesec}
 
 % tikz things
 \usetikzlibrary{petri, topaths, positioning}
@@ -51,7 +53,7 @@
 % indented definitions, lemmas etc
 \makeatletter
 \newtheoremstyle{indented}
-    {5pt}% space before
+    {15pt}% space before
     {5pt}% space after
     {\addtolength{\@totalleftmargin}{0em}
      \addtolength{\linewidth}{-0em}
@@ -78,6 +80,7 @@
 \newtheorem{corollary}[sec-ctr]{Corollary}
 \newtheorem*{corollary*}{Corollary}
 \newtheorem{remark}[sec-ctr]{Remark}
+\newtheorem*{remark*}{Remark}
 \newtheorem*{remarks}{Remarks}
 
 

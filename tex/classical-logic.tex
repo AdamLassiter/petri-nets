@@ -1,13 +1,13 @@
 \section{Classical Logic}
 
-    \begin{definition}[Formulae]
+    \begin{definition*}[Formulae]
         A \textit{formula} within classical logic is constructed as follows:
         \begin{align*}
             A, B, C                \quad &\defeq \quad \top \,|\, \bot \,|\, a \,|\, \neg\, a \,|\, A \vee B \,|\, A \wedge B \\
             \Gamma, \Delta, \Sigma \quad &\defeq \quad A \,|\, A,B \,|\, A,B,C \ldots
         \end{align*}
         where $\vee, \wedge$ are additive linear logic disjunction and conjunction respectively and $\Gamma, \Delta, \Sigma$ are contexts.
-    \end{definition}
+    \end{definition*}
 
     \begin{example}
         \begin{equation*}
@@ -16,7 +16,7 @@
     \end{example}
 
 
-    \begin{definition}[Sequent Proofs]
+    \begin{definition*}[Sequent Proofs]
         Within \textit{classical logic}, a \textit{sequent proof} is constructed from the following rules:
 
         \begin{minipage}[H]{\linewidth}
@@ -61,18 +61,18 @@
         \end{minipage}~\par
         where $A, B, C$ are formulae and $\Gamma, \Delta, \Sigma$ are sequents.
         A sequent proof provides, without context, a proof of its conclusion and each line of the proof represents a tautology.
-    \end{definition}
+    \end{definition*}
 
     \begin{example}
     \end{example}
 
 
-    \begin{remark}
+    \begin{remark*}
         Within the context of weakening and contraction, \textit{additive} and \textit{multiplicative} rules are inter-derivable.
-    \end{remark}
+    \end{remark*}
 
 
-    \begin{definition}[Derivations]
+    \begin{definition*}[Derivations]
         Given \textit{tops} $\Gamma_1 \ldots \Gamma_n$ for the sequent proof $\vdash \Delta$, a \textit{derivation} is a tree providing a proof of $\Gamma_1 \ldots \Gamma_n \implies \Delta$.
 
         A derivation is written as:
@@ -83,18 +83,18 @@
             \RightLabel{\textit{[label]}} \doubleLine\TrinaryInfC{$\vdash \Delta$}
         \end{prooftree}
         where the \textit{label} describes which rules may be used within the derivation.
-    \end{definition}
+    \end{definition*}
 
-    \begin{corollary}[Derivation Equivalence]
+    \begin{corollary*}[Derivation Equivalence]
         A sequent proof is a derivation where all top derivations of the tree are $=\joinrel= \top, ax$.
         Equivalence of derivations may be weakly defined up to equivalence of leaves and conclusion.
-    \end{corollary}
+    \end{corollary*}
 
     \begin{example}
     \end{example}
 
 
-    \begin{definition}[Additive Stratification]
+    \begin{definition*}[Additive Stratification]
         A proof tree is said to be \textit{additively stratified} if $\vdash P$ is structured as follows:
         \begin{prooftree}
             \AxiomC{}
@@ -114,15 +114,15 @@
             \item Conjunction/Disjunction
             \item Contraction
         \end{enumerate}
-    \end{definition}
+    \end{definition*}
     
     \begin{example}
     \end{example}
 
 
-    \begin{proposition}[Stratification Equivalence]
+    \begin{proposition*}[Stratification Equivalence]
         Given $\vdash A$, there exists an additively stratified proof of $A$.
-    \end{proposition}
+    \end{proposition*}
     \begin{proof}
         For each instance of a weakening below another inference, there exists an equivalent subproof that is additively stratified:
 
