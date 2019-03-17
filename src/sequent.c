@@ -21,68 +21,6 @@ void sequent_proof_free(SequentProof *proof) {
 }
 
 
-// Given an (exhaustively) fired net, search for proofs of subformulae, with recursive sequent printing
-// TODO: Reduce this to just a print function
-static SubstitutionResult sequent_substitute_top(PetriNet *net, Formula *root, char free_var, bool latex_out) {
-    Formula *f = (Formula *) malloc(sizeof *f);
-    size_t n = net->places->n;
-    bool substituted = false;
-    
-    size_t *place = (size_t *) calloc(sizeof *place, n);
-    for (size_t i = 0; i < n; i++)
-        place[i] = root->i;
-    
-    if ((root->type == And) || (root->type == Or)) {
-        if (ndarray_get(net->places, place)) {
-            // TODO: print_substitution(f, free_var, latex_out)
-            if (latex_out) {
-                printf("$ %c := ", free_var); formula_latex(root); printf("$\\newline\n");
-                Formula *tmp_parent = root->parent;
-                root->parent = NULL;
-                sequent_recurse(root, true, latex_out);
-                root->parent = tmp_parent;
-            }
-            substituted = true;
-
-            *f = (Formula) {
-                .type = Top,
-                .symbol = free_var,
-                .parent = NULL
-            };
-            free_var += 1;
-        } else {
-            SubstitutionResult left = sequent_substitute_top(net, root->left, free_var, latex_out),
-                               right = sequent_substitute_top(net, root->right, left.free_var, latex_out);
-            free_var = right.free_var;
-            substituted |= left.substituted || right.substituted;
-
-            *f = (Formula) {
-                .left = left.formula,
-                .right = right.formula,
-                .type = root->type,
-                .symbol = root->symbol,
-                .parent = NULL
-            };
-            f->left->parent = f;
-            f->right->parent = f;
-        }
-    } else {
-        *f = (Formula) {
-            .type = root->type,
-            .symbol = root->symbol,
-            .parent = NULL
-        };
-    }
-    
-    free(place); 
-    formula_index(f, 0);
-    return (SubstitutionResult) {
-        .formula = f,
-        .substituted = substituted,
-        .free_var = free_var
-    };
-}
-
 // Given a proven petri net, backtrack to build a sequent proof
 SequentProof *sequent_backtrack(PetriNet *net, size_t *place) {
     bool backtracked = false;
@@ -154,7 +92,7 @@ void sequent_proof_print(SequentProof *proof) {
     // Count number of children to deduce inference type
     size_t n_children = 0;
 
-    // Print leaves abovebo
+    // Print leaves above
     for (LListNode *n = proof->branches->head; n != NULL; n = n->next) {
         SequentProof *q = (SequentProof *) n->value;
         sequent_proof_print(q);
@@ -187,12 +125,23 @@ void sequent_proof_latex(SequentProof *proof) {
     printf("\\end{prooftree}\\end{varwidth}\n}\\\\\n");
 }
 
+// Recursive sequent printing when a top-substitution is made
+static void sequent_substitution_print(Formula *f, char v, bool p) {
+    if (p) {
+        printf("$ %c := ", v); formula_latex(f); printf("$\\newline\n");
+        Formula *t = f->parent;
+        f->parent = NULL;
+        sequent_recurse(f, true, p);
+        f->parent = t;
+    }
+}
+
 
 static int sequent_recurse(Formula *formula, bool with_sequent, bool top_optimise) {
     struct timeval start, stop;
     /* 3, 2, 1, Go... */
     gettimeofday(&start, NULL);
-    CoalescenceResult r = petri_net_coalescence(formula, with_sequent, top_optimise, with_sequent ? sequent_substitute_top : petri_net_substitute_top);
+    CoalescenceResult r = petri_net_coalescence(formula, with_sequent, top_optimise, with_sequent ? sequent_substitution_print : petri_net_substitution_print);
     gettimeofday(&stop, NULL);
     /* Finish */
 
