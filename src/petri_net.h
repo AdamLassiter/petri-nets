@@ -39,6 +39,7 @@ void petri_net_token_sort(size_t *, size_t);
 PetriNet *petri_net_new(Formula *);
 void petri_net_free(PetriNet *);
 
+SubstitutionResult petri_net_substitute_top(PetriNet *, Formula *, char, bool);
 CoalescenceResult petri_net_coalescence(Formula *, bool, bool, SubTopFn);
 
 void petri_net_print(PetriNet *);

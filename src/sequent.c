@@ -22,7 +22,8 @@ void sequent_proof_free(SequentProof *proof) {
 
 
 // Given an (exhaustively) fired net, search for proofs of subformulae, with recursive sequent printing
-static SubstitutionResult sequent_substitute_top(PetriNet *net, Formula *root, char free_var, bool hide_sequent) {
+// TODO: Reduce this to just a print function
+static SubstitutionResult sequent_substitute_top(PetriNet *net, Formula *root, char free_var, bool latex_out) {
     Formula *f = (Formula *) malloc(sizeof *f);
     size_t n = net->places->n;
     bool substituted = false;
@@ -33,13 +34,16 @@ static SubstitutionResult sequent_substitute_top(PetriNet *net, Formula *root, c
     
     if ((root->type == And) || (root->type == Or)) {
         if (ndarray_get(net->places, place)) {
-            if (!hide_sequent) {
+            // TODO: print_substitution(f, free_var, latex_out)
+            if (latex_out) {
                 printf("$ %c := ", free_var); formula_latex(root); printf("$\\newline\n");
                 Formula *tmp_parent = root->parent;
                 root->parent = NULL;
-                sequent_recurse(root, true, true);
+                sequent_recurse(root, true, latex_out);
                 root->parent = tmp_parent;
             }
+            substituted = true;
+
             *f = (Formula) {
                 .type = Top,
                 .symbol = free_var,
@@ -47,8 +51,8 @@ static SubstitutionResult sequent_substitute_top(PetriNet *net, Formula *root, c
             };
             free_var += 1;
         } else {
-            SubstitutionResult left = sequent_substitute_top(net, root->left, free_var, hide_sequent),
-                               right = sequent_substitute_top(net, root->right, left.free_var, hide_sequent);
+            SubstitutionResult left = sequent_substitute_top(net, root->left, free_var, latex_out),
+                               right = sequent_substitute_top(net, root->right, left.free_var, latex_out);
             free_var = right.free_var;
             substituted |= left.substituted || right.substituted;
 
@@ -184,16 +188,16 @@ void sequent_proof_latex(SequentProof *proof) {
 }
 
 
-static int sequent_recurse(Formula *formula, bool top_optimise, bool print_sequent) {
+static int sequent_recurse(Formula *formula, bool with_sequent, bool top_optimise) {
     struct timeval start, stop;
     /* 3, 2, 1, Go... */
     gettimeofday(&start, NULL);
-    CoalescenceResult r = petri_net_coalescence(formula, top_optimise, !print_sequent, sequent_substitute_top);
+    CoalescenceResult r = petri_net_coalescence(formula, with_sequent, top_optimise, with_sequent ? sequent_substitute_top : petri_net_substitute_top);
     gettimeofday(&stop, NULL);
     /* Finish */
 
     // Print a latex-suitable sequent proof
-    if (print_sequent && r.n > 0) {
+    if (with_sequent && r.n > 0) {
         // Generate a token for the root node
         size_t *root = (size_t *) calloc(sizeof *root, r.n);
         for (size_t i = 0; i < r.n; i++) {
@@ -212,7 +216,7 @@ static int sequent_recurse(Formula *formula, bool top_optimise, bool print_seque
     printf(r.n > 0 ? "Solution in %d dimensions.\n" : "No solution found (up to %d dimensions).\n", abs(r.n));
     printf("Time taken: %li sec, %li msec, %li usec\n", diff_sec, diff_usec / 1000, diff_usec % 1000);
 
-    if (print_sequent) printf("\\\\");
+    if (with_sequent) printf("\\\\");
 
     return r.n;
 }
@@ -223,12 +227,12 @@ int main(int argc, char *argv[]) {
 static int sequent_proof_main(int argc, char *argv[]) {
 #endif
     bool top_optimise = false,
-         print_sequent = false;
+         with_sequent = false;
     int c;
     while ((c = getopt(argc, argv, "st")) != -1)
         switch ((char) c) {
             case 's':
-                print_sequent = true;
+                with_sequent = true;
                 break;
             case 't':
                 top_optimise = true;
@@ -247,9 +251,9 @@ static int sequent_proof_main(int argc, char *argv[]) {
     char *string = argv[optind];
     Formula *formula = formula_parse(&string);
     
-    if (print_sequent) printf("\\documentclass[border=1in]{standalone}\n\\usepackage{bpextra,varwidth}\n\\begin{document}\n\\begin{tabular}{@{}l@{}}\n");
-    int ret = sequent_recurse(formula, top_optimise, print_sequent);
-    if (print_sequent) printf("\\end{tabular}\n\\end{document}\n");
+    if (with_sequent) printf("\\documentclass[border=1in]{standalone}\n\\usepackage{bpextra,varwidth}\n\\begin{document}\n\\begin{tabular}{@{}l@{}}\n");
+    int ret = sequent_recurse(formula, with_sequent, top_optimise);
+    if (with_sequent) printf("\\end{tabular}\n\\end{document}\n");
     
     return ret > 0 ? ret : -1;
 }

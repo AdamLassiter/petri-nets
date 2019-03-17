@@ -236,7 +236,7 @@ static PetriNet *petri_net_exhaustive_fire(Formula *f, size_t n) {
 }
 
 // Given an (exhaustively) fired net, search for proofs of subformulae
-static SubstitutionResult petri_net_substitute_top(PetriNet *net, Formula *root, char free_var, bool partial_print) {
+SubstitutionResult petri_net_substitute_top(PetriNet *net, Formula *root, char free_var, bool latex_out) {
     Formula *f = (Formula *) malloc(sizeof *f);
     size_t n = net->places->n;
     bool substituted = false;
@@ -247,7 +247,7 @@ static SubstitutionResult petri_net_substitute_top(PetriNet *net, Formula *root,
     
     if ((root->type == And) || (root->type == Or)) {
         if (ndarray_get(net->places, place)) {
-            if (partial_print) {
+            if (!latex_out) {
                 printf("%c := ", free_var); formula_print(root); printf("\n");
             }
             substituted = true;
@@ -259,8 +259,8 @@ static SubstitutionResult petri_net_substitute_top(PetriNet *net, Formula *root,
             };
             free_var += 1;
         } else {
-            SubstitutionResult left = petri_net_substitute_top(net, root->left, free_var, partial_print),
-                               right = petri_net_substitute_top(net, root->right, left.free_var, partial_print);
+            SubstitutionResult left = petri_net_substitute_top(net, root->left, free_var, latex_out),
+                               right = petri_net_substitute_top(net, root->right, left.free_var, latex_out);
             free_var = right.free_var;
             substituted |= left.substituted || right.substituted;
 
@@ -292,20 +292,20 @@ static SubstitutionResult petri_net_substitute_top(PetriNet *net, Formula *root,
 }
 
 // Perform coalescence algorithm in all dimensions until halt or out-of-memory error
- CoalescenceResult petri_net_coalescence(Formula *f, bool top_opt, bool partial_print, SubTopFn substitute_top) {
+ CoalescenceResult petri_net_coalescence(Formula *f, bool latex_out, bool top_opt, SubTopFn substitute_top) {
     size_t n_free = formula_n_free_names(f);
     size_t n;
     char substituted = 0;
     char free_var = 'A';
     
     for (n = 2; n <= n_free + 1; (!substituted) ? n++ : substituted--) {
-        if (partial_print) {formula_print(f); printf("\n");}
+        if (!latex_out) {formula_print(f); printf("\n");}
 
         // Fire an n-dimensional net exhaustively
         PetriNet *net = petri_net_exhaustive_fire(f, n);
         
         // Check for substitutions, in particular root for Top
-        SubstitutionResult res = (*substitute_top)(net, f, free_var, true);
+        SubstitutionResult res = (*substitute_top)(net, f, free_var, !(latex_out || top_opt));
         Formula *f_next = res.formula;
 
         // Check if we have reached the root
@@ -316,8 +316,8 @@ static SubstitutionResult petri_net_substitute_top(PetriNet *net, Formula *root,
                 .n = (int) n,
                 .root = (int) f->i
             };
-        } else if (res.substituted) {
-            SubstitutionResult print = (*substitute_top)(net, f, free_var, false);
+        } else if (res.substituted && latex_out && top_opt) {
+            SubstitutionResult print = (*substitute_top)(net, f, free_var, latex_out);
             free_var = print.free_var;
             substituted = (char) print.substituted;
             formula_free(print.formula);
@@ -365,7 +365,8 @@ int main(int argc, char *argv[]) {
 #else
 static int petri_net_main(int argc, char *argv[]) {
 #endif
-    bool top_optimise = false;
+    bool latex_out = false,
+         top_optimise = false;
     int c;
     while ((c = getopt(argc, argv, "t")) != -1)
         switch ((char) c) {
@@ -389,7 +390,7 @@ static int petri_net_main(int argc, char *argv[]) {
     struct timeval start, stop;
     /* 3, 2, 1, Go... */
     gettimeofday(&start, NULL);
-    CoalescenceResult r = petri_net_coalescence(formula, top_optimise, true, petri_net_substitute_top);
+    CoalescenceResult r = petri_net_coalescence(formula, latex_out, top_optimise, petri_net_substitute_top);
     gettimeofday(&stop, NULL);
     /* Finish */
     
