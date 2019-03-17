@@ -15,6 +15,7 @@
 \usepackage{tikz}
 \usepackage{tkz-berge}
 \usepackage{titlesec}
+\usepackage{varwidth}
 
 % tikz things
 \usetikzlibrary{petri, topaths, positioning}
@@ -49,6 +50,11 @@
 \def\defeq{::=}
 % set-to-equals
 \def\seteq{:=}
+
+% scalable proof tree
+\newenvironment{scprooftree}[1]%
+  {\gdef\scalefactor{#1}\begin{center}\proofSkipAmount \leavevmode}%
+  {\scalebox{\scalefactor}{\DisplayProof}\proofSkipAmount \end{center} }
 
 
 % indented definitions, lemmas etc

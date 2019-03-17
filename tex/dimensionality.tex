@@ -55,5 +55,81 @@
     \end{definition}
 
     \begin{example}
-        Consider the formula $P \defeq \vdash (a \vee \neg a) \wedge (b \vee \neg b)$. 
+        Consider the formula $P \defeq (a \vee \neg a) \wedge (b \vee \neg b)$.
+        The sequent proof $\vdash P$ is large and has dimensionality 3 as follows:
+
+        \begin{center}
+            \begin{tabular}{@{}l@{}}
+                \begin{varwidth}{\linewidth}
+                    \begin{scprooftree}{0.5}
+                        \AxiomC{$ \vdash a , a , \neg a $}
+                        \UnaryInfC{$ \vdash a , ( a \vee \neg a ) , \neg a $}
+                        \AxiomC{$ \vdash a , \neg a , b $}
+                        \UnaryInfC{$ \vdash a , \neg a , ( b \vee \neg b ) $}
+                        \BinaryInfC{$ \vdash a , \neg a , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) $}
+                        \UnaryInfC{$ \vdash a , ( a \vee \neg a ) , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) $}
+                        \AxiomC{$ \vdash a , \neg a , b $}
+                        \UnaryInfC{$ \vdash a , \neg a , ( b \vee \neg b ) $}
+                        \UnaryInfC{$ \vdash a , ( a \vee \neg a ) , ( b \vee \neg b ) $}
+                        \AxiomC{$ \vdash a , b , \neg b $}
+                        \UnaryInfC{$ \vdash a , b , ( b \vee \neg b ) $}
+                        \UnaryInfC{$ \vdash a , ( b \vee \neg b ) , ( b \vee \neg b ) $}
+                        \BinaryInfC{$ \vdash a , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( b \vee \neg b ) $}
+                        \BinaryInfC{$ \vdash a , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) $}
+                        \UnaryInfC{$ \vdash ( a \vee \neg a ) , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) $}
+                        \AxiomC{$ \vdash a , \neg a , b $}
+                        \UnaryInfC{$ \vdash a , \neg a , ( b \vee \neg b ) $}
+                        \UnaryInfC{$ \vdash a , ( a \vee \neg a ) , ( b \vee \neg b ) $}
+                        \AxiomC{$ \vdash a , b , \neg b $}
+                        \UnaryInfC{$ \vdash a , b , ( b \vee \neg b ) $}
+                        \UnaryInfC{$ \vdash a , ( b \vee \neg b ) , ( b \vee \neg b ) $}
+                        \BinaryInfC{$ \vdash a , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( b \vee \neg b ) $}
+                        \UnaryInfC{$ \vdash ( a \vee \neg a ) , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( b \vee \neg b ) $}
+                        \AxiomC{$ \vdash ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , b , \neg b $}
+                        \UnaryInfC{$ \vdash ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , b , ( b \vee \neg b ) $}
+                        \UnaryInfC{$ \vdash ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( b \vee \neg b ) , ( b \vee \neg b ) $}
+                        \BinaryInfC{$ \vdash ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( b \vee \neg b ) $}
+                        \BinaryInfC{$ \vdash ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) $}
+                    \end{scprooftree}
+                \end{varwidth}
+            \end{tabular}
+        \end{center}
+        
+        Using substitutions of $\top$ for provable subformulae, the proof $\vdash P$ becomes much more manageable:
+
+        \begin{center}
+            \begin{tabular}{@{}l@{}}
+                $ A := ( a \vee \neg a ) $
+                \begin{varwidth}{\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$ \vdash a , \neg a $}
+                        \UnaryInfC{$ \vdash a , ( a \vee \neg a ) $}
+                        \UnaryInfC{$ \vdash ( a \vee \neg a ) , ( a \vee \neg a ) $}
+                    \end{prooftree}
+                \end{varwidth}\\ \\
+
+                $ B := ( b \vee \neg b ) $
+                \begin{varwidth}{\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$ \vdash b , \neg b $}
+                        \UnaryInfC{$ \vdash b , ( b \vee \neg b ) $}
+                        \UnaryInfC{$ \vdash ( b \vee \neg b ) , ( b \vee \neg b ) $}
+                    \end{prooftree}
+                \end{varwidth}\\ \\
+
+                \begin{varwidth}{\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$ \vdash A , A $}
+                        \AxiomC{$ \vdash A , B $}
+                        \BinaryInfC{$ \vdash A , ( A \wedge B ) $}
+                        \AxiomC{$ \vdash A , B $}
+                        \AxiomC{$ \vdash B , B $}
+                        \BinaryInfC{$ \vdash B , ( A \wedge B ) $}
+                        \BinaryInfC{$ \vdash ( A \wedge B ) , ( A \wedge B ) $}
+                    \end{prooftree}
+                \end{varwidth}\\
+            \end{tabular}
+        \end{center}
+
+        While the final step need only be performed with dimensionality 1, the prior steps require dimensionality 2, giving the full formula a dimensionality of 2.
     \end{example}
