@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[draft]{article}
 
 % ~~~~~~~~~~~~~~~~~~~~~~~ Preamble ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -17,8 +17,12 @@
 \usepackage{titlesec}
 \usepackage{varwidth}
 
+% anti-tikz things
+\usetikzlibrary{external}
+\tikzexternalize
+
 % tikz things
-\usetikzlibrary{petri, topaths, positioning}
+\usetikzlibrary{petri, topaths, positioning, decorations.pathmorphing}
 
 \pgfarrowsdeclare{arr}{arr}{
   \setlength{\arrowsize}{0.6pt}
@@ -33,6 +37,15 @@
   \pgfpathlineto{\pgfpoint{-5\arrowsize}{-4\arrowsize}}
   \pgfusepathqstroke
 }
+
+\newcommand{\drawsquig}{\draw[-arr,
+line join=round,
+decorate, decoration={
+    zigzag,
+    segment length=4,
+    amplitude=.9,post=lineto,
+    post length=2pt
+}]}
 
 
 \titlespacing{\section}{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
@@ -114,6 +127,4 @@
 
     \input{dimensionality}
 
-    \input{optimisation}
-    
 \end{document}

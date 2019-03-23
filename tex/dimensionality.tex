@@ -10,14 +10,16 @@
     \end{example}
 
 
-    \begin{definition*}[Classes of Formulae]
+    \begin{definition}[Classes of Formulae]\label{sec-ctr:formulae-classes}
         Let $A^i$ be the subclasses of formulae defined as:
         \begin{align*}
-            A^1 \quad &\defeq \quad \top \,|\, \bot \,|\, A^1 \wedge A^1 \,|\, A^* \vee A^1 \\
-            A^2 \quad &\defeq \quad A^1 \,|\, \textit{Additive Linear Logic} \,|\, A^* \vee A^2 \,|\, P \vee \neg P
+            A^1 \quad &\defeq \quad \top \,|\, A^1 \wedge A^1 \,|\, A^* \vee A^1 \\
+            A^2 \quad &\defeq \quad A^1 \,|\, A^* \vee A^2 \,|\, P \vee \neg P \,|\, \ldots
         \end{align*}
         where $A^* \defeq \bigcup_{i \in \mathbb{N}} A_i$, such that $A^n$ is the class of all formulae provable in n dimensions.
-    \end{definition*}
+
+        \textit{This definition will be revised later.}
+    \end{definition}
 
 
     \begin{remark*}[Satisfiability vs Provability]
@@ -50,18 +52,17 @@
         Instead, a natural optimisation is applied to the algorithm as follows, giving rise to a different set of classes of dimensionality and more pleasing properties.
     \end{remark*} 
 
-    \begin{definition}[$\top$-substitution]
+    \begin{definition*}[$\top$-substitution]
          Given a sequent expressing a proof of $Q$, i.e. $\vdash Q, Q, \ldots Q$, the formula $P$ may be equivalently expressed $P[Q \seteq \top]$.
-    \end{definition}
+    \end{definition*}
 
     \begin{example}
         Consider the formula $P \defeq (a \vee \neg a) \wedge (b \vee \neg b)$.
         The sequent proof $\vdash P$ is large and has dimensionality 3 as follows:
-
         \begin{center}
             \begin{tabular}{@{}l@{}}
                 \begin{varwidth}{\linewidth}
-                    \begin{scprooftree}{0.5}
+                    \begin{scprooftree}{0.48}
                         \AxiomC{$ \vdash a , a , \neg a $}
                         \UnaryInfC{$ \vdash a , ( a \vee \neg a ) , \neg a $}
                         \AxiomC{$ \vdash a , \neg a , b $}
@@ -133,3 +134,52 @@
 
         While the final step need only be performed with dimensionality 1, the prior steps require dimensionality 2, giving the full formula a dimensionality of 2.
     \end{example}
+
+
+    \begin{remark*}
+        It is now important to reexamine the coalescence algorithm.
+
+        Storing a token as a \texttt{Tuple} gives an inefficient algorithm due to the implicit ordering.
+        By commutativity, given a token $(a_1 \ldots a_n)$, there exist up to $n!$ permutations of $a_i$'s and thus $n!$ equivalent tokens.
+        
+        Instead, order is abstracted away from and a token is stored as a \texttt{Multiset}.
+        This gives the storage optimisation exploiting the symmetry of petri nets that expresses commutativity of terms in a sequent.
+
+        This may be taken a step further --- consider a token stored as a \texttt{Set}.
+    \end{remark*}
+
+    \begin{examples}
+        Consider again the formula $(a \vee \neg a) \wedge (b \vee \neg b)$, with a proofs as follow, but instead tracing the values of tokens.
+        Symbols in the formula are iterated and indexed by $1 \ldots m$, i.e. $1 \equiv a, 2 \equiv  a \vee \neg a, 4 \equiv (a \vee \neg a) \wedge (b \vee \neg b)$
+
+        Where tokens are member of the category \texttt{Tuple}, so as to demonstrate the exponential blow-up, the proof is as follows:
+        \input{proofnet-example-tuple} where $\rightsquigarrow$ is an application of weakening.
+        This is notable as this will be the point coalescence will reach for $n \seteq 2$ and a suitably intelligent method for extending dimensions will maintain the proof search so far.
+
+
+        Where tokens are now members of \texttt{Multiset}, the proof of the full formula follows:
+        \input{proofnet-example-multiset}
+        The above is still tedious and unnatural.
+        Proofs of each of $a \vee \neg a$ and $b \vee \neg b$ are constructed in two steps, while the remaining steps are to prove the conjunction of these (proven) subformulae.
+        Instead, consider the tokens as members of \texttt{Set} as follows:
+
+        \input{proofnet-example-set}
+        This is finally deemed a `satisfying' proof --- dimensionality is extracted as the largest set required in the proof, a nicer algebra of dimensionality may be constructed and there is some essence of justification for the correctness of this $\top$-substitution -- all through changing the datatype of tokens.
+    \end{examples}
+
+    \begin{definition*}[Classes of Formulae]
+        With this new concept of coalescence, dimensionality and proof search, the definitions in \ref{sec-ctr:formulae-classes} are revisited and revised.
+        Let $A^i$ be redefined as the subclasses of formulae:
+        \begin{align*}
+            A^1 \quad &\defeq \quad \top \,|\, A^1 \wedge A^1 \,|\, A^* \vee A^1 \\
+            A^2 \quad &\defeq \quad P \vee \neg P \,|\, A_2 \vee A_{i \geq 2} \,|\, A_2 \wedge A_{i \leq 2}
+        \end{align*}
+        where $A^* \defeq \bigcup_{i \in \mathbb{N}} A_i$, such that $A^n$ is the class of all formulae provable in n dimensions.
+        In fact, for $P \in A_i, Q \in A_j$, the following equalities hold:
+        \begin{equation*}
+            P \vee Q \in A_{\min{i, j}}
+            \qquad
+            P \wedge Q \in A_{\max{i, j}}
+        \end{equation*}
+
+    \end{definition*}

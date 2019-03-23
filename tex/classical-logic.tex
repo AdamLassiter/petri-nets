@@ -10,6 +10,7 @@
     \end{definition*}
 
     \begin{example}
+        Consider the formulae constructed as follows:
         \begin{equation*}
             A \seteq a \vee b \quad B \seteq \neg b \vee c \quad C \seteq A \wedge B \equiv (a \vee b) \wedge (\neg b \vee c)
         \end{equation*}
@@ -58,17 +59,31 @@
                     \UnaryInfC{$\vdash \Gamma, A$}
                 \end{prooftree}
             \end{minipage}
-        \end{minipage}~\par
+        \end{minipage}
+
         where $A, B, C$ are formulae and $\Gamma, \Delta, \Sigma$ are sequents.
         A sequent proof provides, without context, a proof of its conclusion and each line of the proof represents a tautology.
     \end{definition*}
 
     \begin{example}
+        Consider the formula $P \seteq (a \vee \neg a) \wedge \top$.
+        The sequent proof of $P$, written $\vdash P$, is constructed as follows:
+        \begin{prooftree}
+            \AxiomC{$~$}
+            \RightLabel{$ax$}\UnaryInfC{$\vdash a, \neg a$}
+            \RightLabel{$\vee R$}\UnaryInfC{$\vdash a \vee \neg a, \neg a$}
+            \RightLabel{$\vee R$}\UnaryInfC{$\vdash a \vee \neg a, a \vee \neg a$}
+            \RightLabel{$c$}\UnaryInfC{$\vdash a \vee \neg a$}
+            \AxiomC{$~$}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$\wedge R$}\BinaryInfC{$\vdash (a \vee \neg a) \wedge \top$}
+        \end{prooftree}
     \end{example}
 
 
     \begin{remark*}
-        Within the context of weakening and contraction, \textit{additive} and \textit{multiplicative} rules are inter-derivable.
+        Within the context of weakening and contraction, \textit{additive} and \textit{multiplicative} rules of linear logic are inter-derivable.
+        In this case, the \textit{additive} rules are used, with the effect of $\vee R, \wedge R$ maintaining the number of formulae in a seqent across derivation steps.
     \end{remark*}
 
 
@@ -88,9 +103,29 @@
     \begin{corollary*}[Derivation Equivalence]
         A sequent proof is a derivation where all top derivations of the tree are $=\joinrel= \top, ax$.
         Equivalence of derivations may be weakly defined up to equivalence of leaves and conclusion.
+        %% TODO: See Jean-Yves Girard, `morally' identical
     \end{corollary*}
 
     \begin{example}
+        Considering the leaves $\vdash A, A$ and $\vdash B$ with the conclusion $\vdash A \wedge B$, the following proofs are weakly equivalent:
+        \begin{prooftree}
+            \AxiomC{$\vdash A, A$}
+            \RightLabel{$c$}\UnaryInfC{$\vdash A$}
+            \AxiomC{$\vdash B$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash A \wedge B$}
+        \end{prooftree}
+        \begin{prooftree}
+            \AxiomC{$\vdash A, A$}
+            \AxiomC{$\vdash B$}
+            \RightLabel{$w$}\UnaryInfC{$\vdash A, B$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash A, A \wedge B$}
+            \AxiomC{$\vdash B$}
+            \RightLabel{$w$}\UnaryInfC{$\vdash B, A \wedge B$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash A \wedge B, A \wedge B$}
+            \RightLabel{$c$}\UnaryInfC{$\vdash A \wedge B$}
+        \end{prooftree}
+        Note that the collection of leaves is a \texttt{Set}, so equivalence is up to existence of terms only and not number.
+        Further, equivalence of sequents may be applied, in particular equivalence up to commutativity of formulae $\vdash A, B \equiv \,\, \vdash B, A$.
     \end{example}
 
 
@@ -130,7 +165,7 @@
             \centering
             \begin{minipage}[H]{0.4\linewidth}
                 \begin{prooftree}
-                    \AxiomC{$\vdash \Gamma, A, B$}
+                    \AxiomC{$\vdash \Gamma, A$}
                     \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B$}
                     \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A \vee B$, C}
                 \end{prooftree}
@@ -138,9 +173,9 @@
             $\leadsto$
             \begin{minipage}[H]{0.4\linewidth}
                 \begin{prooftree}
-                    \AxiomC{$\vdash \Gamma, A, B$}
-                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, B, C$}
-                    \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B$, C}
+                    \AxiomC{$\vdash \Gamma, A$}
+                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, C$}
+                    \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B, C$}
                 \end{prooftree}
             \end{minipage}
         \end{minipage}
@@ -192,17 +227,16 @@
             \centering
             \begin{minipage}[H]{0.4\linewidth}
                 \begin{prooftree}
-                    \AxiomC{$\vdash \Gamma, A, A, B$}
-                    \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A, B$}
+                    \AxiomC{$\vdash \Gamma, A, A$}
+                    \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A$}
                     \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B$}
                 \end{prooftree}
             \end{minipage}
             $\leadsto$
             \begin{minipage}[H]{0.4\linewidth}
                 \begin{prooftree}
-                    \AxiomC{$\vdash \Gamma, A, A, B$}
-                    \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, A, B, B$}
-                    \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B, A, B$}
+                    \AxiomC{$\vdash \Gamma, A, A$}
+                    \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B, A$}
                     \RightLabel{$\vee$}\UnaryInfC{$\vdash \Gamma, A \vee B, A \vee B$}
                     \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A \vee B$}
                 \end{prooftree}

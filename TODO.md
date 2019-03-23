@@ -21,12 +21,5 @@
         * Consistency
         * Dimensionality
     * Informal
-        * Time Efficiency
-        * Space Efficiency
         * What expressions are quick, what are slow
-        * What optimisations help 
-            * Token sort and rbtree
-            * |- P in Q -> Substitute Q[T\P]
-            * 1-bit bools
-            * etc...
 * Differentiate carefully between CL, ALL, MLL
