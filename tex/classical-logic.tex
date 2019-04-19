@@ -103,11 +103,12 @@
     \begin{corollary*}[Derivation Equivalence]
         A sequent proof is a derivation where all top derivations of the tree are $=\joinrel= \top, ax$.
         Equivalence of derivations may be weakly defined up to equivalence of leaves and conclusion.
-        %% TODO: See Jean-Yves Girard, `morally' identical
+
+        This is described in detail by \citet{proofs-and-types} as \textit{morally equivalent}.
     \end{corollary*}
 
     \begin{example}
-        Considering the leaves $\vdash A, A$ and $\vdash B$ with the conclusion $\vdash A \wedge B$, the following proofs are weakly equivalent:
+        Considering the leaves $\vdash A, A$ and $\vdash B$ with the conclusion $\vdash A \wedge B$, the following proofs are morally equivalent:
         \begin{prooftree}
             \AxiomC{$\vdash A, A$}
             \RightLabel{$c$}\UnaryInfC{$\vdash A$}
@@ -125,7 +126,8 @@
             \RightLabel{$c$}\UnaryInfC{$\vdash A \wedge B$}
         \end{prooftree}
         Note that the collection of leaves is a \texttt{Set}, so equivalence is up to existence of terms only and not number.
-        Further, equivalence of sequents may be applied, in particular equivalence up to commutativity of formulae $\vdash A, B \equiv \,\, \vdash B, A$.
+        Furthermore, equivalence of leaves is also defined up to equivalence of sequents, in particular equivalence up to commutativity of formulae $\vdash A, B \equiv \,\, \vdash B, A$.
+        Equivalence may also be considered up to idempotency of formulae $\vdash A, A \equiv \,\, \vdash A$, but this interferes with the correctness of some definitions.
     \end{example}
 
 
@@ -152,12 +154,14 @@
     \end{definition*}
     
     \begin{example}
+        % TODO
     \end{example}
 
 
     \begin{proposition*}[Stratification Equivalence]
         Given $\vdash A$, there exists an additively stratified proof of $A$.
     \end{proposition*}
+
     \begin{proof}
         For each instance of a weakening below another inference, there exists an equivalent subproof that is additively stratified:
 
@@ -298,4 +302,5 @@
     \end{proof}
 
     \begin{example}
+        % TODO
     \end{example}

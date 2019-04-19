@@ -5,12 +5,16 @@
         In particular, $\mathcal{P}$ is a set of places and $\mathcal{F}$ a set of flows or transitions.
         A \textit{configuration} is a set $\mathcal{C} \subset \mathcal{P}$ of tokens in places.
 
+        Here follows the convention used by \citet{naming-proofs-in-cl} of iterating over places in a formula and indexing by $i \in \mathcal{N}$.
         Given a formula in classical logic, conjunction or disjunction is encoded as:
         \begin{align*}
-            A_1 \vee_2 B_3    &\quad\mapsto\quad \{ (A_1) \times \vee_2, (B_3) \times \vee_2 \} \\
-            A_1 \wedge_2 B_3 &\quad\mapsto\quad \{ (A_1, B_3) \times \wedge_2 \}
+            P_1 \vee_2 Q_3    &\quad\mapsto\quad \{ (P_1) \times \vee_2, (Q_3) \times \vee_2 \} \\
+            P_1 \wedge_2 Q_3 &\quad\mapsto\quad \{ (P_1, Q_3) \times \wedge_2 \}
         \end{align*}
         where $A, B$ are (not necessarily unique) subformulae in unique places iterated over by $\{1, 2, \ldots\}$.
+        Subsequently, in an expression such as $A_1 \wedge_2 A_3$, a token on $A_1$ is unique to a token on $A_3$
+
+        This is then a direct continuation of the concepts explored by \citet{petri-nets}.
     \end{definition*}
 
     \begin{example}
@@ -41,7 +45,7 @@
     \begin{example}
         Consider the 2d petri net representing $a \vee \neg a \otimes \neg a \wedge a$ with tokens at $\{(a, \neg a), (\neg a, a)\}$.
         \input{coalescence-example-2}
-        Note in the final step the pair of tokens required to perform the conjunction transition.
+        Note that, in the final step, a pair of tokens are required to perform the conjunction transition.
     \end{example}
 
 

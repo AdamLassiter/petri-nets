@@ -126,7 +126,7 @@ Formula *formula_parse(char **string) {
 
 // Free a dynamically-allocated formula
 void formula_free(Formula *formula) {
-    if (formula != NULL) {
+    if (formula != NULL && (formula->type == And || formula->type == Or)) {
         formula_free(formula->left);
         formula_free(formula->right);
         free(formula);

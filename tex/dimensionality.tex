@@ -7,16 +7,17 @@
     \end{definition*}
 
     \begin{example}
+        % TODO
     \end{example}
 
 
     \begin{definition}[Classes of Formulae]\label{sec-ctr:formulae-classes}
-        Let $A^i$ be the subclasses of formulae defined as:
+        Let $D^i$ be the subclasses of formulae defined as:
         \begin{align*}
-            A^1 \quad &\defeq \quad \top \,|\, A^1 \wedge A^1 \,|\, A^* \vee A^1 \\
-            A^2 \quad &\defeq \quad A^1 \,|\, A^* \vee A^2 \,|\, P \vee \neg P \,|\, \ldots
+            D^1 \quad &\defeq \quad \top \,|\, D^1 \wedge D^1 \,|\, D^* \vee D^1 \\
+            D^2 \quad &\defeq \quad D^{i \geq 2} \vee D^2 \,|\, P \vee \neg P \,|\, \ldots
         \end{align*}
-        where $A^* \defeq \bigcup_{i \in \mathbb{N}} A_i$, such that $A^n$ is the class of all formulae provable in n dimensions.
+        where $D^* \defeq \bigcup_{i \in \mathbb{N}} D_i$, such that $D^n$ is the class of all formulae provable in n dimensions.
 
         \textit{This definition will be revised later.}
     \end{definition}
@@ -28,23 +29,13 @@
     \end{remark*}
     
     
-    \begin{proposition*}[$ax$-Bound on Dimensionality]
-        \begin{align*}
-            \dim(P) &\leq 1 + \#\{ax\textit{-Rule} \in \,\, \vdash P\} \\
-            \dim(P) &\leq 1 + \#\{vars \in P\}
-        \end{align*}
+    \begin{proposition*}[Bounds on Dimensionality]
+        Given a formula $P$, the following provides a bound its dimensionality:
+        \begin{equation*}
+            P \in D^n \implies n+1 \leq vars(P)
+        \end{equation*}
+        Justification is left unaddressed here as the current construction does not emit a `nice' proof.
     \end{proposition*}
-
-    \begin{proof}
-        The first case is trivial.
-        Given a formula $P$ and a additively-stratified sequent proof $\vdash P$ (through coalescence or otherwise), additive stratification ensures that $\dim(P) = n \implies \#leaves(P) \geq n$.
-        As each of the $n$ branches of the tree moves `upwards', they must either terminate at an $ax$-rule or branch, leaving $n + 1$ branches total.
-        Subsequently, for each $ax$-rule forming a leaf of the tree, $\dim(P)$ increases by no more than one.
-        Finally, consider a base case such as $P \seteq \vdash a \vee \neg a$ where $\dim(P) = 2 \leq 1 + \#\{ax-Rule \in \vdash P\}$ (in this case, it is equal).
-        
-        Second case omitted. %% TODO
-    \end{proof}
-
 
     \begin{remark*}
         These methods do not lend themselves to `nice' properties.
@@ -62,7 +53,7 @@
         \begin{center}
             \begin{tabular}{@{}l@{}}
                 \begin{varwidth}{\linewidth}
-                    \begin{scprooftree}{0.48}
+                    \begin{scprooftree}{0.47}
                         \AxiomC{$ \vdash a , a , \neg a $}
                         \UnaryInfC{$ \vdash a , ( a \vee \neg a ) , \neg a $}
                         \AxiomC{$ \vdash a , \neg a , b $}
@@ -142,20 +133,20 @@
         Storing a token as a \texttt{Tuple} gives an inefficient algorithm due to the implicit ordering.
         By commutativity, given a token $(a_1 \ldots a_n)$, there exist up to $n!$ permutations of $a_i$'s and thus $n!$ equivalent tokens.
         
-        Instead, order is abstracted away from and a token is stored as a \texttt{Multiset}.
+        Instead, order is abstracted over and a token is stored as a \texttt{Multiset}.
         This gives the storage optimisation exploiting the symmetry of petri nets that expresses commutativity of terms in a sequent.
 
-        This may be taken a step further --- consider a token stored as a \texttt{Set}.
+        This may be taken a step further.
+        Consider a token stored as a \texttt{Set} which expresses idempotency of terms in a sequent $\vdash P, P \equiv \, \vdash P$.
     \end{remark*}
 
     \begin{examples}
         Consider again the formula $(a \vee \neg a) \wedge (b \vee \neg b)$, with a proofs as follow, but instead tracing the values of tokens.
-        Symbols in the formula are iterated and indexed by $1 \ldots m$, i.e. $1 \equiv a, 2 \equiv  a \vee \neg a, 4 \equiv (a \vee \neg a) \wedge (b \vee \neg b)$
-
-        Where tokens are member of the category \texttt{Tuple}, so as to demonstrate the exponential blow-up, the proof is as follows:
+        
+        Where tokens are member of the category \texttt{Tuple}, so as to demonstrate the exponential blow-up, both the `minimal' (black) and `saturated' (grey) proofs are as follows:
         \input{proofnet-example-tuple} where $\rightsquigarrow$ is an application of weakening.
         This is notable as this will be the point coalescence will reach for $n \seteq 2$ and a suitably intelligent method for extending dimensions will maintain the proof search so far.
-
+        Both `minimal' and `saturated' proofs are included as each represent the deterministic versus non-deterministic searches --- proof search versus validation.
 
         Where tokens are now members of \texttt{Multiset}, the proof of the full formula follows:
         \input{proofnet-example-multiset}
@@ -164,22 +155,68 @@
         Instead, consider the tokens as members of \texttt{Set} as follows:
 
         \input{proofnet-example-set}
-        This is finally deemed a `satisfying' proof --- dimensionality is extracted as the largest set required in the proof, a nicer algebra of dimensionality may be constructed and there is some essence of justification for the correctness of this $\top$-substitution -- all through changing the datatype of tokens.
+        This is finally deemed a `satisfying' proof --- dimensionality is extracted as the largest set required in the proof, a nicer algebra of dimensionality may be constructed and there is some essence of justification for the correctness of this $\top$-substitution --- all through changing the datatype of tokens.
     \end{examples}
 
     \begin{definition*}[Classes of Formulae]
-        With this new concept of coalescence, dimensionality and proof search, the definitions in \ref{sec-ctr:formulae-classes} are revisited and revised.
-        Let $A^i$ be redefined as the subclasses of formulae:
+        With this new concept of coalescence, dimensionality and proof search, the definitions in~\ref{sec-ctr:formulae-classes} are revisited and revised.
+        Let $\mathcal{D}^i$ be defined as the subclasses of formulae:
         \begin{align*}
-            A^1 \quad &\defeq \quad \top \,|\, A^1 \wedge A^1 \,|\, A^* \vee A^1 \\
-            A^2 \quad &\defeq \quad P \vee \neg P \,|\, A_2 \vee A_{i \geq 2} \,|\, A_2 \wedge A_{i \leq 2}
+            \mathcal{D}^1 \quad &\defeq \quad \top \,|\, \mathcal{D}^1 \wedge \mathcal{D}^1 \,|\, \mathcal{D}^* \vee \mathcal{D}^1 \\
+            \mathcal{D}^2 \quad &\defeq \quad P \vee \neg P \,|\, \mathcal{D}^2 \vee \mathcal{D}^{i \geq 2} \,|\, \mathcal{D}^2 \wedge \mathcal{D}^{i \leq 2} \\
+            \mathcal{D}^3 \quad &\defeq \quad (P \wedge Q) \vee (P \wedge \neg Q) \vee (\neg P \wedge Q) \vee (\neg P \wedge \neg Q) \,|\, \mathcal{D}^3 \vee \mathcal{D}^{i \geq 3} \,|\, \mathcal{D}^3 \wedge \mathcal{D}^{i \leq 3}
         \end{align*}
-        where $A^* \defeq \bigcup_{i \in \mathbb{N}} A_i$, such that $A^n$ is the class of all formulae provable in n dimensions.
-        In fact, for $P \in A_i, Q \in A_j$, the following equalities hold:
-        \begin{equation*}
-            P \vee Q \in A_{\min{i, j}}
-            \qquad
-            P \wedge Q \in A_{\max{i, j}}
-        \end{equation*}
-
+        where $\mathcal{D}^* \defeq \bigcup_{i \in \mathbb{N}} \mathcal{D}^i$, $P \in \mathcal{D}^*$, such that $\mathcal{D}^n$ is the class of all formulae provable in exactly n dimensions.
     \end{definition*}
+    
+    \begin{corollary*}
+        For $P \in \mathcal{D}^i, Q \in \mathcal{D}^j$, the following statements hold:
+        \begin{equation*}
+            P \vee Q \in \mathcal{D}^{\min{i, j}}
+            \qquad
+            P \wedge Q \in \mathcal{D}^{\max{i, j}}
+        \end{equation*}
+        In fact, for $P \in \mathcal{D}^n$ in $v$ variables, $n \leq v + 1$.
+    \end{corollary*}
+
+
+    \begin{proposition}
+        Let $\textit{DNF}^n$ denote the set of all formulae in $n$ variables in disjunctive normal form.
+        That is, $P \in \textit{DNF}^n \implies P = \bigvee_{j = 1 .. 2^n} (\bigwedge_{i = 1 .. n} a_i)$ the disjunction of $2^n$ conjuctions, each representing an `assignment' of boolean values to $n$ variables.
+        Then the following statement holds:
+        \begin{equation*}
+            P \in \textit{DNF}^n \implies P \in \mathcal{D}^{n+1}
+        \end{equation*}
+    \end{proposition}
+
+    \begin{proof}
+        By induction on n.
+
+        Suppose:
+        \begin{equation*}
+            \forall \,\, i < n \,:\, P \in \textit{DNF}^i \implies P \in \mathcal{D}^{i+1}
+        \end{equation*}
+        We seek to show:
+        \begin{equation*}
+            \exists \, Q \in \textit{DNF}^n \text{ such that } Q \in \mathcal{D}^{n+1}
+        \end{equation*}
+        
+        Let $a_n$ be fresh in $P$ and construct $Q$ as follows:
+        \begin{equation*}
+            Q \seteq (P \wedge a_n) \vee (P \wedge \neg a_n)
+        \end{equation*}
+        where $Q \in \textit{DNF}^n$ by distributivity of conjunction.
+    \end{proof}
+
+    \begin{proposition*}
+        
+        \begin{equation*}
+            P \in \mathcal{D}^{n+1} \iff \exists \, Q \in P \text{ such that } Q \in DNF^{n}
+        \end{equation*}
+    \end{proposition*}
+
+    
+    \begin{remarks}
+        \citet{tableaux-for-logic-of-proofs}
+        \citet{connection-based-proof-method}
+    \end{remarks}

@@ -9,8 +9,9 @@
 \usepackage{enumitem}
 \usepackage{float}
 \usepackage[margin=1.5in]{geometry}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{latexsym}
+\usepackage{natbib}
 \usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{tkz-berge}
@@ -24,11 +25,15 @@
 % tikz things
 \usetikzlibrary{petri, topaths, positioning, decorations.pathmorphing}
 
+% natbib source
+\bibliographystyle{custom}
+\renewcommand{\bibsection}{}
+
 \pgfarrowsdeclare{arr}{arr}{
   \setlength{\arrowsize}{0.6pt}
   \addtolength{\arrowsize}{.5\pgflinewidth}
-  \pgfarrowsrightextend{0}
-  \pgfarrowsleftextend{-5\arrowsize}
+  \pgfarrowsrightextend{1\arrowsize}
+  \pgfarrowsleftextend{1\arrowsize}
 }{
   \setlength{\arrowsize}{0.6pt}
   \addtolength{\arrowsize}{.5\pgflinewidth}
@@ -121,10 +126,14 @@ decorate, decoration={
         }
     \end{abstract}
 
+    \input{introduction}
+
     \input{classical-logic}
  
     \input{coalescence}
 
     \input{dimensionality}
+
+    \input{references}
 
 \end{document}

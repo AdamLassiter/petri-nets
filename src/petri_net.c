@@ -214,6 +214,7 @@ static PetriNet *petri_net_exhaustive_fire(Formula *f, size_t n) {
     // and then populate grid with tokens
     RBTreeIter *iter = rbtree_iter_new();
     for (size_t *tk = (size_t *) rbtree_iter_first(iter, net->tokens); tk; tk = (size_t *) rbtree_iter_next(iter)) {
+        // FIXME: There are more tokens than this - one for each permutation
         ndarray_set(net->places, tk, true);
     }
     rbtree_iter_free(iter);

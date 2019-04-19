@@ -30,12 +30,12 @@ SequentProof *sequent_backtrack(PetriNet *net, size_t *place) {
 
     // Create a new sequent proof here
     SequentProof *proof = sequent_proof_new();
-
+    
+    // For each possible branch (sequent term)
     for (size_t dim = 0; dim < n; dim++) {
-
         Formula *f = net->symbols[place[dim]];
         Grammar type = f->type;
-
+        formula_print(f); printf("\n"); fflush(stdout);
         // Regardless of how we got here, this is proven
         llist_append(proof->sequents, f);
         
@@ -44,6 +44,9 @@ SequentProof *sequent_backtrack(PetriNet *net, size_t *place) {
         bool left_child = false,
              right_child = false;
         
+        // FIXME: There exists some bug where we end up with an invalid state and the proof halts
+        // This seems to occur on right-branches
+
         // Where they exist, get both children
         if (arity > 0) { 
             // Left
@@ -57,11 +60,11 @@ SequentProof *sequent_backtrack(PetriNet *net, size_t *place) {
             petri_net_token_sort(left_tk, n);
             right_child = ndarray_get(net->places, right_tk);
         }
-
+        
         // Append children as tree branches
         size_t n_children = left_child && right_child ? 2 : left_child || right_child ? 1 : 0;
         // Don't follow in multiple dimensions
-        if (n_children >= arity && arity > 0 && !backtracked) {
+        if (n_children >= arity && arity != 0 && !backtracked) {
             backtracked = true;
             switch (arity) {
                 case 2:

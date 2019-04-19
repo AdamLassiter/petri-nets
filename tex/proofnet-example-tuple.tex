@@ -1,40 +1,40 @@
 \begin{figure}[H]
     \centering
-    \begin{tikzpicture}[every node/.style={scale=0.7}]
+    \begin{tikzpicture}[every node/.style={scale=0.7}, every path/.style={color=black!25}]
         \def\x{1cm}
         \def\y{1cm}
         
         \node[anchor=center](root){};
         \node[on grid, left=       4*\x of root](lroot){};
         \node[on grid, left=       2*\x of lroot  ](13){$(1, 3)$};
-        \node[on grid, right=      2*\x of lroot  ](31){$(3, 1)$};
+        \node[on grid, right=      2*\x of lroot  , style={color=black!100}](31){$(3, 1)$};
         \node[on grid, below left= \y and \x of 13](23){$(2, 3)$};
         \node[on grid, below right=\y and \x of 13](12){$(1, 2)$};
         \node[on grid, below left= \y and \x of 31](21){$(2, 1)$};
-        \node[on grid, below right=\y and \x/2 of 31](32){$(3, 2)$};
-        \node[on grid, below right=\y and \x of 12](22){$(2, 2)$};
+        \node[on grid, below right=\y and \x/2 of 31, style={color=black!100}](32){$(3, 2)$};
+        \node[on grid, below right=\y and \x of 12, style={color=black!100}](22){$(2, 2)$};
                         
         \node[on grid, right=      2*\x of root](rroot){};
-        \node[on grid, left=       2*\x of rroot  ](57){$(5, 7)$};
+        \node[on grid, left=       2*\x of rroot  , style={color=black!100}](57){$(5, 7)$};
         \node[on grid, right=      2*\x of rroot  ](75){$(7, 5)$};
-        \node[on grid, below left= \y and \x/2 of 57](67){$(6, 7)$};
+        \node[on grid, below left= \y and \x/2 of 57, style={color=black!100}](67){$(6, 7)$};
         \node[on grid, below right=\y and \x of 57](56){$(5, 6)$};
         \node[on grid, below left= \y and \x of 75](65){$(6, 5)$};
         \node[on grid, below right=\y and \x of 75](76){$(7, 6)$};
-        \node[on grid, below right=\y and \x of 56](66){$(6, 6)$};
+        \node[on grid, below right=\y and \x of 56, style={color=black!100}](66){$(6, 6)$};
         
-        \node[on grid, below left= \y and 2*\x of 22](224){$(2, 2, 4)$};
+        \node[on grid, below left= \y and 2*\x of 22, style={color=black!100}](224){$(2, 2, 4)$};
         \node[on grid, below left= \y and 0*\x of 22](242){$(2, 4, 2)$};
         \node[on grid, below right=\y and 2*\x of 22](422){$(4, 2, 2)$};
         \node[on grid, below left= \y and 2*\x of 66](466){$(4, 6, 6)$};
         \node[on grid, below left= \y and 0*\x of 66](646){$(6, 4, 6)$};
-        \node[on grid, below right=\y and 2*\x of 66](664){$(6, 6, 4)$};
+        \node[on grid, below right=\y and 2*\x of 66, style={color=black!100}](664){$(6, 6, 4)$};
        
         \node[on grid, below left= 2*\y and 3*\x of 22](226){$(2, 2, 6)$};
-        \node[on grid, below left= 2*\y and \x of 22  ](262){$(2, 6, 2)$};
-        \node[on grid, below right=2*\y and \x of 22  ](622){$(6, 2, 2)$};
-        \node[on grid, below left= 2*\y and 3*\x of 66](266){$(2, 6, 6)$};
-        \node[on grid, below left= 2*\y and \x of 66  ](626){$(6, 2, 6)$};
+        \node[on grid, below left= 2*\y and \x of 22  , style={color=black!100}](262){$(2, 6, 2)$};
+        \node[on grid, below right=2*\y and \x of 22  , style={color=black!100}](622){$(6, 2, 2)$};
+        \node[on grid, below left= 2*\y and 3*\x of 66, style={color=black!100}](266){$(2, 6, 6)$};
+        \node[on grid, below left= 2*\y and \x of 66  , style={color=black!100}](626){$(6, 2, 6)$};
         \node[on grid, below right=2*\y and \x of 66  ](662){$(6, 6, 2)$};
 
         \coordinate[on grid, below=\y of 226   ](246c){};
@@ -45,10 +45,10 @@
         \coordinate[on grid, right=2*\x of 624c](642c){};
 
         \node[on grid, below=\y/2 of 246c](246){$(2, 4, 6)$};
-        \node[on grid, below=\y/2 of 264c](264){$(2, 6, 4)$};
+        \node[on grid, below=\y/2 of 264c, style={color=black!100}](264){$(2, 6, 4)$};
         \node[on grid, below=\y/2 of 426c](426){$(4, 2, 6)$};
         \node[on grid, below=\y/2 of 462c](462){$(4, 6, 2)$};
-        \node[on grid, below=\y/2 of 624c](624){$(6, 2, 4)$};
+        \node[on grid, below=\y/2 of 624c, style={color=black!100}](624){$(6, 2, 4)$};
         \node[on grid, below=\y/2 of 642c](642){$(6, 4, 2)$};
 
         \coordinate[on grid, below=2.5*\y of 224](224c){};
@@ -73,75 +73,81 @@
         \coordinate[on grid, below right=1.5*\y and \x/2 of 466c](446rc){};
 
         \node[on grid, below=2*\y of 224c](244){$(2, 4, 4)$};
-        \node[on grid, below=2*\y of 242c](424){$(4, 2, 4)$};
+        \node[on grid, below=2*\y of 242c, style={color=black!100}](424){$(4, 2, 4)$};
         \node[on grid, below=2*\y of 422c](442){$(4, 4, 2)$};
         \node[on grid, below=2*\y of 466c](446){$(4, 4, 6)$};
-        \node[on grid, below=2*\y of 646c](464){$(4, 6, 4)$};
+        \node[on grid, below=2*\y of 646c, style={color=black!100}](464){$(4, 6, 4)$};
         \node[on grid, below=2*\y of 664c](644){$(6, 4, 4)$};
+
+        \coordinate[on grid, below right=\y and \x of 424](x44c){};
+        \coordinate[on grid, below right=\y and \x of 442](4x4c){};
+        \coordinate[on grid, below right=\y and \x of 446](44xc){};
+
+        \node[on grid, below right=2*\y and \x of 442, style={color=black!100}](444){$(4, 4, 4)$};
 
         \draw[-arr] (13) to (23);
         \draw[-arr] (13) to (12);
         \draw[-arr] (31) to (21);
-        \draw[-arr] (31) to (32);
+        \draw[-arr, style={color=black!100}] (31) to (32);
         \draw[-arr] (23) to (22);
         \draw[-arr] (12) to (22);
         \draw[-arr] (21) to (22);
-        \draw[-arr] (32) to (22);
+        \draw[-arr, style={color=black!100}] (32) to (22);
         
-        \draw[-arr] (57) to (67);
+        \draw[-arr, style={color=black!100}] (57) to (67);
         \draw[-arr] (57) to (56);
         \draw[-arr] (75) to (65);
         \draw[-arr] (75) to (76);
-        \draw[-arr] (67) to (66);
+        \draw[-arr, style={color=black!100}] (67) to (66);
         \draw[-arr] (56) to (66);
         \draw[-arr] (65) to (66);
         \draw[-arr] (76) to (66);        
         
-        \drawsquig (22) to (224);
+        \drawsquig[style={color=black!100}] (22) to (224);
         \drawsquig (22) to (242);
         \drawsquig (22) to (422);
         \drawsquig (66) to (466);
         \drawsquig (66) to (646);
-        \drawsquig (66) to (664);
+        \drawsquig[style={color=black!100}] (66) to (664);
 
         \drawsquig (22) to (226);
-        \drawsquig (22) to (262);
-        \drawsquig (22) to (622);
-        \drawsquig (66) to (266);
-        \drawsquig (66) to (626);
+        \drawsquig[style={color=black!100}] (22) to (262);
+        \drawsquig[style={color=black!100}] (22) to (622);
+        \drawsquig[style={color=black!100}] (66) to (266);
+        \drawsquig[style={color=black!100}] (66) to (626);
         \drawsquig (66) to (662);
 
         \draw[-] (226) to (246c) to (266);
         \draw[-] (226) to (426c) to (626);
-        \draw[-] (262) to (264c) to (266);
+        \draw[-, style={color=black!100}] (262) to (264c) to (266);
         \draw[-] (262) to (462c) to (662);
-        \draw[-] (622) to (624c) to (626);
+        \draw[-, style={color=black!100}] (622) to (624c) to (626);
         \draw[-] (622) to (642c) to (662);
 
         \draw[-arr] (246c) to (246);
-        \draw[-arr] (264c) to (264);
+        \draw[-arr, style={color=black!100}] (264c) to (264);
         \draw[-arr] (426c) to (426);
         \draw[-arr] (462c) to (462);
-        \draw[-arr] (624c) to (624);
+        \draw[-arr, style={color=black!100}] (624c) to (624);
         \draw[-arr] (642c) to (642);
 
-        \draw[-] (224) to (224c);
+        \draw[-, style={color=black!100}] (224) to (224c);
         \draw[-] (242) to (242c);
         \draw[-] (422) to (422c);
         \draw[-] (466) to (466c);
         \draw[-] (646) to (646c);
-        \draw[-] (664) to (664c);
+        \draw[-, style={color=black!100}] (664) to (664c);
 
         \draw[-] (246) to (244lc) to (242c);
         \draw[-] (246) to (446lc) to (646c);
         \draw[-] (264) to (244rc) to (224c);
-        \draw[-] (264) to (464lc) to (664c);
+        \draw[-, style={color=black!100}] (264) to (464lc) to (664c);
         \draw[-] (426) to (424lc) to (422c);
         \draw[-] (426) to (446rc) to (466c);
         \draw[-] (462) to (464rc) to (466c);
         \draw[-] (462) to (442lc) to (422c);
         \draw[-] (624) to (644lc) to (664c);
-        \draw[-] (624) to (424rc) to (224c);
+        \draw[-, style={color=black!100}] (624) to (424rc) to (224c);
         \draw[-] (642) to (644rc) to (646c);
         \draw[-] (642) to (442rc) to (242c);
 
@@ -149,14 +155,22 @@
         \draw[-arr] (424lc) to (424);
         \draw[-arr] (442lc) to (442);
         \draw[-arr] (644lc) to (644);
-        \draw[-arr] (464lc) to (464);
+        \draw[-arr, style={color=black!100}] (464lc) to (464);
         \draw[-arr] (446lc) to (446);
         \draw[-arr] (244rc) to (244);
-        \draw[-arr] (424rc) to (424);
+        \draw[-arr, style={color=black!100}] (424rc) to (424);
         \draw[-arr] (442rc) to (442);
         \draw[-arr] (644rc) to (644);
         \draw[-arr] (464rc) to (464);
         \draw[-arr] (446rc) to (446);
+
+        \draw[-] (244) to (x44c) to (644);
+        \draw[-, style={color=black!100}] (424) to (4x4c) to (464);
+        \draw[-] (442) to (44xc) to (446);
+
+        \draw[-arr] (x44c) to (444);
+        \draw[-arr, style={color=black!100}] (4x4c) to (444);
+        \draw[-arr] (44xc) to (444);
 
     \end{tikzpicture}
 \end{figure}
