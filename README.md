@@ -31,8 +31,8 @@ cd petri-nets/tex
 latexmk -pdf dissertation.tex
 ```
 
-Additionally, the project contains a short abstract submission for  SD’19: 5th Int. Workshop on Structures and Deduction 2019.
-To compile the abstract
+Additionally, the project contains a short abstract submission for  SD’19: 5th Int. Workshop on Structures and Deduction 2019.  
+To compile the abstract:
 ```
 cd petri-nets/tex
 latexmk -pdf dortmund.tex
