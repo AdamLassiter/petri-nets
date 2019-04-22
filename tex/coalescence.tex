@@ -5,7 +5,7 @@
         In particular, $\mathcal{P}$ is a set of places and $\mathcal{F}$ a set of flows or transitions.
         A \textit{configuration} is a set $\mathcal{C} \subset \mathcal{P}$ of tokens in places.
 
-        Here follows the convention used by \citet{naming-proofs-in-cl} of iterating over places in a formula and indexing by $i \in \mathcal{N}$.
+        Notation from here follows the convention used by \citet{naming-proofs-in-cl} of iterating over places in a formula and indexing by $i \in \mathcal{N}$.
         Given a formula in classical logic, conjunction or disjunction is encoded as:
         \begin{align*}
             P_1 \vee_2 Q_3    &\quad\mapsto\quad \{ (P_1) \times \vee_2, (Q_3) \times \vee_2 \} \\
@@ -17,10 +17,10 @@
         This is then a direct continuation of the concepts explored by \citet{petri-nets}.
     \end{definition*}
 
-    \begin{example}
+    \begin{example*}
         Consider the 2-d petri net representing the cross-product $a \vee \neg a \otimes \neg a \wedge a$ as follows:
         \input{coalescence-example-1}
-    \end{example}
+    \end{example*}
 
 
     \begin{definition*}[Firing Petri Nets]
@@ -29,7 +29,7 @@
         \begin{equation*}
             (\mathcal{N = (P, F), C}) \mapsto (\mathcal{N}, (\mathcal{C} \cup f_{right}) \setminus f_{left})
         \end{equation*}
-        for some $f = (f_{left}, f_{right}) \in \mathcal{F}$
+        for some $f = (f_{left}, f_{right}) \in \mathcal{F}$.
         
         For the uses required here, a variant of firing is used instead called \textit{spawning}.
         This generates new configurations in the same manner as firing, with one key difference:
@@ -42,11 +42,11 @@
         A petri net is said to be \textit{exhaustively fired} if it is fired until there does not exist any such $f \in \mathcal{F}$ to fire.
     \end{definition*}
 
-    \begin{example}
+    \begin{example*}
         Consider the 2d petri net representing $a \vee \neg a \otimes \neg a \wedge a$ with tokens at $\{(a, \neg a), (\neg a, a)\}$.
         \input{coalescence-example-2}
         Note that, in the final step, a pair of tokens are required to perform the conjunction transition.
-    \end{example}
+    \end{example*}
 
 
     \begin{definition*}[Coalescence]
@@ -61,11 +61,11 @@
         \end{enumerate}
     \end{definition*}
     
-    \begin{example}
+    \begin{example*}
         Consider the petri net proof for the formula $(a \vee b) \vee \neg a$, with a solution for $n = 2$.
         The net is initialised with tokens in all places satisfying either the $ax$-rule or $\top$-rule and fired exhaustively:
         \input{coalescence-example-3}
-    \end{example}
+    \end{example*}
 
     \begin{remark*}
         Note the symmetry along the upper-left lower-right diagonal.
@@ -73,13 +73,13 @@
         If this is the case, the coalescence algorithm may halt early if the root of the formula is reached.
     \end{remark*}
 
-    \begin{example}
+    \begin{example*}
         Consider the petri net proof for the formula $(a \vee \neg a) \wedge (b \vee \neg b)$, with a solution for $n = 3$.
         In an exhaustively fired net for $n = 2$, the proof looks as follows:
         \input{coalescence-example-4}
         The coalescence algorithm fails to find a solution in 2 dimensions due to the lack of tokens in upper-right or lower-left quadrants.
         If there were tokens in such a place, the tree would be able to continue to grow towards the formula root at the centre of the net.
-    \end{example}
+    \end{example*}
 
     \begin{remark*}
         Implementing firable petri nets is straightforward using an $n$-dimensional boolean array of places visited and a collection of $n$-tuples representing tokens.

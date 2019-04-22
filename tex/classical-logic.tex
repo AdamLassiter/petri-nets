@@ -9,12 +9,12 @@
         where $\vee, \wedge$ are additive linear logic disjunction and conjunction respectively and $\Gamma, \Delta, \Sigma$ are contexts.
     \end{definition*}
 
-    \begin{example}
+    \begin{example*}
         Consider the formulae constructed as follows:
         \begin{equation*}
             A \seteq a \vee b \quad B \seteq \neg b \vee c \quad C \seteq A \wedge B \equiv (a \vee b) \wedge (\neg b \vee c)
         \end{equation*}
-    \end{example}
+    \end{example*}
 
 
     \begin{definition*}[Sequent Proofs]
@@ -37,13 +37,13 @@
             \begin{minipage}[H]{.3\linewidth}
                 \begin{prooftree}
                     \AxiomC{$\vdash \Gamma, A$}
-                    \RightLabel{$\vee$R}
+                    \RightLabel{$\vee$}
                     \UnaryInfC{$\vdash \Gamma, A \vee B$}
                 \end{prooftree}
                 \begin{prooftree}
                     \AxiomC{$\vdash \Gamma, A$}
                     \AxiomC{$\vdash \Gamma, B$}
-                    \RightLabel{$\wedge$R}
+                    \RightLabel{$\wedge$}
                     \BinaryInfC{$\vdash \Gamma, A \wedge B$}
                 \end{prooftree}
             \end{minipage}
@@ -65,7 +65,7 @@
         A sequent proof provides, without context, a proof of its conclusion and each line of the proof represents a tautology.
     \end{definition*}
 
-    \begin{example}
+    \begin{example*}
         Consider the formula $P \seteq (a \vee \neg a) \wedge \top$.
         The sequent proof of $P$, written $\vdash P$, is constructed as follows:
         \begin{prooftree}
@@ -78,7 +78,7 @@
             \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
             \RightLabel{$\wedge R$}\BinaryInfC{$\vdash (a \vee \neg a) \wedge \top$}
         \end{prooftree}
-    \end{example}
+    \end{example*}
 
 
     \begin{remark*}
@@ -107,7 +107,7 @@
         This is described in detail by \citet{proofs-and-types} as \textit{morally equivalent}.
     \end{corollary*}
 
-    \begin{example}
+    \begin{example*}
         Considering the leaves $\vdash A, A$ and $\vdash B$ with the conclusion $\vdash A \wedge B$, the following proofs are morally equivalent:
         \begin{prooftree}
             \AxiomC{$\vdash A, A$}
@@ -128,7 +128,7 @@
         Note that the collection of leaves is a \texttt{Set}, so equivalence is up to existence of terms only and not number.
         Furthermore, equivalence of leaves is also defined up to equivalence of sequents, in particular equivalence up to commutativity of formulae $\vdash A, B \equiv \,\, \vdash B, A$.
         Equivalence may also be considered up to idempotency of formulae $\vdash A, A \equiv \,\, \vdash A$, but this interferes with the correctness of some definitions.
-    \end{example}
+    \end{example*}
 
 
     \begin{definition*}[Additive Stratification]
@@ -153,13 +153,28 @@
         \end{enumerate}
     \end{definition*}
     
-    \begin{example}
-        % TODO
+    \begin{example}\label{example:add-strat-proof}
+        The following proof tree is additively stratified:
+        \begin{prooftree}
+            \AxiomC{}
+            \RightLabel{$ax$}\UnaryInfC{$\vdash a, \neg a$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash a \vee \neg a, \neg a$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash a \vee \neg a, a \vee \neg a$}
+            \AxiomC{}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$w$}\UnaryInfC{$\vdash \top, a \vee \neg a$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash (a \vee \neg a) \wedge \top, a \vee \neg a$}
+            \AxiomC{}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$w$}\UnaryInfC{$\vdash \top, (a \vee \neg a) \wedge \top$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash (a \vee \neg a) \wedge \top, (a \vee \neg a) \wedge \top$}
+            \RightLabel{$c$}\UnaryInfC{$\vdash (a \vee \neg a) \wedge \top$}
+        \end{prooftree}
     \end{example}
 
 
     \begin{proposition*}[Stratification Equivalence]
-        Given $\vdash A$, there exists an additively stratified proof of $A$.
+        Given $\vdash A$, there exists a morally equivalent additively stratified proof of $A$.
     \end{proposition*}
 
     \begin{proof}
@@ -301,6 +316,33 @@
 
     \end{proof}
 
-    \begin{example}
-        % TODO
-    \end{example}
+    \begin{example*}
+        Similarly to Example~\ref{example:add-strat-proof}, consider the two following morally equivalent proofs, with only the latter additively stratified.
+        \begin{prooftree}
+            \AxiomC{}
+            \RightLabel{$ax$}\UnaryInfC{$\vdash a, \neg a$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash a \vee \neg a, \neg a$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash a \vee \neg a, a \vee \neg a$}
+            \RightLabel{$w$}\UnaryInfC{$\vdash a \vee \neg a$}
+            \AxiomC{}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash (a \vee \neg a) \wedge \top$}
+        \end{prooftree}
+        \begin{prooftree}
+            \AxiomC{}
+            \RightLabel{$ax$}\UnaryInfC{$\vdash a, \neg a$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash a \vee \neg a, \neg a$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash a \vee \neg a, a \vee \neg a$}
+            \AxiomC{}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$w$}\UnaryInfC{$\vdash \top, a \vee \neg a$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash (a \vee \neg a) \wedge \top, a \vee \neg a$}
+            \AxiomC{}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$w$}\UnaryInfC{$\vdash \top, (a \vee \neg a) \wedge \top$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash (a \vee \neg a) \wedge \top, (a \vee \neg a) \wedge \top$}
+            \RightLabel{$c$}\UnaryInfC{$\vdash (a \vee \neg a) \wedge \top$}
+        \end{prooftree}
+        Note that moral equivalence here is without regard to number --- there are two leaves $\vdash \top$ under additive stratification versus one otherwise.
+        Furthermore, notice that the proof without additive stratification is shorter --- this will be of importance when improving asymptotic performance.
+    \end{example*}

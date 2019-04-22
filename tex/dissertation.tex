@@ -1,4 +1,5 @@
-\documentclass[draft]{article}
+\documentclass{article}
+%\documentclass[draft]{article}
 
 % ~~~~~~~~~~~~~~~~~~~~~~~ Preamble ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -20,7 +21,7 @@
 
 % anti-tikz things
 \usetikzlibrary{external}
-\tikzexternalize
+%\tikzexternalize
 
 % tikz things
 \usetikzlibrary{petri, topaths, positioning, decorations.pathmorphing}
@@ -100,7 +101,8 @@ decorate, decoration={
 \newtheorem*{proposition*}{Proposition}
 \newtheorem{lemma}[sec-ctr]{Lemma}
 \newtheorem*{lemma*}{Lemma}
-\newtheorem*{example}{Example}
+\newtheorem{example}[sec-ctr]{Example}
+\newtheorem*{example*}{Example}
 \newtheorem*{examples}{Examples}
 \newtheorem{corollary}[sec-ctr]{Corollary}
 \newtheorem*{corollary*}{Corollary}
@@ -133,6 +135,8 @@ decorate, decoration={
     \input{coalescence}
 
     \input{dimensionality}
+
+    \input{conclusion}
 
     \input{references}
 

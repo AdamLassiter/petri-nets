@@ -6,9 +6,24 @@
         The dimensionality of $P$ is then defined $\dim(P) \defeq n$.
     \end{definition*}
 
-    \begin{example}
-        % TODO
-    \end{example}
+    \begin{example*}
+        Borrowing the proof from Example~\ref{example:add-strat-proof}, it has dimensionality 2 since the tree concludes with $\vdash P, P$ before any contractions.
+        \begin{prooftree}
+            \AxiomC{}
+            \RightLabel{$ax$}\UnaryInfC{$\vdash a, \neg a$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash a \vee \neg a, \neg a$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash a \vee \neg a, a \vee \neg a$}
+            \AxiomC{}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$w$}\UnaryInfC{$\vdash \top, a \vee \neg a$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash (a \vee \neg a) \wedge \top, a \vee \neg a$}
+            \AxiomC{}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$w$}\UnaryInfC{$\vdash \top, (a \vee \neg a) \wedge \top$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash (a \vee \neg a) \wedge \top, (a \vee \neg a) \wedge \top$}
+            \RightLabel{$c$}\UnaryInfC{$\vdash (a \vee \neg a) \wedge \top$}
+        \end{prooftree}
+    \end{example*}
 
 
     \begin{definition}[Classes of Formulae]\label{sec-ctr:formulae-classes}
@@ -47,7 +62,7 @@
          Given a sequent expressing a proof of $Q$, i.e. $\vdash Q, Q, \ldots Q$, the formula $P$ may be equivalently expressed $P[Q \seteq \top]$.
     \end{definition*}
 
-    \begin{example}
+    \begin{example*}
         Consider the formula $P \defeq (a \vee \neg a) \wedge (b \vee \neg b)$.
         The sequent proof $\vdash P$ is large and has dimensionality 3 as follows:
         \begin{center}
@@ -124,7 +139,7 @@
         \end{center}
 
         While the final step need only be performed with dimensionality 1, the prior steps require dimensionality 2, giving the full formula a dimensionality of 2.
-    \end{example}
+    \end{example*}
 
 
     \begin{remark*}
@@ -157,6 +172,12 @@
         \input{proofnet-example-set}
         This is finally deemed a `satisfying' proof --- dimensionality is extracted as the largest set required in the proof, a nicer algebra of dimensionality may be constructed and there is some essence of justification for the correctness of this $\top$-substitution --- all through changing the datatype of tokens.
     \end{examples}
+    
+    \begin{remark}
+        In essence, allowing for efficient substitution of a $\top$ term for proven subformulae allows the coalescence algorithm to run without restricting the output to additively stratified proofs.
+        A proof may be reconstructed including substitutions, where each subproof substituted is itself additively stratified, but now there are contractions for the conclusion of a subproof on top of weakenings for the axioms of a superproof.
+    \end{remark}
+
 
     \begin{definition*}[Classes of Formulae]
         With this new concept of coalescence, dimensionality and proof search, the definitions in~\ref{sec-ctr:formulae-classes} are revisited and revised.
@@ -180,7 +201,7 @@
     \end{corollary*}
 
 
-    \begin{proposition}
+    \begin{proposition}[Dimensionality Bounds of Disjunctive Normal Forms]
         Let $\textit{DNF}^n$ denote the set of all formulae in $n$ variables in disjunctive normal form.
         That is, $P \in \textit{DNF}^n \implies P = \bigvee_{j = 1 .. 2^n} (\bigwedge_{i = 1 .. n} a_i)$ the disjunction of $2^n$ conjuctions, each representing an `assignment' of boolean values to $n$ variables.
         Then the following statement holds:
@@ -190,24 +211,53 @@
     \end{proposition}
 
     \begin{proof}
-        By induction on $n$.
+        By induction on the number of variables $n$.
 
-        Suppose:
+        Let the base case be $n \seteq 1$ and the proof is trivial --- the sequent proof $\vdash a \vee \neg a$ requires 2 dimensions and the hypothesis holds.
+
+        Suppose the inductive hypothesis holds up to $n - 1$ variables --- in $i$ dimensions where $i \leq n$ and all \textit{DNF}-terms in $v$ variables where $i - 1 \equiv v < n$ such that:
         \begin{equation*}
-            \forall \,\, i < n \,:\, P \in \textit{DNF}^i \implies P \in \mathcal{D}^{i+1}
+            \forall \,\, i \leq n \,:\, P \in \textit{DNF}^{i} \implies P \in \mathcal{D}^{i}
         \end{equation*}
-        We seek to show:
+        We seek to show the hypothesis continues to hold for up to $n$ variables:
         \begin{equation*}
-            \exists \, Q \in \textit{DNF}^n \text{ such that } Q \in \mathcal{D}^{n+1}
+            \forall \, Q \in \textit{DNF}^n :  Q \in \mathcal{D}^{n+1}
         \end{equation*}
+        Let $a_n$ be fresh in $P$ and $a_1 \ldots a_{n-1}$ be used, then the disjunctive normal form expression $P$ is in the class:
+        \begin{equation*}
+            P \defeq * \,|\, P_j \vee P    \qquad    P_j \defeq * \,|\, a_i \,|\, \neg a_i \,|\, P_j \wedge P_j
+        \end{equation*}
+        Write $P \defeq \bigvee_j (P_j \defeq \bigwedge_j a_{ij})$ for some $P_j \,\, \forall \, j \in 1 \ldots n$ where $P_j$ is purely a conjunction of an `assignment' $a_{ij}$ of variables.
+        Now construct $Q$ as follows:
+        \begin{equation*}
+            Q \equiv Q_{l} \vee Q_{r} \seteq (\bigvee_i P_i \wedge a_n) \vee (\bigvee_i P_i \wedge \neg a_n) \in \textit{DNF}^n
+        \end{equation*}
+        where $Q$ is the simplest $\textit{DNF}^n$-term extension of $P$.
+        Each $P_i$ is of course not provable by itself, therefore not provable up to $n$ dimensions, but up to $n$ dimensions produces sequents of $n$ terms.
+        Similarly, $Q$ is therefore not provable in $n$ dimensions.
         
-        Let $a_n$ be fresh in $P \defeq \bigvee_i (P_i \defeq \bigwedge_j a_{ij})$ and construct $Q$ as follows:
-        \begin{equation*}
-            Q \seteq (\bigvee_i P_i \wedge a_n) \vee (\bigvee_i P_i \wedge \neg a_n) \in \textit{DNF}^n
-        \end{equation*}
-
-        % TODO: Finish
+        Since $Q$ not provable in $n$ dimensions, extend the proof to $n+1$ dimensions --- on the left, the leaf sequents of $Q_l$ may be extended from $\vdash \Gamma$ atomic terms to $\vdash \Gamma, \neg a$ giving $n + 1$ dimensionality as required.
+        Now the conclusion of this proof subtree may be up to:
+        \begin{prooftree}
+            \AxiomC{}
+            \doubleLine\UnaryInfC{$\vdash Q_l \ldots_n Q_l, \neg a_n$}
+            \UnaryInfC{$\vdash Q \ldots_n Q, \neg a_n$}
+        \end{prooftree}
+        Similarly, this may be applied to $Q_r$ but instead `solving' for each $a_{i < n}$ yielding $\,\, \forall \, i < n$:
+        \begin{prooftree}
+            \AxiomC{}
+            \doubleLine\UnaryInfC{$\vdash Q_r \ldots_n Q_r, a_i$}
+            \UnaryInfC{$\vdash Q \ldots_n Q, a_i$}
+        \end{prooftree}
+        
+        Reducing across all subtrees by the $\wedge$ rule yields $\vdash Q \ldots_n Q, P_j \wedge a_n$ for some assignment $P_j$.
+        Finally, the $\vee$ rule may be applied up the formula syntax tree to yield $\vdash Q \ldots_{n} Q, Q \equiv \, \vdash Q \ldots_{n+1} Q \implies Q \in \mathcal{D}^{n+1}$, where $Q \in \textit{DNF}^n$ as required.
     \end{proof}
+
+    \begin{remark} \label{remark:proof-subtleties}
+        This proof omits the subtleties and specifics of deriving each assignment of $P_j$ with respect to the two cases of $a_n, \neg a_n$.
+        This is considered tedious and does not aid to a clear representation of the intermediate steps but remains to be formally proven, should such a thing be desirable.
+    \end{remark}
 
     \begin{proposition*}
         

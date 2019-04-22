@@ -35,7 +35,6 @@ SequentProof *sequent_backtrack(PetriNet *net, size_t *place) {
     for (size_t dim = 0; dim < n; dim++) {
         Formula *f = net->symbols[place[dim]];
         Grammar type = f->type;
-        formula_print(f); printf("\n"); fflush(stdout);
         // Regardless of how we got here, this is proven
         llist_append(proof->sequents, f);
         
