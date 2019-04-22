@@ -190,7 +190,7 @@
     \end{proposition}
 
     \begin{proof}
-        By induction on n.
+        By induction on $n$.
 
         Suppose:
         \begin{equation*}
@@ -201,11 +201,12 @@
             \exists \, Q \in \textit{DNF}^n \text{ such that } Q \in \mathcal{D}^{n+1}
         \end{equation*}
         
-        Let $a_n$ be fresh in $P$ and construct $Q$ as follows:
+        Let $a_n$ be fresh in $P \defeq \bigvee_i (P_i \defeq \bigwedge_j a_{ij})$ and construct $Q$ as follows:
         \begin{equation*}
-            Q \seteq (P \wedge a_n) \vee (P \wedge \neg a_n)
+            Q \seteq (\bigvee_i P_i \wedge a_n) \vee (\bigvee_i P_i \wedge \neg a_n) \in \textit{DNF}^n
         \end{equation*}
-        where $Q \in \textit{DNF}^n$ by distributivity of conjunction.
+
+        % TODO: Finish
     \end{proof}
 
     \begin{proposition*}

@@ -70,3 +70,6 @@
 *.so
 *.so.*
 *.dylib
+
+# Dortmund draft
+dortmund
