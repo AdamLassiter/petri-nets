@@ -1,0 +1,167 @@
+\documentclass{article}
+
+% ~~~~~~~~~~~~~~~~~~~~~~~ Preamble ~~~~~~~~~~~~~~~~~~~~~~~
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bpextra}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage[margin=1.5in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{latexsym}
+\usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+\usepackage{titlesec}
+\usepackage{varwidth}
+
+% anti-tikz things
+\usetikzlibrary{external}
+% \tikzexternalize
+
+% tikz things
+\usetikzlibrary{petri, topaths, positioning, decorations.pathmorphing}
+
+% natbib source
+\bibliographystyle{custom}
+\renewcommand{\bibsection}{}
+
+\pgfarrowsdeclare{arr}{arr}{
+  \setlength{\arrowsize}{0.6pt}
+  \addtolength{\arrowsize}{.5\pgflinewidth}
+  \pgfarrowsrightextend{1\arrowsize}
+  \pgfarrowsleftextend{1\arrowsize}
+}{
+  \setlength{\arrowsize}{0.6pt}
+  \addtolength{\arrowsize}{.5\pgflinewidth}
+  \pgfpathmoveto{\pgfpoint{-5\arrowsize}{4\arrowsize}}
+  \pgfpathlineto{\pgfpointorigin}
+  \pgfpathlineto{\pgfpoint{-5\arrowsize}{-4\arrowsize}}
+  \pgfusepathqstroke
+}
+
+\newcommand{\drawsquig}{\draw[-arr,
+line join=round,
+decorate, decoration={
+    zigzag,
+    segment length=4,
+    amplitude=.9,post=lineto,
+    post length=2pt
+}]}
+
+
+\titlespacing{\section}{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+%\titleformat{\section}
+%  {\normalfont\scshape}{\thesection}{1em}{}
+
+% no paragraph indent
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+%\setlength{\columnsep}{2em}
+
+% delta-equals (unused)
+\def\deltaeq{\mathrel{\ensurestackMath{\stackon[1pt]{=}{\scriptstyle\Delta}}}}
+% define-equals
+\def\defeq{::=}
+% set-to-equals
+\def\seteq{:=}
+
+% scalable proof tree
+\newenvironment{scprooftree}[1]%
+  {\gdef\scalefactor{#1}\begin{center}\proofSkipAmount \leavevmode}%
+  {\scalebox{\scalefactor}{\DisplayProof}\proofSkipAmount \end{center} }
+
+
+% indented definitions, lemmas etc
+\makeatletter
+\newtheoremstyle{indented}
+    {15pt}% space before
+    {5pt}% space after
+    {\addtolength{\@totalleftmargin}{0em}
+     \addtolength{\linewidth}{-0em}
+     \parshape 1 0em \linewidth}% body font
+    {-0em}% indent
+    {\bfseries}% header font
+    {.}% punctuation
+    {\newline}% after theorem header
+    {}% header specification (empty for default)
+\makeatother
+
+
+% theorems with global counter
+\theoremstyle{indented}
+\newtheorem{sec-ctr}{???}[section]
+\newtheorem{definition}[sec-ctr]{Definition}
+\newtheorem*{definition*}{Definition}
+\newtheorem{proposition}[sec-ctr]{Proposition}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem{lemma}[sec-ctr]{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem*{example}{Example}
+\newtheorem*{examples}{Examples}
+\newtheorem{corollary}[sec-ctr]{Corollary}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem{remark}[sec-ctr]{Remark}
+\newtheorem*{remark*}{Remark}
+\newtheorem*{remarks}{Remarks}
+
+
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+\title{Natural Proof Search for Additive Linear Logic}
+\author{Adam Lassiter\\Department of Computer Science\\University of Bath \and Willem Heijltjes\\Department of Computer Science\\University of Bath}
+\date{\today}
+
+\begin{document}
+
+    \maketitle
+    \begin{abstract}
+        \textbf{
+            We investigate a natural algorithm for proof search within classical logic and prove bounds on the complexity class of such a search.
+            We further examine natural optimisations to this algorithm and how they affect complexity bounds.
+        }
+    \end{abstract}
+
+    \section*{Introduction}
+        Building on the work done by~\cite{petri-nets}, we investigate proof search in classical logic via additive linear logic (ALL).
+        The process, called \textit{coalescence}, is a top-down proof search from axiom links down to the conclusion.
+        This method is promising as it boasts great efficiency for ALL proof search.
+
+    \section*{Sequent Calculus and ALL}
+        The main idea is that a classical formula can be proved by an n-dimensional additive proof for some n, depending upon the formula.
+        We propose some simple classes for formulae --- boolean constants only are 1-dimensional, normal additive proofs are 2-dimensional.
+        We prove that this idea is consistent through \textit{additive stratification} of the sequent calculus.
+
+    \section*{Coalescence}
+        We construct our proof search through `natural' deductions.
+        Using a system analogous to petri nets, we construct a net through the cross product of places in a formula and associated transitions across the net.
+        Each token in our net begins at an axiom and transitions are exhaustively traversed up the syntax tree --- or down a sequent proof tree.
+        A place is a coordinate on an n-dimensional grid representing a context of n places in the formula.
+        The dimensionality of a proof is then the dimensionality of our grid.
+
+    \section*{Motivation}
+        Clearly complexity scales with dimensionality and our motivation is then: `What dimension is sufficient for a given formula?'.
+        In essence, this gives an upper bound for proof search.
+
+    \section*{Some Examples}
+        It turns out that this is not as expected --- for example, in $(a \vee \neg a) \wedge (b \vee \neg b)$ we would expect a dimension of 2 since each component may be proved in dimension 2 and the conjunction should be trivial.
+        We instead find, unsatisfyingly, that this increases dimension quickly and unreasonably.
+
+    \section*{Solution}
+        To solve this issue, we then investigate liberating the search algorithm and generalising over the properties of sequents --- namely, idempotency and commutativity.
+        This includes: applying conjunctions `diagonally' and switching from tuple or multiset links to set links.
+        The latter takes us into more familiar/obvious proof search territory.
+        
+        Beyond these two points, there exist various other implementation trade-offs: dense/sparse representation, high-performance data structures and assorted other ad-hoc optimisations.
+
+    \section*{Ongoing Work}
+        We continue to study how coalescence proof search relates to traditional proof search methods, but we expect it to be similar to either the `connections' method (see~\cite{connection-based-proof-method}) or the `matrix' method (see~\cite{tableaux-for-logic-of-proofs})
+
+    \section*{References}
+        \bibliography{dissertation}
+
+\end{document}
