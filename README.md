@@ -42,7 +42,7 @@ latexmk -pdf dortmund.tex
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details on code of conduct and the process for submitting pull requests.
 
 ## Authors
-This project remains the sole work of Adam Lassiter (https://gitlab.com/adamlassiter, http://people.bath.ac.uk/atl35/) - see [COPYRIGHT.md](COPYRIGHT.md) for details.
+This project remains the sole work of Adam Lassiter (https://gitlab.com/adamlassiter, http://people.bath.ac.uk/atl35/) and Willem Heijltjes (http://willem.heijltj.es/) - see [COPYRIGHT.md](COPYRIGHT.md) for details.
 
 ## License
 This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) for details.
