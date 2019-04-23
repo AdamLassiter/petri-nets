@@ -1,0 +1,112 @@
+\documentclass{article}
+%\documentclass[draft]{article}
+
+% ~~~~~~~~~~~~~~~~~~~~~~~ Preamble ~~~~~~~~~~~~~~~~~~~~~~~
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bpextra}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage[margin=1.5in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{latexsym}
+\usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+\usepackage{titlesec}
+\usepackage{varwidth}
+
+% anti-tikz things
+\usetikzlibrary{external}
+%\tikzexternalize
+
+% tikz things
+\usetikzlibrary{petri, topaths, positioning, decorations.pathmorphing}
+
+% natbib source
+\bibliographystyle{custom}
+\renewcommand{\bibsection}{}
+
+\pgfarrowsdeclare{arr}{arr}{
+  \setlength{\arrowsize}{0.6pt}
+  \addtolength{\arrowsize}{.5\pgflinewidth}
+  \pgfarrowsrightextend{1\arrowsize}
+  \pgfarrowsleftextend{1\arrowsize}
+}{
+  \setlength{\arrowsize}{0.6pt}
+  \addtolength{\arrowsize}{.5\pgflinewidth}
+  \pgfpathmoveto{\pgfpoint{-5\arrowsize}{4\arrowsize}}
+  \pgfpathlineto{\pgfpointorigin}
+  \pgfpathlineto{\pgfpoint{-5\arrowsize}{-4\arrowsize}}
+  \pgfusepathqstroke
+}
+
+\newcommand{\drawsquig}{\draw[-arr,
+line join=round,
+decorate, decoration={
+    zigzag,
+    segment length=4,
+    amplitude=.9,post=lineto,
+    post length=2pt
+}]}
+
+
+\titlespacing{\section}{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+%\titleformat{\section}
+%  {\normalfont\scshape}{\thesection}{1em}{}
+
+% no paragraph indent
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+%\setlength{\columnsep}{2em}
+
+% delta-equals (unused)
+\def\deltaeq{\mathrel{\ensurestackMath{\stackon[1pt]{=}{\scriptstyle\Delta}}}}
+% define-equals
+\def\defeq{::=}
+% set-to-equals
+\def\seteq{:=}
+
+% scalable proof tree
+\newenvironment{scprooftree}[1]%
+  {\gdef\scalefactor{#1}\begin{center}\proofSkipAmount \leavevmode}%
+  {\scalebox{\scalefactor}{\DisplayProof}\proofSkipAmount \end{center} }
+
+
+% indented definitions, lemmas etc
+\makeatletter
+\newtheoremstyle{indented}
+    {15pt}% space before
+    {5pt}% space after
+    {\addtolength{\@totalleftmargin}{0em}
+     \addtolength{\linewidth}{-0em}
+     \parshape 1 0em \linewidth}% body font
+    {-0em}% indent
+    {\bfseries}% header font
+    {.}% punctuation
+    {\newline}% after theorem header
+    {}% header specification (empty for default)
+\makeatother
+
+
+% theorems with global counter
+\theoremstyle{indented}
+\newtheorem{sec-ctr}{???}[section]
+\newtheorem{definition}[sec-ctr]{Definition}
+\newtheorem*{definition*}{Definition}
+\newtheorem{proposition}[sec-ctr]{Proposition}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem{lemma}[sec-ctr]{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{example}[sec-ctr]{Example}
+\newtheorem*{example*}{Example}
+\newtheorem*{examples}{Examples}
+\newtheorem{corollary}[sec-ctr]{Corollary}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem{remark}[sec-ctr]{Remark}
+\newtheorem*{remark*}{Remark}
+\newtheorem*{remarks}{Remarks}
+
