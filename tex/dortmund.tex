@@ -20,10 +20,10 @@
         This method is promising as it boasts great efficiency for ALL proof search and has a natural transformation to sequent calculus proofs.
 
     \section*{Sequent Calculus and ALL}
-        A classical formula can be proved by an n-dimensional additive proof, for some n depending upon the formula.
+        A classical formula can be proved by an n-dimensional additive proof, for some n dependant upon the formula.
         We propose some simple classes for formulae --- boolean constants \textit{only} are 1-dimensional, normal additive proofs are 2-dimensional amongst others etc.
-        We prove that this idea is consistent through \textit{additive stratification} of the sequent calculus --- that is, any sequent proof may be `rearranged' up to order of rules applied, in particular with \textit{weakening} at the top and \textit{contraction} at the bottom.
-        Then coalescence is exactly (additively stratified) proof search.
+        We prove that this idea is consistent through \textit{additive stratification} of the sequent calculus --- that is, any sequent proof may be `rearranged' up to the order of rules applied, in particular with \textit{weakening} at the top and \textit{contraction} at the bottom.
+        Coalescence is then exactly (additively stratified) proof search.
 
     \section*{Coalescence}
         We construct our proof search through use of `natural' deductions.
@@ -38,7 +38,7 @@
         In essence, this gives an upper bound for proof search.
 
     \section*{Some Examples}
-        It turns out that this does not yield results as expected --- for example, in $(a \vee \neg a) \wedge (b \vee \neg b)$ we would expect a dimension of 2 since each component may be proved in 2 dimensions and the conjunction should be trivial.
+        We find that this does not yield results as expected --- for example, in $(a \vee \neg a) \wedge (b \vee \neg b)$ we would expect a dimension of 2 since each component may be proved in 2 dimensions and the conjunction should be trivial.
         We instead find, unsatisfyingly, that this increases dimension quickly and unreasonably, with the aforementioned case yielding dimensionality 3 and linear growth for subsequent additional variables.
 
     \section*{Solution}
