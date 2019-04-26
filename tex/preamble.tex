@@ -1,5 +1,4 @@
-\documentclass{article}
-%\documentclass[draft]{article}
+\documentclass[11pt, openright, twoside, a4paper]{report}
 
 % ~~~~~~~~~~~~~~~~~~~~~~~ Preamble ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -9,7 +8,6 @@
 \usepackage{bpextra}
 \usepackage{enumitem}
 \usepackage{float}
-\usepackage[margin=1.5in]{geometry}
 \usepackage[hidelinks]{hyperref}
 \usepackage{latexsym}
 \usepackage{natbib}
@@ -27,7 +25,7 @@
 \usetikzlibrary{petri, topaths, positioning, decorations.pathmorphing}
 
 % natbib source
-\bibliographystyle{custom}
+\bibliographystyle{agsm}
 \renewcommand{\bibsection}{}
 
 \pgfarrowsdeclare{arr}{arr}{
@@ -94,7 +92,7 @@ decorate, decoration={
 
 % theorems with global counter
 \theoremstyle{indented}
-\newtheorem{sec-ctr}{???}[section]
+\newtheorem{sec-ctr}{???}[chapter]
 \newtheorem{definition}[sec-ctr]{Definition}
 \newtheorem*{definition*}{Definition}
 \newtheorem{proposition}[sec-ctr]{Proposition}
@@ -110,3 +108,7 @@ decorate, decoration={
 \newtheorem*{remark*}{Remark}
 \newtheorem*{remarks}{Remarks}
 
+
+\title{Natural Proof Search for Classical Logic}
+\author{Adam Lassiter}
+\date{MComp (hons) Computer Science and Mathematics\\The University of Bath\\\today}

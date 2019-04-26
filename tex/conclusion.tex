@@ -1,3 +1,54 @@
-\section{Conclusion}
+\chapter{Conclusion}
+    
+    % TODO past tense, consistency, person
+    % Your conclusion should summarise the points made in the argument and provide a synthesis of thought on the main thesis.
+    % You should identify possible limitations or gaps in the dissertation, attempt to pre-empt objections and counter-arguments, and situate your findings in the broader literature.
+    % The best conclusions also give some indication as to where future research on the topic discussed might lead.
+    % In some disciplines, it is also appropriate to point out possible “real world” applications and implications of your research.
+    % A conclusion can also open out onto areas which have been bracketed in the main body for reasons of length.
+    % For instance, in a dissertation devoted to criticising a body of work, the conclusion could suggest what other bodies of work might be more appropriate, or how you might want to reformulate the field in line with your findings.
+    
+    \section*{Introduction}
+        Building on the work done by \citet{petri-nets}, we investigate proof search in classical logic through additive linear logic (ALL).
+        The process we investigate, called \textit{coalescence}, is a top-down proof search from axiom links down to the conclusion.
+        This method is promising as it boasts great efficiency for ALL proof search and has a natural transformation to sequent calculus proofs.
 
+    \section*{Sequent Calculus and ALL}
+        A classical formula can be proved by an n-dimensional additive proof, for some n dependant upon the formula.
+        We propose some simple classes for formulae --- boolean constants \textit{only} are 1-dimensional, normal additive proofs are 2-dimensional amongst others etc.
+        We prove that this idea is consistent through \textit{additive stratification} of the sequent calculus --- that is, any sequent proof may be `rearranged' up to the order of rules applied, in particular with \textit{weakening} at the top and \textit{contraction} at the bottom.
+        Coalescence is then exactly (additively stratified) proof search.
+
+    \section*{Coalescence}
+        We construct our proof search through use of `natural' deductions.
+        Using a system analogous to \textit{petri nets}, we construct a net through the n-dimensional cross product of places in a formula and associated transitions across the net.
+        Each token in our net begins at an axiom and transitions are exhaustively applied up the formula's syntax tree --- or down an equivalent sequent proof tree.
+        A place is a coordinate in the n-dimensional grid representing a context of n places in the formula that is provable.
+        The process either halts when the root of the formula syntax tree is reached and a proof is constructed, or restarts in a higher dimension when applicable transitions are exhausted and the dimensionality must be increased.
+        The dimensionality of a proof is then the dimensionality of our grid when the root is reached.
+
+    \section*{Motivation}
+        Clearly complexity scales with dimensionality and our motivation is then: \textit{`What dimension is sufficient for a given formula?'}.
+        In essence, this gives an upper bound for proof search.
+
+    \section*{Some Examples}
+        We find that this does not yield results as expected --- for example, in $(a \vee \neg a) \wedge (b \vee \neg b)$ we would expect a dimension of 2 since each component may be proved in 2 dimensions and the conjunction should be trivial.
+        We instead find, unsatisfyingly, that this increases dimension quickly and unreasonably, with the aforementioned case yielding dimensionality 3 and linear growth for subsequent additional variables.
+
+    \section*{Solution}
+        To solve this issue, we then investigate liberating the search algorithm and generalising over the properties of sequents --- namely, idempotency and commutativity.
+        This includes: some notion of applying conjunctions `diagonally' and switching from tuple or multiset links to set links.
+        The latter takes us into more familiar/obvious proof search territory.
+        
+        Beyond these two points, there exist various other implementation trade-offs: dense/sparse representation, high-performance data structures and assorted other ad-hoc optimisations.
+
+    \section*{Further Examples}
+        Our optimisation through generalising over sequents yields favourable results for conjunctive normal form (CNF) but maintains poor performance for disjunctive normal form (DNF) formulae.
+        We construct a simple algebra of classes, with conjunction and disjunction of proven formulae equivalent to maximum and minimum functions of left and right subformulae dimensionality.
+        Finally, we hypothesise a generalised bound for any formula and provide the `essence' of the associated proof --- we expect dimensionality to be equivalent to the most number of variables in any DNF subformula.
+
+    \section*{Ongoing Work}
+        We continue to study how coalescence proof search relates to traditional proof search methods, but we expect it to be similar to either the `connections' or `matrix' method --- see: \citet{tableaux-for-logic-of-proofs}, \citet{matrices-with-connections}, \citet{connection-based-proof-method} and \citet{proving-by-matings}.
+        Progress is still to be made as to DNF formulae --- we expect generalisation over associativity of ALL terms and automatic construction of subformulae may hold the key to a more natural computation.
+   
     Amend~\ref{remark:proof-subtleties}.

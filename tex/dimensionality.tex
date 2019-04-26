@@ -1,4 +1,4 @@
-\section{Dimensionality}
+\chapter{Dimensionality}
     
     \begin{definition*}[Dimensionality]
         Given a formula $P$, the coalescence proof search produces a proof in an $n$-dimensional petri net.
@@ -68,7 +68,7 @@
         \begin{center}
             \begin{tabular}{@{}l@{}}
                 \begin{varwidth}{\linewidth}
-                    \begin{scprooftree}{0.47}
+                    \begin{scprooftree}{0.40}
                         \AxiomC{$ \vdash a , a , \neg a $}
                         \UnaryInfC{$ \vdash a , ( a \vee \neg a ) , \neg a $}
                         \AxiomC{$ \vdash a , \neg a , b $}
@@ -92,7 +92,11 @@
                         \UnaryInfC{$ \vdash a , ( b \vee \neg b ) , ( b \vee \neg b ) $}
                         \BinaryInfC{$ \vdash a , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( b \vee \neg b ) $}
                         \UnaryInfC{$ \vdash ( a \vee \neg a ) , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( b \vee \neg b ) $}
-                        \AxiomC{$ \vdash ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , b , \neg b $}
+                        \AxiomC{$ \vdash a , b , \neg b $}
+                        \UnaryInfC{$ \vdash a \vee \neg a , b, \neg b $}
+                        \AxiomC{$ \vdash b , b , \neg b $}
+                        \UnaryInfC{$ \vdash b \vee \neg b , b , \neg b $}
+                        \BinaryInfC{$ \vdash ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , b , \neg b $}
                         \UnaryInfC{$ \vdash ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , b , ( b \vee \neg b ) $}
                         \UnaryInfC{$ \vdash ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( b \vee \neg b ) , ( b \vee \neg b ) $}
                         \BinaryInfC{$ \vdash ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( ( a \vee \neg a ) \wedge ( b \vee \neg b ) ) , ( b \vee \neg b ) $}
@@ -268,6 +272,8 @@
 
     
     \begin{remarks}
-        \citet{tableaux-for-logic-of-proofs}
-        \citet{connection-based-proof-method}
+        \citet{tableaux-for-logic-of-proofs} and
+        \citet{connection-based-proof-method} and
+        \citet{matrices-with-connections} and
+        \citet{proving-by-matings}
     \end{remarks}

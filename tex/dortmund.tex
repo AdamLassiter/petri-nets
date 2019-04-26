@@ -1,6 +1,6 @@
 \input{preamble}
 
-\title{Natural Proof Search for Additive Linear Logic}
+\title{From Additive to Classical Proof Search}
 \author{Adam Lassiter\\Department of Computer Science\\University of Bath \and Willem Heijltjes\\Department of Computer Science\\University of Bath}
 \date{\today}
 
@@ -15,7 +15,7 @@
     \end{abstract}
 
     \section*{Introduction}
-        Building on the work done by~\cite{petri-nets}, we investigate proof search in classical logic through additive linear logic (ALL).
+        Building on the work done by \citet{petri-nets}, we investigate proof search in classical logic through additive linear logic (ALL).
         The process we investigate, called \textit{coalescence}, is a top-down proof search from axiom links down to the conclusion.
         This method is promising as it boasts great efficiency for ALL proof search and has a natural transformation to sequent calculus proofs.
 
@@ -54,7 +54,7 @@
         Finally, we hypothesise a generalised bound for any formula and provide the `essence' of the associated proof --- we expect dimensionality to be equivalent to the most number of variables in any DNF subformula.
 
     \section*{Ongoing Work}
-        We continue to study how coalescence proof search relates to traditional proof search methods, but we expect it to be similar to either the `connections' method, see~\cite{connection-based-proof-method}, or the `matrix' method, see~\cite{tableaux-for-logic-of-proofs}.
+        We continue to study how coalescence proof search relates to traditional proof search methods, but we expect it to be similar to either the `connections' or `matrix' method --- see: \citet{tableaux-for-logic-of-proofs}, \citet{matrices-with-connections}, \citet{connection-based-proof-method} and \citet{proving-by-matings}.
         Progress is still to be made as to DNF formulae --- we expect generalisation over associativity of ALL terms and automatic construction of subformulae may hold the key to a more natural computation.
 
     \section*{References}
