@@ -1,34 +1,28 @@
 \chapter{Conclusion}
     
     % TODO past tense, consistency, person
-    % Your conclusion should summarise the points made in the argument and provide a synthesis of thought on the main thesis.
-    % You should identify possible limitations or gaps in the dissertation, attempt to pre-empt objections and counter-arguments, and situate your findings in the broader literature.
-    % The best conclusions also give some indication as to where future research on the topic discussed might lead.
-    % In some disciplines, it is also appropriate to point out possible “real world” applications and implications of your research.
-    % A conclusion can also open out onto areas which have been bracketed in the main body for reasons of length.
-    % For instance, in a dissertation devoted to criticising a body of work, the conclusion could suggest what other bodies of work might be more appropriate, or how you might want to reformulate the field in line with your findings.
-    
+        
     \section*{Introduction}
-        Building on the work done by \citet{petri-nets}, we investigate proof search in classical logic through additive linear logic (ALL).
-        The process we investigate, called \textit{coalescence}, is a top-down proof search from axiom links down to the conclusion.
+        Building on the work done by \citet{petri-nets}, proof search in classical logic through additive linear logic (ALL) was further investigated, with particular focus as to the complexity of search.
+        The process investigated, called \textit{coalescence}, is a top-down proof search from axiom links down to the conclusion.
         This method is promising as it boasts great efficiency for ALL proof search and has a natural transformation to sequent calculus proofs.
 
     \section*{Sequent Calculus and ALL}
-        A classical formula can be proved by an n-dimensional additive proof, for some n dependant upon the formula.
-        We propose some simple classes for formulae --- boolean constants \textit{only} are 1-dimensional, normal additive proofs are 2-dimensional amongst others etc.
-        We prove that this idea is consistent through \textit{additive stratification} of the sequent calculus --- that is, any sequent proof may be `rearranged' up to the order of rules applied, in particular with \textit{weakening} at the top and \textit{contraction} at the bottom.
+        A classical formula can be proved by an $n$-dimensional additive proof, for some $n$ dependant upon the formula.
+        Some simple classes for formulae were proposed --- boolean constants \textit{only} are 1-dimensional, normal additive proofs are 2-dimensional amongst others etc.
+        It can be proven that this idea is consistent through \textit{additive stratification} of the sequent calculus --- that is, any sequent proof may be `rearranged' up to the order of rules applied, in particular with \textit{weakening} at the top and \textit{contraction} at the bottom.
         Coalescence is then exactly (additively stratified) proof search.
 
     \section*{Coalescence}
-        We construct our proof search through use of `natural' deductions.
-        Using a system analogous to \textit{petri nets}, we construct a net through the n-dimensional cross product of places in a formula and associated transitions across the net.
-        Each token in our net begins at an axiom and transitions are exhaustively applied up the formula's syntax tree --- or down an equivalent sequent proof tree.
-        A place is a coordinate in the n-dimensional grid representing a context of n places in the formula that is provable.
+        A proof search is then constructed through use of `natural' deductions.
+        Using a system analogous to \textit{petri nets}, construct a net through the $n$-dimensional cross product of places in a formula and associated transitions across the net.
+        Each token in the net begins at an axiom and transitions are exhaustively applied up the formula's syntax tree --- or down an equivalent sequent proof tree.
+        A place is a coordinate in the $n$-dimensional grid representing a context of $n$ places in the formula that is provable.
         The process either halts when the root of the formula syntax tree is reached and a proof is constructed, or restarts in a higher dimension when applicable transitions are exhausted and the dimensionality must be increased.
         The dimensionality of a proof is then the dimensionality of our grid when the root is reached.
 
     \section*{Motivation}
-        Clearly complexity scales with dimensionality and our motivation is then: \textit{`What dimension is sufficient for a given formula?'}.
+        Clearly complexity scales with dimensionality and the motivating question is then: \textit{`What dimension is sufficient for a given formula?'}.
         In essence, this gives an upper bound for proof search.
 
     \section*{Some Examples}
