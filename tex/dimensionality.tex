@@ -150,13 +150,15 @@
         It is now important to reexamine the coalescence algorithm.
 
         Storing a token as a \texttt{Tuple} gives an inefficient algorithm due to the implicit ordering.
-        By commutativity, given a token $(a_1 \ldots a_n)$, there exist up to $n!$ permutations of $a_i$'s and thus $n!$ equivalent tokens.
+        By commutativity, given a token $(a_1 \ldots a_n)$, there exist up to $n!$ permutations of $a_i$'s and thus $n!$ equivalences per token.
         
         Instead, order is abstracted over and a token is stored as a \texttt{Multiset}.
         This gives the storage optimisation exploiting the symmetry of petri nets that expresses commutativity of terms in a sequent.
+        There are now only $n$ equivalences per token.
 
         This may be taken a step further.
         Consider a token stored as a \texttt{Set} which expresses idempotency of terms in a sequent $\vdash P, P \equiv \, \vdash P$.
+        This forms a canonical representation of tokens --- the only token equivalent to $T \in \texttt{Set}$ is T itself.
     \end{remark*}
 
     \begin{examples}
@@ -169,7 +171,7 @@
 
         Where tokens are now members of \texttt{Multiset}, the proof of the full formula follows:
         \input{proofnet-example-multiset}
-        The above is still tedious and unnatural.
+        The above remains tedious and unnatural.
         Proofs of each of $a \vee \neg a$ and $b \vee \neg b$ are constructed in two steps, while the remaining steps are to prove the conjunction of these (proven) subformulae.
         Instead, consider the tokens as members of \texttt{Set} as follows:
 
@@ -223,7 +225,7 @@
         \begin{equation*}
             \forall \,\, i \leq n \,:\, P \in \textit{DNF}^{i} \implies P \in \mathcal{D}^{i}
         \end{equation*}
-        We seek to show the hypothesis continues to hold for up to $n$ variables:
+        It is now sufficient to show the hypothesis continues to hold for up to $n$ variables:
         \begin{equation*}
             \forall \, Q \in \textit{DNF}^n :  Q \in \mathcal{D}^{n+1}
         \end{equation*}

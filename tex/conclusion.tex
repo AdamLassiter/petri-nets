@@ -3,8 +3,8 @@
     % TODO past tense, consistency, person
         
     \section*{Introduction}
-        Building on the work done by \citet{petri-nets}, proof search in classical logic through additive linear logic (ALL) was further investigated, with particular focus as to the complexity of search.
-        The process investigated, called \textit{coalescence}, is a top-down proof search from axiom links down to the conclusion.
+        Building on the work done by \citet{petri-nets}, proof search in classical logic through additive linear logic (ALL) was further investigated, with particular focus on the complexity of search.
+        The process investigated, called \textit{coalescence}, is a top-down proof search from axiom links through to the conclusion.
         This method is promising as it boasts great efficiency for ALL proof search and has a natural transformation to sequent calculus proofs.
 
     \section*{Sequent Calculus and ALL}
@@ -26,7 +26,7 @@
         In essence, this gives an upper bound for proof search.
 
     \section*{Some Examples}
-        We find that this does not yield results as expected --- for example, in $(a \vee \neg a) \wedge (b \vee \neg b)$ we would expect a dimension of 2 since each component may be proved in 2 dimensions and the conjunction should be trivial.
+        We find that the definition of dimensionality and construction of proofs do not yield results as expected --- for example, in $(a \vee \neg a) \wedge (b \vee \neg b)$ we would expect a dimension of 2 since each component may be proved in 2 dimensions and the conjunction should be trivial.
         We instead find, unsatisfyingly, that this increases dimension quickly and unreasonably, with the aforementioned case yielding dimensionality 3 and linear growth for subsequent additional variables.
 
     \section*{Solution}
