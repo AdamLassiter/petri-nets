@@ -1,7 +1,13 @@
 \chapter{Introduction}
     
-    % TODO
-    % The introduction should explain the basic outline of what you are doing in the dissertation, why you have chosen this topic and how the dissertation is structured.
-    % It is common for introductions to situate the dissertation briefly in the wider field or in relation to contemporary issues, and for it to lay out what will be done in each chapter or section.
-    % The introduction should close with a paragraph leading smoothly into the main body of the dissertation.
-    % Some but not all authors write the introduction after the substantive chapters are written.
+    This paper investigates a natural proof search introduced by \citet{petri-nets}.
+    Given a formula composed of conjunctions and disjunctions of variables, it falls into one of three categories: provably true, satisfiably true/false, provably false.
+    Satisfiably true or false terms are equivalent to those studied in the boolean satisfiability problem (SAT).
+    Since the set of provably false formulae forms the complement to the set of satisfiably true formulae, with provably true similarly forming the complement to satisfiably false, the question of proof search and its complexity ties directly into problems of P versus NP\@.
+    The motivating question was `What is the complexity of the chosen proof search'.
+    
+    The paper begins with a run-through of classical logic and sequent proofs before examining the proof search algorithm in question.
+    The research entails studying the properties of this algorithm and implementation details that affect computational complexity, in particular a natural optimisation that gives great performance benefits for certain classes of formulae.
+    Finally, the essence of the problem is dissected --- how can the complexity of the proof search be bounded by the structure of the formula?
+    
+    A C implementation of the described algorithm complements the research and may be found at \url{https://gitlab.com/adamlassiter/petri-nets}.

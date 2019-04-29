@@ -1,16 +1,13 @@
 \chapter{Conclusion}
     
-    % TODO past tense, consistency, person
-        
-    \section*{Introduction}
-        Building on the work done by \citet{petri-nets}, proof search in classical logic through additive linear logic (ALL) was further investigated, with particular focus on the complexity of search.
-        The process investigated, called \textit{coalescence}, is a top-down proof search from axiom links through to the conclusion.
-        This method is promising as it boasts great efficiency for ALL proof search and has a natural transformation to sequent calculus proofs.
+    Building on the work done by \citet{petri-nets}, proof search in classical logic through additive linear logic (ALL) was further investigated, with particular focus on the complexity of search.
+    The process investigated, called \textit{coalescence}, is a top-down proof search from axiom links through to the conclusion.
+    This method is promising as it boasts great efficiency for ALL proof search and has a natural transformation to sequent calculus proofs.
 
     \section*{Sequent Calculus and ALL}
         A classical formula can be proved by an $n$-dimensional additive proof, for some $n$ dependant upon the formula.
         Some simple classes for formulae were proposed --- boolean constants \textit{only} are 1-dimensional, normal additive proofs are 2-dimensional amongst others etc.
-        It can be proven that this idea is consistent through \textit{additive stratification} of the sequent calculus --- that is, any sequent proof may be `rearranged' up to the order of rules applied, in particular with \textit{weakening} at the top and \textit{contraction} at the bottom.
+        It was proven that this idea is consistent through \textit{additive stratification} of the sequent calculus --- that is, any sequent proof may be `rearranged' up to the order of rules applied, in particular with \textit{weakening} at the top and \textit{contraction} at the bottom.
         Coalescence is then exactly (additively stratified) proof search.
 
     \section*{Coalescence}
@@ -23,26 +20,28 @@
 
     \section*{Motivation}
         Clearly complexity scales with dimensionality and the motivating question is then: \textit{`What dimension is sufficient for a given formula?'}.
-        In essence, this gives an upper bound for proof search.
+        In essence, this gives an upper bound for complexity of proof search --- specifically, $\mathcal{O}(m^n)$ where $m$ is the length of the formula and $n$ the dimension of the proof.
 
     \section*{Some Examples}
-        We find that the definition of dimensionality and construction of proofs do not yield results as expected --- for example, in $(a \vee \neg a) \wedge (b \vee \neg b)$ we would expect a dimension of 2 since each component may be proved in 2 dimensions and the conjunction should be trivial.
-        We instead find, unsatisfyingly, that this increases dimension quickly and unreasonably, with the aforementioned case yielding dimensionality 3 and linear growth for subsequent additional variables.
+        The definition of dimensionality and construction of proofs was found to not yield results as expected --- for example, $(a \vee \neg a) \wedge (b \vee \neg b)$ would suggest a dimension of 2 since each component may be proven in 2 dimensions and the conjunction should be trivial.
+        Instead, unsatisfyingly, this increases dimension quickly and unreasonably, with the aforementioned case yielding dimensionality 3 and linear growth for subsequent additional cases of $(x \vee \neg x)$ appended through conjunction.
 
     \section*{Solution}
-        To solve this issue, we then investigate liberating the search algorithm and generalising over the properties of sequents --- namely, idempotency and commutativity.
-        This includes: some notion of applying conjunctions `diagonally' and switching from tuple or multiset links to set links.
-        The latter takes us into more familiar/obvious proof search territory.
+        To solve this issue, the search algorithm was generalised over the properties of sequents --- namely, idempotency and commutativity of terms in a context.
+        This is analogous to some notion of applying conjunctions `diagonally' and achieved through switching from \texttt{tuple} or \texttt{multiset} links to \texttt{set} links.
+        This can be seen as more familiar proof search territory.
         
-        Beyond these two points, there exist various other implementation trade-offs: dense/sparse representation, high-performance data structures and assorted other ad-hoc optimisations.
+        There exist various other implementation trade-offs: dense/sparse representation, high-performance data structures and assorted other ad-hoc optimisations.
+        These were not touched upon here as they do not affect the complexity of the search in any meaningful way.
 
     \section*{Further Examples}
-        Our optimisation through generalising over sequents yields favourable results for conjunctive normal form (CNF) but maintains poor performance for disjunctive normal form (DNF) formulae.
-        We construct a simple algebra of classes, with conjunction and disjunction of proven formulae equivalent to maximum and minimum functions of left and right subformulae dimensionality.
-        Finally, we hypothesise a generalised bound for any formula and provide the `essence' of the associated proof --- we expect dimensionality to be equivalent to the most number of variables in any DNF subformula.
+        The optimisation through generalising over sequents yielded favourable results for conjunctive normal form (CNF) formulae but maintained poor performance for disjunctive normal form (DNF).
+        A simple algebra of classes, with conjunction and disjunction of proven formulae equivalent to maximum and minimum functions of left and right subformulae dimensionality, was constructed and provided bounds on dimensionality for the conjunction or disjunction of any \textit{provable} subformulae.
+        Finally, a generalised bound for any formula was hypothesised with the `essence' of the associated proof provided --- dimensionality is equivalent to one more than the most number of variables in any DNF subformula.
 
     \section*{Ongoing Work}
-        We continue to study how coalescence proof search relates to traditional proof search methods, but we expect it to be similar to either the `connections' or `matrix' method --- see: \citet{tableaux-for-logic-of-proofs}, \citet{matrices-with-connections}, \citet{connection-based-proof-method} and \citet{proving-by-matings}.
-        Progress is still to be made as to DNF formulae --- we expect generalisation over associativity of ALL terms and automatic construction of subformulae may hold the key to a more natural computation.
-   
-    Amend~\ref{remark:proof-subtleties}.
+        Further study is required as to how coalescence proof search relates to traditional proof search methods, but it is expected to be similar to either the `connections' or `matrix' method --- see \citet{tableaux-for-logic-of-proofs}, \citet{matrices-with-connections}, \citet{connection-based-proof-method} and \citet{proving-by-matings}.
+        
+        Progress is still to be made as to DNF formulae --- generalisation over associativity of ALL terms (the only remaining algebraic property of terms not addressed) and automatic construction of subformulae (allowing for a better description of DNF formulae) may hold the key to a more natural computation.
+        
+        The proof of Proposition~\ref{propn:dimensionality-bounds} remains incomplete and future work may see this amended.

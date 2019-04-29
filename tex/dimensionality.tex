@@ -207,7 +207,7 @@
     \end{corollary*}
 
 
-    \begin{proposition}[Dimensionality Bounds of Disjunctive Normal Forms]
+    \begin{proposition}[Dimensionality Bounds of Disjunctive Normal Forms]\label{propn:dimensionality-bounds}
         Let $\textit{DNF}^n$ denote the set of all formulae in $n$ variables in disjunctive normal form.
         That is, $P \in \textit{DNF}^n \implies P = \bigvee_{j = 1 .. 2^n} (\bigwedge_{i = 1 .. n} a_i)$ the disjunction of $2^n$ conjuctions, each representing an `assignment' of boolean values to $n$ variables.
         Then the following statement holds:
@@ -260,20 +260,26 @@
         Finally, the $\vee$ rule may be applied up the formula syntax tree to yield $\vdash Q \ldots_{n} Q, Q \equiv \, \vdash Q \ldots_{n+1} Q \implies Q \in \mathcal{D}^{n+1}$, where $Q \in \textit{DNF}^n$ as required.
     \end{proof}
 
-    \begin{remark} \label{remark:proof-subtleties}
+    \begin{remark}\label{remark:proof-subtleties}
         This proof omits the subtleties and specifics of deriving each assignment of $P_j$ with respect to the two cases of $a_n, \neg a_n$.
         This is considered tedious and does not aid to a clear representation of the intermediate steps but remains to be formally proven, should such a thing be desirable.
     \end{remark}
 
+
     \begin{proposition*}
-        
+        Building on the above, the dimensionality of any given formula can be predicted by examining the most variables in a disjunctive normal form subformula:
         \begin{equation*}
-            P \in \mathcal{D}^{n+1} \iff \exists \, Q \in P \text{ such that } Q \in DNF^{n}
+            P \in \mathcal{D}^{n+1} \iff \exists \, Q \in P \,:\, Q \in DNF^{n}
         \end{equation*}
     \end{proposition*}
 
+    \begin{proof}
+        % TODO
+    \end{proof}
+
     
     \begin{remarks}
+        % TODO
         \citet{tableaux-for-logic-of-proofs} and
         \citet{connection-based-proof-method} and
         \citet{matrices-with-connections} and
