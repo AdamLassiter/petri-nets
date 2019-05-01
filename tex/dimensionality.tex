@@ -196,7 +196,7 @@
         where $\mathcal{D}^* \defeq \bigcup_{i \in \mathbb{N}} \mathcal{D}^i$, $P \in \mathcal{D}^*$, such that $\mathcal{D}^n$ is the class of all formulae provable in exactly n dimensions.
     \end{definition*}
     
-    \begin{corollary*}
+    \begin{corollary}\label{cory:dimensionality-algebra}
         For $P \in \mathcal{D}^i, Q \in \mathcal{D}^j$, the following statements hold:
         \begin{equation*}
             P \vee Q \in \mathcal{D}^{\min{i, j}}
@@ -204,7 +204,7 @@
             P \wedge Q \in \mathcal{D}^{\max{i, j}}
         \end{equation*}
         In fact, for $P \in \mathcal{D}^n$ in $v$ variables, $n \leq v + 1$.
-    \end{corollary*}
+    \end{corollary}
 
 
     \begin{proposition}[Dimensionality Bounds of Disjunctive Normal Forms]\label{propn:dimensionality-bounds}
@@ -274,7 +274,28 @@
     \end{proposition*}
 
     \begin{proof}
-        % TODO
+        It can be trivially seen that by combining the results in Corollary~\ref{cory:dimensionality-algebra} and Proposition~\ref{propn:dimensionality-bounds} that the statement is true.
+        
+        $(\impliedby)$
+        The reverse implication is given exactly by Proposition~\ref{propn:dimensionality-bounds}.
+
+        $(\implies)$
+        Suppose $P \in \mathcal{D}^{n+1}$.
+        Then, one of the following is true:
+
+        \begin{enumerate}
+            \item
+            $P \equiv (L \wedge R)$  where there exist proofs for each of $L, R$ and by Corollary~\ref{cory:dimensionality-algebra}, without loss of generality, $L \in \mathcal{D}^{n+1}$.
+            Then, the proof recurses on $L$.
+
+            \item
+            $P \equiv (L \vee R)$ where there exist proofs for each of $L, R$ and by Corollary~\ref{cory:dimensionality-algebra} $L, R \in \mathcal{D}^{n+1}$.
+            Then, the proof recurses on both $L$ and $R$.
+
+            \item
+            $P \equiv (L \vee R)$ where there do not exist proofs for both $L, R$.
+            Therefore, if there is a proof of $P$, then $P \in \textit{DNF}$ and $P \in \mathcal{D}^{n+1} \implies P \in \textit{DNF}^n$ as required.
+        \end{enumerate}
     \end{proof}
 
     

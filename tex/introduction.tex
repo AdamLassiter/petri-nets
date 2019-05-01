@@ -8,6 +8,13 @@
     
     The paper begins with a run-through of classical logic and sequent proofs before examining the proof search algorithm in question.
     The research entails studying the properties of this algorithm and implementation details that affect computational complexity, in particular a natural optimisation that gives great performance benefits for certain classes of formulae.
-    Finally, the essence of the problem is dissected --- how can the complexity of the proof search be bounded by the structure of the formula?
+    Finally, the essence of the problem is dissected --- how can the complexity of proof search be bounded by the structure of the formula?
     
     A C implementation of the described algorithm complements the research and may be found at \url{https://gitlab.com/adamlassiter/petri-nets}.
+    This is broken down into:
+    \begin{itemize}
+        \item An additive linear logic (ALL) formula parser with some additional inferences for some operators ($(a \implies b) \equiv (\neg a \vee b)$ etc.)
+        \item An implementation of the coalescence algorithm using a derivative of petri nets, including a described optimisation on the complexity bound for certain formulae
+        \item A system to backtrack over petri nets fired through coalescence to their equivalent sequent proofs --- a bug remains present in this code where proofs are occasionally backtracked incorrectly
+    \end{itemize}
+    While this remains somewhat of a work in progress, the code as is provides consistent results and moderately good performance --- when benchmarked against Naoyuki Tamura's Prolog sequent prover\footnote{\url{http://bach.istc.kobe-u.ac.jp/seqprover/}} saw a decrease in runtime of up to 25x for some formulae.
