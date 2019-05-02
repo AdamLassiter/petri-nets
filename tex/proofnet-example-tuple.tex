@@ -1,9 +1,8 @@
 \begin{figure}[H]
+    \def\x{0.9cm}
+    \def\y{0.9cm}
     \centering
     \begin{tikzpicture}[every node/.style={scale=0.7}, every path/.style={color=black!25}]
-        \def\x{1cm}
-        \def\y{1cm}
-        
         \node[anchor=center](root){};
         \node[on grid, left=       4*\x of root](lroot){};
         \node[on grid, left=       2*\x of lroot  ](13){$(1, 3)$};

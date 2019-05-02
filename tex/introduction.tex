@@ -1,20 +1,23 @@
 \chapter{Introduction}
     
-    This paper investigates a natural proof search introduced by \citet{petri-nets}.
-    Given a formula composed of conjunctions and disjunctions of variables, it falls into one of three categories: provably true, satisfiably true/false, provably false.
-    Satisfiably true or false terms are equivalent to those studied in the boolean satisfiability problem (SAT).
-    Since the set of provably false formulae forms the complement to the set of satisfiably true formulae, with provably true similarly forming the complement to satisfiably false, the question of proof search and its complexity ties directly into problems of P versus NP\@.
-    The motivating question was `What is the complexity of the chosen proof search'.
+    \section*{Landscape and Motivation}
+        This paper investigates a natural proof search introduced by \citet{petri-nets}.
+        Given a formula composed of conjunctions and disjunctions of variables, it falls into one of three categories: provably true, satisfiably true/false, provably false.
+        Satisfiably true or false terms are equivalent to those studied in the boolean satisfiability problem (SAT).
+        Since the set of provably false formulae forms the complement to the set of satisfiably true formulae, with provably true similarly forming the complement to satisfiably false, the question of proof search and its complexity ties directly into problems of P versus NP\@.
+        The motivating question was `What is the complexity of the chosen proof search'.
+   
+    \section*{Research and Results}
+        The paper begins with a run-through of classical logic and sequent proofs before examining the proof search algorithm in question.
+        The research entails studying the properties of this algorithm and implementation details that affect computational complexity, in particular a natural optimisation that gives great performance benefits for certain classes of formulae.
+        Finally, the essence of the problem is dissected --- how can the complexity of proof search be bounded by the structure of the formula?
     
-    The paper begins with a run-through of classical logic and sequent proofs before examining the proof search algorithm in question.
-    The research entails studying the properties of this algorithm and implementation details that affect computational complexity, in particular a natural optimisation that gives great performance benefits for certain classes of formulae.
-    Finally, the essence of the problem is dissected --- how can the complexity of proof search be bounded by the structure of the formula?
-    
-    A C implementation of the described algorithm complements the research and may be found at \url{https://gitlab.com/adamlassiter/petri-nets}.
-    This is broken down into:
-    \begin{itemize}
-        \item An additive linear logic (ALL) formula parser with some additional inferences for some operators ($(a \implies b) \equiv (\neg a \vee b)$ etc.)
-        \item An implementation of the coalescence algorithm using a derivative of petri nets, including a described optimisation on the complexity bound for certain formulae
-        \item A system to backtrack over petri nets fired through coalescence to their equivalent sequent proofs --- a bug remains present in this code where proofs are occasionally backtracked incorrectly
-    \end{itemize}
-    While this remains somewhat of a work in progress, the code as is provides consistent results and moderately good performance --- when benchmarked against Naoyuki Tamura's Prolog sequent prover\footnote{\url{http://bach.istc.kobe-u.ac.jp/seqprover/}} saw a decrease in runtime of up to 25x for some formulae.
+    \section*{Implementation and Validation}
+        A C implementation of the described algorithm complements the research and may be found at \url{https://gitlab.com/adamlassiter/petri-nets}.
+        This is broken down into:
+        \begin{itemize}
+            \item An additive linear logic (ALL) formula parser with some additional inferences for some operators ($(a \implies b) \equiv (\neg a \vee b)$ etc.)
+            \item An implementation of the coalescence algorithm using a derivative of petri nets, including a described optimisation on the complexity bound for certain formulae
+            \item A system to backtrack over petri nets fired through coalescence to their equivalent sequent proofs --- a bug remains present in this code where proofs are occasionally backtracked incorrectly
+        \end{itemize}
+        While this remains somewhat of a work in progress, the code as is provides consistent results and moderately good performance --- when benchmarked against Naoyuki Tamura's Prolog sequent prover\footnote{\url{http://bach.istc.kobe-u.ac.jp/seqprover/}} saw a decrease in runtime of up to 25x for some formulae.

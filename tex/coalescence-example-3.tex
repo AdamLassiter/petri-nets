@@ -1,38 +1,39 @@
 \begin{figure}[H]
+    \def\x{0.8cm}
     \centering
     \begin{subfigure}{0.4\linewidth}
         \begin{tikzpicture}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
             % nodes
             % a
-            \node[anchor=center, label=left:\rotatebox{-90}{$(a$}, label=above:{$(a$}](aa){};
-            \node[right=0.5cm of aa, label=above:{$\vee$}](av){};
-            \node[right=0.5cm of av, label=above:{$b)$}](ab){};
-            \node[right=0.5cm of ab, label=above:{$\vee$}](aw){};
-            \node[right=0.5cm of aw, style={color=black!100}, label=above:{$\neg a$}](ae){};
+            \node[on grid, anchor=center, label=left:\rotatebox{-90}{$(a$}, label=above:{$(a$}](aa){};
+            \node[on grid, right=\x of aa, label=above:{$\vee$}](av){};
+            \node[on grid, right=\x of av, label=above:{$b)$}](ab){};
+            \node[on grid, right=\x of ab, label=above:{$\vee$}](aw){};
+            \node[on grid, right=\x of aw, style={color=black!100}, label=above:{$\neg a$}](ae){};
             % v
-            \node[below=0.5cm of aa, label=left:\rotatebox{-90}{$\vee$}](va){};
-            \node[right=0.5cm of va](vv){};
-            \node[right=0.5cm of vv](vb){};
-            \node[right=0.5cm of vb](vw){};
-            \node[right=0.5cm of vw](ve){};
+            \node[on grid, below=\x of aa, label=left:\rotatebox{-90}{$\vee$}](va){};
+            \node[on grid, right=\x of va](vv){};
+            \node[on grid, right=\x of vv](vb){};
+            \node[on grid, right=\x of vb](vw){};
+            \node[on grid, right=\x of vw](ve){};
             % b
-            \node[below=0.5cm of va, label=left:\rotatebox{-90}{$b)$}](ba){};
-            \node[right=0.5cm of ba](bv){};
-            \node[right=0.5cm of bv](bb){};
-            \node[right=0.5cm of bb](bw){};
-            \node[right=0.5cm of bw](be){};
+            \node[on grid, below=\x of va, label=left:\rotatebox{-90}{$b)$}](ba){};
+            \node[on grid, right=\x of ba](bv){};
+            \node[on grid, right=\x of bv](bb){};
+            \node[on grid, right=\x of bb](bw){};
+            \node[on grid, right=\x of bw](be){};
             % v
-            \node[below=0.5cm of ba, label=left:\rotatebox{-90}{$\vee$}](wa){};
-            \node[right=0.5cm of wa](wv){};
-            \node[right=0.5cm of wv](wb){};
-            \node[right=0.5cm of wb](ww){};
-            \node[right=0.5cm of ww](we){};
+            \node[on grid, below=\x of ba, label=left:\rotatebox{-90}{$\vee$}](wa){};
+            \node[on grid, right=\x of wa](wv){};
+            \node[on grid, right=\x of wv](wb){};
+            \node[on grid, right=\x of wb](ww){};
+            \node[on grid, right=\x of ww](we){};
             % ~a
-            \node[below=0.5cm of wa, style={color=black!100}, label=left:\rotatebox{-90}{$\neg a$}](ea){};
-            \node[right=0.5cm of ea](ev){};
-            \node[right=0.5cm of ev](eb){};
-            \node[right=0.5cm of eb](ew){};
-            \node[right=0.5cm of ew](ee){};
+            \node[on grid, below=\x of wa, style={color=black!100}, label=left:\rotatebox{-90}{$\neg a$}](ea){};
+            \node[on grid, right=\x of ea](ev){};
+            \node[on grid, right=\x of ev](eb){};
+            \node[on grid, right=\x of eb](ew){};
+            \node[on grid, right=\x of ew](ee){};
 
             % edges
             % horizontal
@@ -97,35 +98,35 @@
         \begin{tikzpicture}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
             % nodes
             % a
-            \node[anchor=center, label=left:\rotatebox{-90}{$(a$}, label=above:{$(a$}](aa){};
-            \node[right=0.5cm of aa, label=above:{$\vee$}](av){};
-            \node[right=0.5cm of av, label=above:{$b)$}](ab){};
-            \node[right=0.5cm of ab, style={color=black!100}, label=above:{$\vee$}](aw){};
-            \node[right=0.5cm of aw, style={color=black!100}, label=above:{$\neg a$}](ae){};
+            \node[on grid, anchor=center, label=left:\rotatebox{-90}{$(a$}, label=above:{$(a$}](aa){};
+            \node[on grid, right=\x of aa, label=above:{$\vee$}](av){};
+            \node[on grid, right=\x of av, label=above:{$b)$}](ab){};
+            \node[on grid, right=\x of ab, style={color=black!100}, label=above:{$\vee$}](aw){};
+            \node[on grid, right=\x of aw, style={color=black!100}, label=above:{$\neg a$}](ae){};
             % v
-            \node[below=0.5cm of aa, label=left:\rotatebox{-90}{$\vee$}](va){};
-            \node[right=0.5cm of va](vv){};
-            \node[right=0.5cm of vv](vb){};
-            \node[right=0.5cm of vb, style={color=black!100}](vw){};
-            \node[right=0.5cm of vw](ve){};
+            \node[on grid, below=\x of aa, label=left:\rotatebox{-90}{$\vee$}](va){};
+            \node[on grid, right=\x of va](vv){};
+            \node[on grid, right=\x of vv](vb){};
+            \node[on grid, right=\x of vb, style={color=black!100}](vw){};
+            \node[on grid, right=\x of vw](ve){};
             % b
-            \node[below=0.5cm of va, label=left:\rotatebox{-90}{$b)$}](ba){};
-            \node[right=0.5cm of ba](bv){};
-            \node[right=0.5cm of bv](bb){};
-            \node[right=0.5cm of bb](bw){};
-            \node[right=0.5cm of bw](be){};
+            \node[on grid, below=\x of va, label=left:\rotatebox{-90}{$b)$}](ba){};
+            \node[on grid, right=\x of ba](bv){};
+            \node[on grid, right=\x of bv](bb){};
+            \node[on grid, right=\x of bb](bw){};
+            \node[on grid, right=\x of bw](be){};
             % v
-            \node[below=0.5cm of ba, style={color=black!100}, label=left:\rotatebox{-90}{$\vee$}](wa){};
-            \node[right=0.5cm of wa, style={color=black!100}](wv){};
-            \node[right=0.5cm of wv](wb){};
-            \node[right=0.5cm of wb, style={color=black!100}, style={color=black!100}](ww){};
-            \node[right=0.5cm of ww](we){};
+            \node[on grid, below=\x of ba, style={color=black!100}, label=left:\rotatebox{-90}{$\vee$}](wa){};
+            \node[on grid, right=\x of wa, style={color=black!100}](wv){};
+            \node[on grid, right=\x of wv](wb){};
+            \node[on grid, right=\x of wb, style={color=black!100}, style={color=black!100}](ww){};
+            \node[on grid, right=\x of ww](we){};
             % ~a
-            \node[below=0.5cm of wa, style={color=black!100}, label=left:\rotatebox{-90}{$\neg a$}](ea){};
-            \node[right=0.5cm of ea](ev){};
-            \node[right=0.5cm of ev](eb){};
-            \node[right=0.5cm of eb](ew){};
-            \node[right=0.5cm of ew](ee){};
+            \node[on grid, below=\x of wa, style={color=black!100}, label=left:\rotatebox{-90}{$\neg a$}](ea){};
+            \node[on grid, right=\x of ea](ev){};
+            \node[on grid, right=\x of ev](eb){};
+            \node[on grid, right=\x of eb](ew){};
+            \node[on grid, right=\x of ew](ee){};
 
             % edges
             % horizontal

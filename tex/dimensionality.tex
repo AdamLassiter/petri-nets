@@ -176,12 +176,15 @@
         Instead, consider the tokens as members of \texttt{Set} as follows:
 
         \input{proofnet-example-set}
+        
+        Equivalently with symbols:
+        \input{proofnet-example-set-symbols}
         This is finally deemed a `satisfying' proof --- dimensionality is extracted as the largest set required in the proof, a nicer algebra of dimensionality may be constructed and there is some essence of justification for the correctness of this $\top$-substitution --- all through changing the datatype of tokens.
     \end{examples}
     
     \begin{remark}
         In essence, allowing for efficient substitution of a $\top$ term for proven subformulae allows the coalescence algorithm to run without restricting the output to additively stratified proofs.
-        A proof may be reconstructed including substitutions, where each subproof substituted is itself additively stratified, but now there are contractions for the conclusion of a subproof on top of weakenings for the axioms of a superproof.
+        A proof may be reconstructed including substitutions, where each subproof substituted is itself additively stratified, but now there are contractions for the conclusion of a subproof on top of weakenings for the axioms of a `superproof'.
     \end{remark}
 
 
@@ -189,9 +192,10 @@
         With this new concept of coalescence, dimensionality and proof search, the definitions in~\ref{sec-ctr:formulae-classes} are revisited and revised.
         Let $\mathcal{D}^i$ be defined as the subclasses of formulae:
         \begin{align*}
-            \mathcal{D}^1 \quad &\defeq \quad \top \,|\, \mathcal{D}^1 \wedge \mathcal{D}^1 \,|\, \mathcal{D}^* \vee \mathcal{D}^1 \\
-            \mathcal{D}^2 \quad &\defeq \quad P \vee \neg P \,|\, \mathcal{D}^2 \vee \mathcal{D}^{i \geq 2} \,|\, \mathcal{D}^2 \wedge \mathcal{D}^{i \leq 2} \\
-            \mathcal{D}^3 \quad &\defeq \quad (P \wedge Q) \vee (P \wedge \neg Q) \vee (\neg P \wedge Q) \vee (\neg P \wedge \neg Q) \,|\, \mathcal{D}^3 \vee \mathcal{D}^{i \geq 3} \,|\, \mathcal{D}^3 \wedge \mathcal{D}^{i \leq 3}
+            \mathcal{D}^1 \quad \defeq \quad &\top \quad | \quad \mathcal{D}^1 \wedge \mathcal{D}^1 \quad | \quad \mathcal{D}^* \vee \mathcal{D}^1 \\
+            \mathcal{D}^2 \quad \defeq \quad &P \vee \neg P \quad | \quad \mathcal{D}^2 \vee \mathcal{D}^{i \geq 2} \quad | \quad \mathcal{D}^2 \wedge \mathcal{D}^{i \leq 2} \\
+            \mathcal{D}^3 \quad \defeq \quad &(P \wedge Q) \vee (P \wedge \neg Q) \vee (\neg P \wedge Q) \vee (\neg P \wedge \neg Q) \\
+                                       \quad &| \quad \mathcal{D}^3 \vee \mathcal{D}^{i \geq 3} \quad | \quad \mathcal{D}^3 \wedge \mathcal{D}^{i \leq 3}
         \end{align*}
         where $\mathcal{D}^* \defeq \bigcup_{i \in \mathbb{N}} \mathcal{D}^i$, $P \in \mathcal{D}^*$, such that $\mathcal{D}^n$ is the class of all formulae provable in exactly n dimensions.
     \end{definition*}
@@ -207,61 +211,129 @@
     \end{corollary}
 
 
-    \begin{proposition}[Dimensionality Bounds of Disjunctive Normal Forms]\label{propn:dimensionality-bounds}
+    \begin{definition*}[Assignments]
+        Given $n$ variables $a_1 \ldots a_n$, then the conjunction of each combination of atoms (with or without negation) is called an \textit{assignment} of boolean values to these variables.
+        For $n$ variables, there exist $2^n$ possible \textit{assignments}, each analogous to one of:
+        \begin{align*}
+            (a_1 \seteq \textit{True} \quad &\ldots \quad a_n \seteq \textit{True}) \\
+            (a_1 \seteq \textit{False}, \, a_2 \seteq \textit{True} \quad &\ldots \quad a_n \seteq \textit{True}) \\
+            &\ldots \\
+            (a_1 \seteq \textit{False} \quad &\ldots \quad a_{n-1} \seteq \textit{False}, \, a_n \seteq \textit{True}) \\
+            (a_1 \seteq \textit{False} \quad &\ldots \quad a_n \seteq \textit{False})
+        \end{align*}
+
+        An assignment $\Delta$ is found in \textit{DNF} terms as $\delta_j \defeq a_1 \wedge \ldots \wedge a_n$ and can therefore be seen as satisfiably true for a unique assignment of values to each $a_i$.
+    \end{definition*}
+    
+    \begin{proposition}[Dimensionality Bound of Disjunctive Normal Form]\label{propn:dimensionality-bounds}
         Let $\textit{DNF}^n$ denote the set of all formulae in $n$ variables in disjunctive normal form.
-        That is, $P \in \textit{DNF}^n \implies P = \bigvee_{j = 1 .. 2^n} (\bigwedge_{i = 1 .. n} a_i)$ the disjunction of $2^n$ conjuctions, each representing an `assignment' of boolean values to $n$ variables.
+        That is, $P \in \textit{DNF}^n \implies P = \bigvee_{j = 1 .. 2^n} (\bigwedge_{i = 1 .. n} a_i)$ the disjunction of $2^n$ conjunctions, each a unique assignment of $n$ variables.
         Then the following statement holds:
         \begin{equation*}
             P \in \textit{DNF}^n \implies P \in \mathcal{D}^{n+1}
         \end{equation*}
     \end{proposition}
 
-    \begin{proof}
+    Two proofs of this statement are presented.
+    The former may be most intuitive to follow and hold the fewest edge-cases, but breaks away from how proof search and calculation of dimensionality is performed in the coalescence algorithm.
+    To this end, the latter is also included which stays truer to the methods used.
+
+    \begin{proof}[Sequent Tree Proof]
+        Working from the bottom of the proof tree upwards, suppose there exists a proof of $Q \seteq \bigvee_j \delta_j \in \textit{DNF}^n$.
+        Let this be written as the sequent $\vdash Q \ldots_m Q$ for some $m$ --- the proof seeks to show $m = n+1$.
+        Suppose $\Delta_i \seteq a_1 \ldots a_n$ the `all true' assignment with associated conjunction $\delta_i$, then any one of these $Q$ must have been derived as follows:
+        \begin{prooftree}
+            \AxiomC{}
+            \doubleLine\UnaryInfC{$\vdash Q \ldots_{m-1} Q, a_1$}
+            \AxiomC{$\ldots_n$}
+            \AxiomC{}
+            \doubleLine\UnaryInfC{$\vdash Q \ldots_{m-1} Q, a_n$}
+            \doubleLine\TrinaryInfC{$\vdash Q \ldots_{m-1} Q, \delta_i$}
+            \doubleLine\UnaryInfC{$\vdash Q \ldots_m Q$}
+        \end{prooftree}
+        
+        Without loss of generality, focus on the rightmost subtree and recurse, then second-rightmost subtree and recurse:
+        \begin{scprooftree}{0.7}
+            \AxiomC{}
+            \doubleLine\UnaryInfC{$\vdash Q \ldots_{m-3} Q, a_1, a_{n-1}, a_n$}
+            \AxiomC{$\ldots_n$}
+            \AxiomC{}
+            \doubleLine\UnaryInfC{$\vdash Q \ldots_{m-3} Q, a_n, a_{n-1}, a_n$}
+            \doubleLine\TrinaryInfC{$\vdash Q \ldots_{m-3} Q, \delta_i, a_{n-1}, a_n$}
+            \doubleLine\UnaryInfC{$\vdash Q \ldots_{m-2} Q, a_1, a_n$}
+            \AxiomC{$\ldots_n$}
+            \AxiomC{}
+            \doubleLine\UnaryInfC{$\vdash Q \ldots_{m-2} Q, a_n, a_n$}
+            \doubleLine\TrinaryInfC{$\vdash Q \ldots_{m-2} Q, \delta_i, a_n$}
+            \doubleLine\UnaryInfC{$\vdash Q \ldots_{m-1} Q, a_n$}
+        \end{scprooftree}
+
+        Then, by induction on $n$, the process may be repeated until there exists a sequent containing atoms for each $a_i \in \delta_i$ as seen in the upper left here:
+        \begin{prooftree}
+            \AxiomC{}
+            \doubleLine\UnaryInfC{$\vdash Q \ldots_{m-n} Q, a_1, a_2 \ldots_{n-1} a_n$}
+            \AxiomC{$\ldots_n$}
+            \AxiomC{}
+            \doubleLine\UnaryInfC{$\vdash Q \ldots_{m-n} Q, a_n, a_2 \ldots_{n-1} a_n$}
+            \doubleLine\TrinaryInfC{$\vdash Q \ldots_{m-n} Q, \delta_i, a_n$}
+            \doubleLine\UnaryInfC{$\vdash Q \ldots_{m+1-n} Q, a_2 \ldots_{n-1} a_n$}
+        \end{prooftree}
+        
+        Now, every other branch in as many steps will have \textit{at most} as many unique atoms as the above, if not less.
+        For the sequent $\vdash Q \ldots_{m-n} Q, a_1 \ldots_n a_n$ to reach the top $\vdash \top$, all that is required is a single $\neg a_i$.
+        This similarly applies for all other leaves.
+
+        This means the sequent $\vdash a_i, a_1 \ldots a_n$ (accompanied by $n^n$ other sequents, most simpler than this `worst-case') is sufficient to provide a proof of $Q$.
+        Therefore, $m = n + 1$ as required and the proof is complete.
+    \end{proof}
+
+    \begin{remark*}
+        This bounds the exponential blowup of \textit{DNF} formulae as $\mathcal{O}(n^n$) --- an exceptionally poor worst-case,
+    \end{remark*}
+
+    \begin{proof}[ALL Proof]
         By induction on the number of variables $n$.
 
         Let the base case be $n \seteq 1$ and the proof is trivial --- the sequent proof $\vdash a \vee \neg a$ requires 2 dimensions and the hypothesis holds.
 
         Suppose the inductive hypothesis holds up to $n - 1$ variables --- in $i$ dimensions where $i \leq n$ and all \textit{DNF}-terms in $v$ variables where $i - 1 \equiv v < n$ such that:
         \begin{equation*}
-            \forall \,\, i \leq n \,:\, P \in \textit{DNF}^{i} \implies P \in \mathcal{D}^{i}
+            \forall \, i \leq n \,:\, P \in \textit{DNF}^{i} \implies P \in \mathcal{D}^{i}
         \end{equation*}
         It is now sufficient to show the hypothesis continues to hold for up to $n$ variables:
         \begin{equation*}
             \forall \, Q \in \textit{DNF}^n :  Q \in \mathcal{D}^{n+1}
         \end{equation*}
-        Let $a_n$ be fresh in $P$ and $a_1 \ldots a_{n-1}$ be used, then the disjunctive normal form expression $P$ is in the class:
-        \begin{equation*}
-            P \defeq * \,|\, P_j \vee P    \qquad    P_j \defeq * \,|\, a_i \,|\, \neg a_i \,|\, P_j \wedge P_j
-        \end{equation*}
-        Write $P \defeq \bigvee_j (P_j \defeq \bigwedge_j a_{ij})$ for some $P_j \,\, \forall \, j \in 1 \ldots n$ where $P_j$ is purely a conjunction of an `assignment' $a_{ij}$ of variables.
+
+        Let $a_n$ be fresh in $P$ and $a_1 \ldots a_{n-1}$ be used.
+        Write $P \defeq \bigvee_j \delta_j \quad \forall \, j \in 1 \ldots 2^{n-1}, \, \forall j \in 1 \ldots n-1$ where each $\delta_j$ is the $j$'th assignment of variables $a_1 \ldots a_{n-1}$.
         Now construct $Q$ as follows:
         \begin{equation*}
-            Q \equiv Q_{l} \vee Q_{r} \seteq (\bigvee_i P_i \wedge a_n) \vee (\bigvee_i P_i \wedge \neg a_n) \in \textit{DNF}^n
+            Q \seteq Q_{l} \vee Q_{r} \seteq (\bigvee_j \delta_j \wedge a_n) \vee (\bigvee_j \delta_j \wedge \neg a_n) \in \textit{DNF}^n
         \end{equation*}
-        where $Q$ is the simplest $\textit{DNF}^n$-term extension of $P$.
-        Each $P_i$ is of course not provable by itself, therefore not provable up to $n$ dimensions, but up to $n$ dimensions produces sequents of $n$ terms.
-        Similarly, $Q$ is therefore not provable in $n$ dimensions.
+        where $Q$ is the simplest $\textit{DNF}^n$ extension of $P$.
+        Each $\delta_j$ is of course not provable by itself.
+        Since the $P$ term has been deconstructed, $P$ provable only in $n$ dimensions or greater and therefore the conditions for the inductive hypothesis have been broken (by contrapositive as the dimensionality is too high), $Q$ is therefore not provable in $n$ dimensions.
+
+        Choose an assignment in $Q$ --- without loss of generality, choose $\Delta_Q \seteq a_1 \ldots a_n$ the `all true' assignment and the associated $d_Q$ conjunction.
+        Since $Q$ not provable in $n$ dimensions, extend the proof to $n+1$ dimensions --- on the left, the leaf sequents of $Q_l$ may be weakened from $\vdash \Gamma$ all atomic terms to $\vdash \Gamma, \neg a_n$ giving at least $n + 1$ dimensionality as required (if the formula can now be proven of course).
+
+        Let $a_i$ be as in the decided assignment $\Delta_Q$.
+        There exist a sufficient number of sequents containing assignments $\Delta_i$ for $P$ of $n-1$ variables (and thus $n-1$ sequent terms) $\vdash a_j, \Delta_i, a_i$ such that $a_j \in \Delta_Q$ and $\neg a_i \in \Delta_i$.
+        By applying the steps made in $\vdash P$, each $\vdash a_j, \Delta_i, a_i$ can produce a sequent proof down to $\vdash a_j, \delta_i \ldots_n \delta_i$ for any given $a_j \in \Delta$, so construct for all of them.
+        By applying the $\wedge$ rule across all these subtrees, this produces $\vdash \delta_j \wedge a_n, \delta_i \ldots_n \delta_i \,\, \equiv \,\, \vdash Q_l, \delta_i \ldots_n \delta_i \,\, \equiv \,\, \vdash Q, \delta_i \ldots_n \delta_i$.
+
+        Tediously, from here the proof can be grown up to the following sequents:
+        \begin{equation*}\label{eqn:proof-omission}
+            \vdash Q \ldots_n Q, \delta_i \qquad \vdash Q \ldots_n Q, a_n \text{\, for \,} a_n \in \Delta_Q \tag{+}
+        \end{equation*}
         
-        Since $Q$ not provable in $n$ dimensions, extend the proof to $n+1$ dimensions --- on the left, the leaf sequents of $Q_l$ may be extended from $\vdash \Gamma$ atomic terms to $\vdash \Gamma, \neg a$ giving $n + 1$ dimensionality as required.
-        Now the conclusion of this proof subtree may be up to:
-        \begin{prooftree}
-            \AxiomC{}
-            \doubleLine\UnaryInfC{$\vdash Q_l \ldots_n Q_l, \neg a_n$}
-            \UnaryInfC{$\vdash Q \ldots_n Q, \neg a_n$}
-        \end{prooftree}
-        Similarly, this may be applied to $Q_r$ but instead `solving' for each $a_{i < n}$ yielding $\,\, \forall \, i < n$:
-        \begin{prooftree}
-            \AxiomC{}
-            \doubleLine\UnaryInfC{$\vdash Q_r \ldots_n Q_r, a_i$}
-            \UnaryInfC{$\vdash Q \ldots_n Q, a_i$}
-        \end{prooftree}
-        
-        Reducing across all subtrees by the $\wedge$ rule yields $\vdash Q \ldots_n Q, P_j \wedge a_n$ for some assignment $P_j$.
+        Reducing across subtrees by the $\wedge$ rule yields $\vdash Q \ldots_n Q, \delta_i \wedge a_n$.
         Finally, the $\vee$ rule may be applied up the formula syntax tree to yield $\vdash Q \ldots_{n} Q, Q \equiv \, \vdash Q \ldots_{n+1} Q \implies Q \in \mathcal{D}^{n+1}$, where $Q \in \textit{DNF}^n$ as required.
     \end{proof}
 
     \begin{remark}\label{remark:proof-subtleties}
-        This proof omits the subtleties and specifics of deriving each assignment of $P_j$ with respect to the two cases of $a_n, \neg a_n$.
+        The latter proof omits the subtleties and specifics of deriving the results in~\eqref{eqn:proof-omission}.
         This is considered tedious and does not aid to a clear representation of the intermediate steps but remains to be formally proven, should such a thing be desirable.
     \end{remark}
 
@@ -297,12 +369,3 @@
             Therefore, if there is a proof of $P$, then $P \in \textit{DNF}$ and $P \in \mathcal{D}^{n+1} \implies P \in \textit{DNF}^n$ as required.
         \end{enumerate}
     \end{proof}
-
-    
-    \begin{remarks}
-        % TODO
-        \citet{tableaux-for-logic-of-proofs} and
-        \citet{connection-based-proof-method} and
-        \citet{matrices-with-connections} and
-        \citet{proving-by-matings}
-    \end{remarks}

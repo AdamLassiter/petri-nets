@@ -265,16 +265,16 @@
         \begin{minipage}[H]{\linewidth}
             \centering
             \begin{minipage}[H]{0.3\linewidth}
-                \begin{prooftree}
+                \begin{scprooftree}{0.8}
                     \AxiomC{$\vdash \Gamma, A, A$}
                     \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A$}
                     \AxiomC{$\vdash \Gamma, B$}
                     \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A \wedge B$}
-                \end{prooftree}
+                \end{scprooftree}
             \end{minipage}
             $\leadsto\quad$
             \begin{minipage}[H]{0.6\linewidth}
-                \begin{prooftree}
+                \begin{scprooftree}{0.8}
                     \AxiomC{$\vdash \Gamma, A, A$}
                     \AxiomC{$\vdash \Gamma, B$}
                     \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, A, B$}
@@ -283,7 +283,7 @@
                     \RightLabel{$w$}\UnaryInfC{$\vdash \Gamma, B, A \wedge B$}
                     \RightLabel{$\wedge$}\BinaryInfC{$\vdash \Gamma, A \wedge B, A \wedge B$}
                     \RightLabel{$c$}\UnaryInfC{$\vdash \Gamma, A \wedge B$}
-                \end{prooftree}
+                \end{scprooftree}
             \end{minipage}
         \end{minipage}
         

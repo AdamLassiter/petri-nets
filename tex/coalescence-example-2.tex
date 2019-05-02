@@ -1,24 +1,26 @@
 \begin{figure}[H]
+    \def\x{1.0cm}
+    \def\y{0.3cm}
     \centering
     \begin{subfigure}{0.3\linewidth}
         \begin{tikzpicture}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
             % nodes
             % top
-            \node[anchor=center, label=left:\rotatebox{-90}{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
-            \node[right=1cm of aa, label=above:{$\vee$}](av){};
-            \node[right=1cm of av, label=above:{$\neg a$}](ana){};
+            \node[on grid, anchor=center, label=left:\rotatebox{-90}{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
+            \node[on grid, right=\x of aa, label=above:{$\vee$}](av){};
+            \node[on grid, right=\x of av, label=above:{$\neg a$}](ana){};
             % middle
-            \node[below=1cm of aa, label=left:\rotatebox{-90}{$\wedge$}](va){};
-            \node[right=1cm of va](vv){};
-            \node[right=1cm of vv](vna){};
+            \node[on grid, below=\x of aa, label=left:\rotatebox{-90}{$\wedge$}](va){};
+            \node[on grid, right=\x of va](vv){};
+            \node[on grid, right=\x of vv](vna){};
             % bottom
-            \node[below=1cm of va, label=left:\rotatebox{-90}{$a$}](naa){};
-            \node[right=1cm of naa](nav){};
-            \node[right=1cm of nav, style={color=black!100}](nana){};
+            \node[on grid, below=\x of va, label=left:\rotatebox{-90}{$a$}](naa){};
+            \node[on grid, right=\x of naa](nav){};
+            \node[on grid, right=\x of nav, style={color=black!100}](nana){};
             % disjunction helpers
-            \coordinate[right=0.28cm of va](da);
-            \coordinate[right=0.28cm of vv](dv);
-            \coordinate[right=0.28cm of vna](dna);
+            \coordinate[on grid, right=\y of va](da);
+            \coordinate[on grid, right=\y of vv](dv);
+            \coordinate[on grid, right=\y of vna](dna);
 
             % edges
             % horizontal
@@ -42,21 +44,21 @@
         \begin{tikzpicture}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
             % nodes
             % top
-            \node[anchor=center, label=left:\rotatebox{-90}{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
-            \node[right=1cm of aa, label=above:{$\vee$}, style={color=black!100}](av){};
-            \node[right=1cm of av, label=above:{$\neg a$}](ana){};
+            \node[on grid, anchor=center, label=left:\rotatebox{-90}{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
+            \node[on grid, right=\x of aa, label=above:{$\vee$}, style={color=black!100}](av){};
+            \node[on grid, right=\x of av, label=above:{$\neg a$}](ana){};
             % middle
-            \node[below=1cm of aa, label=left:\rotatebox{-90}{$\wedge$}](va){};
-            \node[right=1cm of va](vv){};
-            \node[right=1cm of vv](vna){};
+            \node[on grid, below=\x of aa, label=left:\rotatebox{-90}{$\wedge$}](va){};
+            \node[on grid, right=\x of va](vv){};
+            \node[on grid, right=\x of vv](vna){};
             % bottom
-            \node[below=1cm of va, label=left:\rotatebox{-90}{$a$}](naa){};
-            \node[right=1cm of naa, style={color=black!100}](nav){};
-            \node[right=1cm of nav, style={color=black!100}](nana){};
+            \node[on grid, below=\x of va, label=left:\rotatebox{-90}{$a$}](naa){};
+            \node[on grid, right=\x of naa, style={color=black!100}](nav){};
+            \node[on grid, right=\x of nav, style={color=black!100}](nana){};
             % disjunction helpers
-            \coordinate[right=0.28cm of va](da);
-            \coordinate[right=0.28cm of vv](dv);
-            \coordinate[right=0.28cm of vna](dna);
+            \coordinate[on grid, right=\y of va](da);
+            \coordinate[on grid, right=\y of vv](dv);
+            \coordinate[on grid, right=\y of vna](dna);
 
             % edges
             % horizontal
@@ -80,21 +82,21 @@
         \begin{tikzpicture}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
             % nodes
             % top
-            \node[anchor=center, label=left:\rotatebox{-90}{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
-            \node[right=1cm of aa, label=above:{$\vee$}, style={color=black!100}](av){};
-            \node[right=1cm of av, label=above:{$\neg a$}](ana){};
+            \node[on grid, anchor=center, label=left:\rotatebox{-90}{$\neg a$}, label=above:{$a$}, style={color=black!100}](aa){};
+            \node[on grid, right=\x of aa, label=above:{$\vee$}, style={color=black!100}](av){};
+            \node[on grid, right=\x of av, label=above:{$\neg a$}](ana){};
             % middle
-            \node[below=1cm of aa, label=left:\rotatebox{-90}{$\wedge$}](va){};
-            \node[right=1cm of va, style={color=black!100}](vv){};
-            \node[right=1cm of vv](vna){};
+            \node[on grid, below=\x of aa, label=left:\rotatebox{-90}{$\wedge$}](va){};
+            \node[on grid, right=\x of va, style={color=black!100}](vv){};
+            \node[on grid, right=\x of vv](vna){};
             % bottom
-            \node[below=1cm of va, label=left:\rotatebox{-90}{$a$}](naa){};
-            \node[right=1cm of naa, style={color=black!100}](nav){};
-            \node[right=1cm of nav, style={color=black!100}](nana){};
+            \node[on grid, below=\x of va, label=left:\rotatebox{-90}{$a$}](naa){};
+            \node[on grid, right=\x of naa, style={color=black!100}](nav){};
+            \node[on grid, right=\x of nav, style={color=black!100}](nana){};
             % disjunction helpers
-            \coordinate[right=0.28cm of va](da);
-            \coordinate[right=0.28cm of vv](dv);
-            \coordinate[right=0.28cm of vna](dna);
+            \coordinate[on grid, right=\y of va](da);
+            \coordinate[on grid, right=\y of vv](dv);
+            \coordinate[on grid, right=\y of vna](dna);
 
             % edges
             % horizontal

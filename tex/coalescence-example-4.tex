@@ -1,83 +1,85 @@
 \begin{figure}[H]
+    \def\x{0.6cm}
+    \def\y{0.25cm}
     \centering
     \begin{subfigure}{0.4\linewidth}
         \begin{tikzpicture}
             \begin{scope}[transform shape, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
                 % nodes
                 % a
-                \node[anchor=center    ](aa){};
-                \node[right=0.5cm of aa](av){};
-                \node[right=0.5cm of av, style={color=black!100}](ae){};
-                \node[right=0.5cm of ae](an){};
-                \node[right=0.5cm of an](ab){};
-                \node[right=0.5cm of ab](aw){};
-                \node[right=0.5cm of aw](ap){};
+                \node[on grid, anchor=center    ](aa){};
+                \node[on grid, right=\x of aa](av){};
+                \node[on grid, right=\x of av, style={color=black!100}](ae){};
+                \node[on grid, right=\x of ae](an){};
+                \node[on grid, right=\x of an](ab){};
+                \node[on grid, right=\x of ab](aw){};
+                \node[on grid, right=\x of aw](ap){};
                 % v
-                \node[below=0.5cm of aa](va){};
-                \node[right=0.5cm of va](vv){};
-                \node[right=0.5cm of vv](ve){};
-                \node[right=0.5cm of ve](vn){};
-                \node[right=0.5cm of vn](vb){};
-                \node[right=0.5cm of vb](vw){};
-                \node[right=0.5cm of vw](vp){};
+                \node[on grid, below=\x of aa](va){};
+                \node[on grid, right=\x of va](vv){};
+                \node[on grid, right=\x of vv](ve){};
+                \node[on grid, right=\x of ve](vn){};
+                \node[on grid, right=\x of vn](vb){};
+                \node[on grid, right=\x of vb](vw){};
+                \node[on grid, right=\x of vw](vp){};
                 % ~a
-                \node[below=0.5cm of va, style={color=black!100}](ea){};
-                \node[right=0.5cm of ea](ev){};
-                \node[right=0.5cm of ev](ee){};
-                \node[right=0.5cm of ee](en){};
-                \node[right=0.5cm of en](eb){};
-                \node[right=0.5cm of eb](ew){};
-                \node[right=0.5cm of ew](ep){};
+                \node[on grid, below=\x of va, style={color=black!100}](ea){};
+                \node[on grid, right=\x of ea](ev){};
+                \node[on grid, right=\x of ev](ee){};
+                \node[on grid, right=\x of ee](en){};
+                \node[on grid, right=\x of en](eb){};
+                \node[on grid, right=\x of eb](ew){};
+                \node[on grid, right=\x of ew](ep){};
                 % ^
-                \node[below=0.5cm of ea](na){};
-                \node[right=0.5cm of na](nv){};
-                \node[right=0.5cm of nv](ne){};
-                \node[right=0.5cm of ne](nn){};
-                \node[right=0.5cm of nn](nb){};
-                \node[right=0.5cm of nb](nw){};
-                \node[right=0.5cm of nw](np){};
+                \node[on grid, below=\x of ea](na){};
+                \node[on grid, right=\x of na](nv){};
+                \node[on grid, right=\x of nv](ne){};
+                \node[on grid, right=\x of ne](nn){};
+                \node[on grid, right=\x of nn](nb){};
+                \node[on grid, right=\x of nb](nw){};
+                \node[on grid, right=\x of nw](np){};
                 % b
-                \node[below=0.5cm of na](ba){};
-                \node[right=0.5cm of ba](bv){};
-                \node[right=0.5cm of bv](be){};
-                \node[right=0.5cm of be](bn){};
-                \node[right=0.5cm of bn](bb){};
-                \node[right=0.5cm of bb](bw){};
-                \node[right=0.5cm of bw, style={color=black!100}](bp){};
+                \node[on grid, below=\x of na](ba){};
+                \node[on grid, right=\x of ba](bv){};
+                \node[on grid, right=\x of bv](be){};
+                \node[on grid, right=\x of be](bn){};
+                \node[on grid, right=\x of bn](bb){};
+                \node[on grid, right=\x of bb](bw){};
+                \node[on grid, right=\x of bw, style={color=black!100}](bp){};
                 % v
-                \node[below=0.5cm of ba](wa){};
-                \node[right=0.5cm of wa](wv){};
-                \node[right=0.5cm of wv](we){};
-                \node[right=0.5cm of we](wn){};
-                \node[right=0.5cm of wn](wb){};
-                \node[right=0.5cm of wb](ww){};
-                \node[right=0.5cm of ww](wp){};
+                \node[on grid, below=\x of ba](wa){};
+                \node[on grid, right=\x of wa](wv){};
+                \node[on grid, right=\x of wv](we){};
+                \node[on grid, right=\x of we](wn){};
+                \node[on grid, right=\x of wn](wb){};
+                \node[on grid, right=\x of wb](ww){};
+                \node[on grid, right=\x of ww](wp){};
                 % ~b
-                \node[below=0.5cm of wa](pa){};
-                \node[right=0.5cm of pa](pv){};
-                \node[right=0.5cm of pv](pe){};
-                \node[right=0.5cm of pe](pn){};
-                \node[right=0.5cm of pn, style={color=black!100}](pb){};
-                \node[right=0.5cm of pb](pw){};
-                \node[right=0.5cm of pw](pp){};
+                \node[on grid, below=\x of wa](pa){};
+                \node[on grid, right=\x of pa](pv){};
+                \node[on grid, right=\x of pv](pe){};
+                \node[on grid, right=\x of pe](pn){};
+                \node[on grid, right=\x of pn, style={color=black!100}](pb){};
+                \node[on grid, right=\x of pb](pw){};
+                \node[on grid, right=\x of pw](pp){};
 
                 % disjunction helpers
                 % horizontal
-                \coordinate[below=0.2cm of an](ad);
-                \coordinate[below=0.2cm of vn](vd);
-                \coordinate[below=0.2cm of en](ed);
-                \coordinate[below=0.2cm of nn](nd);
-                \coordinate[below=0.2cm of bn](bd);
-                \coordinate[below=0.2cm of wn](wd);
-                \coordinate[below=0.2cm of pn](pd);
+                \coordinate[on grid, below=\y of an](ad);
+                \coordinate[on grid, below=\y of vn](vd);
+                \coordinate[on grid, below=\y of en](ed);
+                \coordinate[on grid, below=\y of nn](nd);
+                \coordinate[on grid, below=\y of bn](bd);
+                \coordinate[on grid, below=\y of wn](wd);
+                \coordinate[on grid, below=\y of pn](pd);
                 % vertical
-                \coordinate[left=0.2cm of na](da);
-                \coordinate[left=0.2cm of nv](dv);
-                \coordinate[left=0.2cm of ne](de);
-                \coordinate[left=0.2cm of nn](dn);
-                \coordinate[left=0.2cm of nb](db);
-                \coordinate[left=0.2cm of nw](dw);
-                \coordinate[left=0.2cm of np](dp);
+                \coordinate[on grid, left=\y of na](da);
+                \coordinate[on grid, left=\y of nv](dv);
+                \coordinate[on grid, left=\y of ne](de);
+                \coordinate[on grid, left=\y of nn](dn);
+                \coordinate[on grid, left=\y of nb](db);
+                \coordinate[on grid, left=\y of nw](dw);
+                \coordinate[on grid, left=\y of np](dp);
 
 
                 % edges
@@ -185,21 +187,21 @@
 
             % labels
             % horizontal
-            \node[above=0.5cm of aa](la){\small $(a$};
-            \node[above=0.5cm of av](lv){\small $\vee$};
-            \node[above=0.5cm of ae](le){\small $\neg a)$};
-            \node[above=0.5cm of an](ln){\small $\wedge$};
-            \node[above=0.5cm of ab](lb){\small $(b$};
-            \node[above=0.5cm of aw](lw){\small $\vee$};
-            \node[above=0.5cm of ap](lp){\small $\neg b)$};
+            \node[on grid, above=\x of aa](la){\small $(a$};
+            \node[on grid, above=\x of av](lv){\small $\vee$};
+            \node[on grid, above=\x of ae](le){\small $\neg a)$};
+            \node[on grid, above=\x of an](ln){\small $\wedge$};
+            \node[on grid, above=\x of ab](lb){\small $(b$};
+            \node[on grid, above=\x of aw](lw){\small $\vee$};
+            \node[on grid, above=\x of ap](lp){\small $\neg b)$};
             % vertical
-            \node[left=0.5cm of aa](al){\rotatebox{-90}{\small $(a$}};
-            \node[left=0.5cm of va](vl){\rotatebox{-90}{\small $\vee$}};
-            \node[left=0.5cm of ea](el){\rotatebox{-90}{\small $\neg a)$}};
-            \node[left=0.5cm of na](nl){\rotatebox{-90}{\small $\wedge$}};
-            \node[left=0.5cm of ba](bl){\rotatebox{-90}{\small $(b$}};
-            \node[left=0.5cm of wa](wl){\rotatebox{-90}{\small $\vee$}};
-            \node[left=0.5cm of pa](pl){\rotatebox{-90}{\small $\neg b)$}};
+            \node[on grid, left=\x of aa](al){\rotatebox{-90}{\small $(a$}};
+            \node[on grid, left=\x of va](vl){\rotatebox{-90}{\small $\vee$}};
+            \node[on grid, left=\x of ea](el){\rotatebox{-90}{\small $\neg a)$}};
+            \node[on grid, left=\x of na](nl){\rotatebox{-90}{\small $\wedge$}};
+            \node[on grid, left=\x of ba](bl){\rotatebox{-90}{\small $(b$}};
+            \node[on grid, left=\x of wa](wl){\rotatebox{-90}{\small $\vee$}};
+            \node[on grid, left=\x of pa](pl){\rotatebox{-90}{\small $\neg b)$}};
 
         \end{tikzpicture}
     \end{subfigure}
@@ -211,79 +213,79 @@
             \begin{scope}[transform shape, label distance=5mm, every path/.style={color=black!25}, every node/.style={circle, fill=black!25, inner sep=0.05cm}, every label/.append style={color=black!100}]
                 % nodes
                 % a
-                \node[anchor=center    ](aa){};
-                \node[right=0.5cm of aa, style={color=black!100}](av){};
-                \node[right=0.5cm of av, style={color=black!100}](ae){};
-                \node[right=0.5cm of ae](an){};
-                \node[right=0.5cm of an](ab){};
-                \node[right=0.5cm of ab](aw){};
-                \node[right=0.5cm of aw](ap){};
+                \node[on grid, anchor=center    ](aa){};
+                \node[on grid, right=\x of aa, style={color=black!100}](av){};
+                \node[on grid, right=\x of av, style={color=black!100}](ae){};
+                \node[on grid, right=\x of ae](an){};
+                \node[on grid, right=\x of an](ab){};
+                \node[on grid, right=\x of ab](aw){};
+                \node[on grid, right=\x of aw](ap){};
                 % v
-                \node[below=0.5cm of aa, style={color=black!100}](va){};
-                \node[right=0.5cm of va, style={color=black!100}](vv){};
-                \node[right=0.5cm of vv, style={color=black!100}](ve){};
-                \node[right=0.5cm of ve](vn){};
-                \node[right=0.5cm of vn](vb){};
-                \node[right=0.5cm of vb](vw){};
-                \node[right=0.5cm of vw](vp){};
+                \node[on grid, below=\x of aa, style={color=black!100}](va){};
+                \node[on grid, right=\x of va, style={color=black!100}](vv){};
+                \node[on grid, right=\x of vv, style={color=black!100}](ve){};
+                \node[on grid, right=\x of ve](vn){};
+                \node[on grid, right=\x of vn](vb){};
+                \node[on grid, right=\x of vb](vw){};
+                \node[on grid, right=\x of vw](vp){};
                 % ~a
-                \node[below=0.5cm of va, style={color=black!100}](ea){};
-                \node[right=0.5cm of ea, style={color=black!100}](ev){};
-                \node[right=0.5cm of ev](ee){};
-                \node[right=0.5cm of ee](en){};
-                \node[right=0.5cm of en](eb){};
-                \node[right=0.5cm of eb](ew){};
-                \node[right=0.5cm of ew](ep){};
+                \node[on grid, below=\x of va, style={color=black!100}](ea){};
+                \node[on grid, right=\x of ea, style={color=black!100}](ev){};
+                \node[on grid, right=\x of ev](ee){};
+                \node[on grid, right=\x of ee](en){};
+                \node[on grid, right=\x of en](eb){};
+                \node[on grid, right=\x of eb](ew){};
+                \node[on grid, right=\x of ew](ep){};
                 % ^
-                \node[below=0.5cm of ea](na){};
-                \node[right=0.5cm of na](nv){};
-                \node[right=0.5cm of nv](ne){};
-                \node[right=0.5cm of ne](nn){};
-                \node[right=0.5cm of nn](nb){};
-                \node[right=0.5cm of nb](nw){};
-                \node[right=0.5cm of nw](np){};
+                \node[on grid, below=\x of ea](na){};
+                \node[on grid, right=\x of na](nv){};
+                \node[on grid, right=\x of nv](ne){};
+                \node[on grid, right=\x of ne](nn){};
+                \node[on grid, right=\x of nn](nb){};
+                \node[on grid, right=\x of nb](nw){};
+                \node[on grid, right=\x of nw](np){};
                 % b
-                \node[below=0.5cm of na](ba){};
-                \node[right=0.5cm of ba](bv){};
-                \node[right=0.5cm of bv](be){};
-                \node[right=0.5cm of be](bn){};
-                \node[right=0.5cm of bn](bb){};
-                \node[right=0.5cm of bb, style={color=black!100}](bw){};
-                \node[right=0.5cm of bw, style={color=black!100}](bp){};
+                \node[on grid, below=\x of na](ba){};
+                \node[on grid, right=\x of ba](bv){};
+                \node[on grid, right=\x of bv](be){};
+                \node[on grid, right=\x of be](bn){};
+                \node[on grid, right=\x of bn](bb){};
+                \node[on grid, right=\x of bb, style={color=black!100}](bw){};
+                \node[on grid, right=\x of bw, style={color=black!100}](bp){};
                 % v
-                \node[below=0.5cm of ba](wa){};
-                \node[right=0.5cm of wa](wv){};
-                \node[right=0.5cm of wv](we){};
-                \node[right=0.5cm of we](wn){};
-                \node[right=0.5cm of wn, style={color=black!100}](wb){};
-                \node[right=0.5cm of wb, style={color=black!100}](ww){};
-                \node[right=0.5cm of ww, style={color=black!100}](wp){};
+                \node[on grid, below=\x of ba](wa){};
+                \node[on grid, right=\x of wa](wv){};
+                \node[on grid, right=\x of wv](we){};
+                \node[on grid, right=\x of we](wn){};
+                \node[on grid, right=\x of wn, style={color=black!100}](wb){};
+                \node[on grid, right=\x of wb, style={color=black!100}](ww){};
+                \node[on grid, right=\x of ww, style={color=black!100}](wp){};
                 % ~b
-                \node[below=0.5cm of wa](pa){};
-                \node[right=0.5cm of pa](pv){};
-                \node[right=0.5cm of pv](pe){};
-                \node[right=0.5cm of pe](pn){};
-                \node[right=0.5cm of pn, style={color=black!100}](pb){};
-                \node[right=0.5cm of pb, style={color=black!100}](pw){};
-                \node[right=0.5cm of pw](pp){};
+                \node[on grid, below=\x of wa](pa){};
+                \node[on grid, right=\x of pa](pv){};
+                \node[on grid, right=\x of pv](pe){};
+                \node[on grid, right=\x of pe](pn){};
+                \node[on grid, right=\x of pn, style={color=black!100}](pb){};
+                \node[on grid, right=\x of pb, style={color=black!100}](pw){};
+                \node[on grid, right=\x of pw](pp){};
 
                 % disjunction helpers
                 % horizontal
-                \coordinate[below=0.2cm of an](ad);
-                \coordinate[below=0.2cm of vn](vd);
-                \coordinate[below=0.2cm of en](ed);
-                \coordinate[below=0.2cm of nn](nd);
-                \coordinate[below=0.2cm of bn](bd);
-                \coordinate[below=0.2cm of wn](wd);
-                \coordinate[below=0.2cm of pn](pd);
+                \coordinate[on grid, below=\y of an](ad);
+                \coordinate[on grid, below=\y of vn](vd);
+                \coordinate[on grid, below=\y of en](ed);
+                \coordinate[on grid, below=\y of nn](nd);
+                \coordinate[on grid, below=\y of bn](bd);
+                \coordinate[on grid, below=\y of wn](wd);
+                \coordinate[on grid, below=\y of pn](pd);
                 % vertical
-                \coordinate[left=0.2cm of na](da);
-                \coordinate[left=0.2cm of nv](dv);
-                \coordinate[left=0.2cm of ne](de);
-                \coordinate[left=0.2cm of nn](dn);
-                \coordinate[left=0.2cm of nb](db);
-                \coordinate[left=0.2cm of nw](dw);
-                \coordinate[left=0.2cm of np](dp);
+                \coordinate[on grid, left=\y of na](da);
+                \coordinate[on grid, left=\y of nv](dv);
+                \coordinate[on grid, left=\y of ne](de);
+                \coordinate[on grid, left=\y of nn](dn);
+                \coordinate[on grid, left=\y of nb](db);
+                \coordinate[on grid, left=\y of nw](dw);
+                \coordinate[on grid, left=\y of np](dp);
 
                 % edges
                 % horizontal
@@ -390,21 +392,21 @@
 
             % labels
             % horizontal
-            \node[above=0.5cm of aa](la){\small $(a$};
-            \node[above=0.5cm of av](lv){\small $\vee$};
-            \node[above=0.5cm of ae](le){\small $\neg a)$};
-            \node[above=0.5cm of an](ln){\small $\wedge$};
-            \node[above=0.5cm of ab](lb){\small $(b$};
-            \node[above=0.5cm of aw](lw){\small $\vee$};
-            \node[above=0.5cm of ap](lp){\small $\neg b)$};
+            \node[on grid, above=\x of aa](la){\small $(a$};
+            \node[on grid, above=\x of av](lv){\small $\vee$};
+            \node[on grid, above=\x of ae](le){\small $\neg a)$};
+            \node[on grid, above=\x of an](ln){\small $\wedge$};
+            \node[on grid, above=\x of ab](lb){\small $(b$};
+            \node[on grid, above=\x of aw](lw){\small $\vee$};
+            \node[on grid, above=\x of ap](lp){\small $\neg b)$};
             % vertical
-            \node[left=0.5cm of aa](al){\rotatebox{-90}{\small $(a$}};
-            \node[left=0.5cm of va](vl){\rotatebox{-90}{\small $\vee$}};
-            \node[left=0.5cm of ea](el){\rotatebox{-90}{\small $\neg a)$}};
-            \node[left=0.5cm of na](nl){\rotatebox{-90}{\small $\wedge$}};
-            \node[left=0.5cm of ba](bl){\rotatebox{-90}{\small $(b$}};
-            \node[left=0.5cm of wa](wl){\rotatebox{-90}{\small $\vee$}};
-            \node[left=0.5cm of pa](pl){\rotatebox{-90}{\small $\neg b)$}};
+            \node[on grid, left=\x of aa](al){\rotatebox{-90}{\small $(a$}};
+            \node[on grid, left=\x of va](vl){\rotatebox{-90}{\small $\vee$}};
+            \node[on grid, left=\x of ea](el){\rotatebox{-90}{\small $\neg a)$}};
+            \node[on grid, left=\x of na](nl){\rotatebox{-90}{\small $\wedge$}};
+            \node[on grid, left=\x of ba](bl){\rotatebox{-90}{\small $(b$}};
+            \node[on grid, left=\x of wa](wl){\rotatebox{-90}{\small $\vee$}};
+            \node[on grid, left=\x of pa](pl){\rotatebox{-90}{\small $\neg b)$}};
 
         \end{tikzpicture}
     \end{subfigure}

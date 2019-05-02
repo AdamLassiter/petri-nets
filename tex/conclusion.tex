@@ -40,8 +40,14 @@
         Finally, a generalised bound for any formula was hypothesised with the `essence' of the associated proof provided --- dimensionality is equivalent to one more than the most number of variables in any DNF subformula.
 
     \section*{Ongoing Work}
-        Further study is required as to how coalescence proof search relates to traditional proof search methods, but it is expected to be similar to either the `connections' or `matrix' method --- see \citet{tableaux-for-logic-of-proofs}, \citet{matrices-with-connections}, \citet{connection-based-proof-method} and \citet{proving-by-matings}.
+        Further study is required as to how coalescence proof search relates to traditional proof search methods, but it is expected to be similar to either the `connections' or `matrix' method --- see \citet{tableaux-for-logic-of-proofs}, \citet{matrices-with-connections}, and \citet{proving-by-matings}.
+        In particular, examining the work of \citet{connection-based-proof-method}, it is apparent that their connection-based proof method is analogous to the exact opposite sort of proof search.
+        Where here proofs are constructed top-down using a dense representation (across all subformulae and possible contexts up to dimensionality $n$), their method equates to a bottom-up sparse search.
+
+        Progress is still to be made as to DNF formulae.
+        Generalisation over associativity of ALL terms (the only remaining algebraic property of terms not addressed) and automatic construction of subformulae (allowing for a better description of DNF formulae) may hold the key to a more natural computation.
         
-        Progress is still to be made as to DNF formulae --- generalisation over associativity of ALL terms (the only remaining algebraic property of terms not addressed) and automatic construction of subformulae (allowing for a better description of DNF formulae) may hold the key to a more natural computation.
-        
-        The proof of Proposition~\ref{propn:dimensionality-bounds} remains incomplete and future work may see this amended.
+        The latter proof of Proposition~\ref{propn:dimensionality-bounds} remains partially incomplete and future work may see this amended.
+
+        Finally, it would be interesting to see how universal and existential quantifiers could be encoded into a proof search such as coalescence, especially if such a thing could be done in a pleasing, `natural' way.
+        Further work could see a hybrid method capable of fantastic performance and complexity in more common cases with a concurrent DNF solver to eliminate hard cases before they cause massive exponential blowup through coalescence.

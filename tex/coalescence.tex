@@ -54,7 +54,7 @@
         \begin{enumerate}[nosep]
             \item Set  $n \seteq 1$
             \item Construct a $n$-dimensional petri net $\mathcal{N}$ as $\bigotimes_n P$ where each subformula represents a place and each conjunction and disjunction a flow
-            \item Construct a configuration $C$ with a token at each place $p = (\ldots, a, \ldots, \neg a, \ldots)$ the intersection of a pair of tautological atoms or $(\ldots, \top, \ldots)$ an instance of \textit{top}
+            \item Construct a configuration $C$ with a token at every $(\ldots, \top, \ldots)$ an instance of \textit{top} and every $(\ldots, a, \ldots, \neg a, \ldots)$ the intersection of a pair of tautological atoms.
             \item Exhaustively fire the petri net $\mathcal{N}$ using the \textit{spawning} method
             \item If there exists a token in the configuration $\mathcal{C^*}$ at the root of the formula $P$, halt and return $n$
             \item Otherwise, increment $n \seteq n + 1$ and go to step 2

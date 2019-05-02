@@ -11,6 +11,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{latexsym}
 \usepackage{natbib}
+\usepackage{pdfpages}
 \usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{tkz-berge}
@@ -29,12 +30,12 @@
 \renewcommand{\bibsection}{}
 
 \pgfarrowsdeclare{arr}{arr}{
-  \setlength{\arrowsize}{0.6pt}
+  \setlength{\arrowsize}{2\pgflinewidth}
   \addtolength{\arrowsize}{.5\pgflinewidth}
-  \pgfarrowsrightextend{1\arrowsize}
+  \pgfarrowsrightextend{-1\arrowsize}
   \pgfarrowsleftextend{1\arrowsize}
 }{
-  \setlength{\arrowsize}{0.6pt}
+  \setlength{\arrowsize}{2\pgflinewidth}
   \addtolength{\arrowsize}{.5\pgflinewidth}
   \pgfpathmoveto{\pgfpoint{-5\arrowsize}{4\arrowsize}}
   \pgfpathlineto{\pgfpointorigin}

@@ -1,9 +1,8 @@
 \begin{figure}[H]
+    \def\x{1cm}
+    \def\y{1cm}
     \centering
     \begin{tikzpicture}
-        \def\x{1cm}
-        \def\y{1cm}
-        
         \node[anchor=center](root){};
         \node[on grid, left=       2*\x of root   ](13){$\{1, 3\}$};
         \node[on grid, right=      2*\x of root   ](57){$\{5, 7\}$};
@@ -13,8 +12,8 @@
         \node[on grid, below right=\y and \x of 57](56){$\{5, 6\}$};
         \node[on grid, below right=\y and \x of 23](2){$\{2\}$};
         \node[on grid, below right=\y and \x of 67](6){$\{6\}$};
-        \coordinate[on grid, right=2*\x of 2](4c){};
-        \node[on grid, below right=\y and 2*\x of 2](4){$\{4\}$};
+        \coordinate[on grid, below right=0.5*\y and 2*\x of 2](4c){};
+        \node[on grid, below=0.5\y of 4c](4){$\{4\}$};
 
         \draw[-arr] (13) to (23);
         \draw[-arr] (13) to (12);
