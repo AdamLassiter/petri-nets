@@ -100,47 +100,6 @@ decorate, decoration={
 % set-to-equals
 \def\seteq{:=}
 
-% scalable proof tree
-\newenvironment{scprooftree}[1]%
-  {\gdef\scalefactor{#1}\begin{center}\proofSkipAmount \leavevmode}%
-  {\scalebox{\scalefactor}{\DisplayProof}\proofSkipAmount \end{center} }
-
-
-% indented definitions, lemmas etc
-\makeatletter
-\newtheoremstyle{indented}
-    {15pt}% space before
-    {5pt}% space after
-    {\addtolength{\@totalleftmargin}{0em}
-     \addtolength{\linewidth}{-0em}
-     \parshape 1 0em \linewidth}% body font
-    {-0em}% indent
-    {\bfseries}% header font
-    {.}% punctuation
-    {\newline}% after theorem header
-    {}% header specification (empty for default)
-\makeatother
-
-
-% theorems with global counter
-\theoremstyle{indented}
-\newtheorem{sec-ctr}{???}[section]
-\newtheorem{definition}[sec-ctr]{Definition}
-\newtheorem*{definition*}{Definition}
-\newtheorem{proposition}[sec-ctr]{Proposition}
-\newtheorem*{proposition*}{Proposition}
-\newtheorem{lemma}[sec-ctr]{Lemma}
-\newtheorem*{lemma*}{Lemma}
-\newtheorem{example}[sec-ctr]{Example}
-\newtheorem*{example*}{Example}
-\newtheorem*{examples}{Examples}
-\newtheorem{corollary}[sec-ctr]{Corollary}
-\newtheorem*{corollary*}{Corollary}
-\newtheorem{remark}[sec-ctr]{Remark}
-\newtheorem*{remark*}{Remark}
-\newtheorem*{remarks}{Remarks}
-
-
 \newcommand\dual{\overline}
 
 \title{From Additive to Classical Proof Search}
@@ -211,10 +170,11 @@ decorate, decoration={
         \end{figure}
 
 
+
     \section*{Coalescence Proof Search}
         Naively searching for a sequent proof, starting from a given conclusion, is exponential: the additive conjunction rule $(\*)$ duplicates its context $C$, and reciprocated duplication between both formulas in the sequent creates exponential growth.
 
-        A more efficient algorithm, first observed by Galmiche \&\ Marion~\cite{..} and later by \citet{petri-nets}, is given by placing proof search for a sequent $\vdash A,B$ in the product space $\subs A\* \subs B$.
+        A more efficient algorithm, first observed by \citet{semantic-methods} and later by \citet{petri-nets}, is given by placing proof search for a sequent $\vdash A,B$ in the product space $\subs A\* \subs B$.
         This set contains all \emph{sub-sequents} of $\vdash A,B$ that might occur in a sequent proof of $\vdash A,B$, without redundancy.
         We represent $\subs A\* \subs B$ by a grid, e.g.\ that for $\vdash \dual a\+(\dual b\+\dual c),(a\* b)\*c$ is below:
         \[
@@ -349,6 +309,7 @@ decorate, decoration={
         %\]
 
 
+
     \section*{Classical Logic and Coalescence}
         A \textit{formula} of ALL within Classical Logic (CL) is constructed:
         \begin{equation*}
@@ -431,9 +392,11 @@ decorate, decoration={
         Coalescence is then equivalent to (additively stratified) proof search, with implicit weakening and contraction of all sequents up to $n$ terms.
 
 
+
     \section*{Motivation}
         Clearly complexity scales with dimensionality and our motivation is then: \textit{`What dimension is sufficient for a given formula?'}.
         In essence, this gives an upper bound for proof search.
+
 
 
     \section*{Some Examples}
@@ -464,18 +427,19 @@ decorate, decoration={
                     \foreach \y/\b in {1/\atom1, 2/\vee, 3/\dual{\atom1}, 4/\wedge, 5/\atom2, 6/\vee, 7/\dual{\atom2}} \draw[gray] (0,\y) node[tgt] {\footnotesize$\b$} (.7,\y) -- (7.3,\y);
                 \foreach \p/\n/\c in {#1} \node[fill,tok,\c] (\n) at (\p) {};
             \end{tikzpicture}}}
-        \newcommand\initSpawnIIGrid{\spawnIIGrid{{1,3}/a1/blue, {3,1}/b1/red, {5,7}/c1/black!30!cyan, {7,5}/d1/black!30!magenta}}
+        \newcommand\initSpawnIIGrid{\spawnIIGrid{{1,3}/a1/blue, {3,1}/b1/red, {5,7}/c1/black!10!cyan, {7,5}/d1/black!10!magenta}}
 
         \[
             \initSpawnIIGrid
             \quad\rightsquigarrow^*\quad
-            \spawnIIGrid{{1,3}/a1/blue, {2,3}/a2/blue, {1,2}/a3/blue, {2,2}/a4/blue, {3,1}/b1/red, {3,2}/b2/red, {2,1}/b3/red, {5,7}/c1/black!30!cyan, {6,7}/c2/black!30!cyan, {5,6}/c3/black!30!cyan, {6,6}/c4/black!30!cyan, {7,5}/d1/black!30!magenta, {7,6}/d2/black!30!magenta, {6,5}/d3/black!30!magenta}
+            \spawnIIGrid{{1,3}/a1/blue, {2,3}/a2/blue, {1,2}/a3/blue, {2,2}/a4/blue, {3,1}/b1/red, {3,2}/b2/red, {2,1}/b3/red, {5,7}/c1/black!10!cyan, {6,7}/c2/black!10!cyan, {5,6}/c3/black!10!cyan, {6,6}/c4/black!10!cyan, {7,5}/d1/black!10!magenta, {7,6}/d2/black!10!magenta, {6,5}/d3/black!10!magenta}
         \]
 
         We do not reach the root $(B, B)$ for $n = 2$ despite having two proven `subproofs' and need only apply a simple conjunction.
         Instead, a solution is reached for $n = 3$ (visualisation omitted due to lack of clarity of 3D diagrams).
         For a similar term in 3 variables $\atom1, \atom2, \atom3$, a solution is reached for $n = 4$ and growth continues linearly.
         This is deemend unsatisfying and we readdress the mechanics of coalescence to fix this.
+
 
 
     \section*{Solution}
@@ -514,7 +478,9 @@ decorate, decoration={
         Beyond these two points, there exist various other implementation trade-offs: dense/sparse representation, high-performance data structures and assorted other ad-hoc optimisations.
 
 
+
     \section*{References}
         \bibliography{dissertation}
+
 
 \end{document}
