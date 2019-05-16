@@ -25,17 +25,17 @@
 \renewcommand{\bibsection}{}
 
 \pgfarrowsdeclare{arr}{arr}{
-  \setlength{\arrowsize}{2\pgflinewidth}
-  \addtolength{\arrowsize}{.5\pgflinewidth}
-  \pgfarrowsrightextend{-1\arrowsize}
-  \pgfarrowsleftextend{1\arrowsize}
+    \setlength{\arrowsize}{2\pgflinewidth}
+    \addtolength{\arrowsize}{.5\pgflinewidth}
+    \pgfarrowsrightextend{-1\arrowsize}
+    \pgfarrowsleftextend{1\arrowsize}
 }{
-  \setlength{\arrowsize}{2\pgflinewidth}
-  \addtolength{\arrowsize}{.5\pgflinewidth}
-  \pgfpathmoveto{\pgfpoint{-5\arrowsize}{4\arrowsize}}
-  \pgfpathlineto{\pgfpointorigin}
-  \pgfpathlineto{\pgfpoint{-5\arrowsize}{-4\arrowsize}}
-  \pgfusepathqstroke
+    \setlength{\arrowsize}{2\pgflinewidth}
+    \addtolength{\arrowsize}{.5\pgflinewidth}
+    \pgfpathmoveto{\pgfpoint{-5\arrowsize}{4\arrowsize}}
+    \pgfpathlineto{\pgfpointorigin}
+    \pgfpathlineto{\pgfpoint{-5\arrowsize}{-4\arrowsize}}
+    \pgfusepathqstroke
 }
 
 \newcommand{\drawsquig}{\draw[-arr,
@@ -196,9 +196,9 @@ decorate, decoration={
 
         The \emph{coalescence proof search} algorithm for ALL is then as follows. We place tokens on this grid to indicate a sub-sequent is provable. Initially, we place tokens on each position $(\dual a,a)$, $(\1,A)$, and $(A,\1)$, as shown above right for our example. Then, we apply the following local rules (and the symmetric variants).
         \begin{itemize}
-                \item Place a token on $(A\+B,C)$ if $(A,C)$ has a token.
-                \item Place a token on $(A\+B,C)$ if $(B,C)$ has a token.
-                \item Place a token on $(A\*B,C)$ if $(A,C)$ and $(B,C)$ have a token.
+            \item Place a token on $(A\+B,C)$ if $(A,C)$ has a token.
+            \item Place a token on $(A\+B,C)$ if $(B,C)$ has a token.
+            \item Place a token on $(A\*B,C)$ if $(A,C)$ and $(B,C)$ have a token.
         \end{itemize}
         We illustrate these graphically as follows; note, though, that the \emph{neighbours} of a position in the grid are given by the subformula relation, and not by adjacency in the plane.
         \[
