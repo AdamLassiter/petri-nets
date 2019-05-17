@@ -8,6 +8,7 @@
 \usepackage{enumitem}
 \usepackage{float}
 \usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
 \usepackage{latexsym}
 \usepackage{natbib}
 \usepackage{pdfpages}
@@ -88,11 +89,6 @@ decorate, decoration={
 %\titleformat{\section}
 %  {\normalfont\scshape}{\thesection}{1em}{}
 
-% no paragraph indent
-\setlength{\parindent}{0em}
-\setlength{\parskip}{1em}
-%\setlength{\columnsep}{2em}
-
 % delta-equals (unused)
 \def\deltaeq{\mathrel{\ensurestackMath{\stackon[1pt]{=}{\scriptstyle\Delta}}}}
 % define-equals
@@ -113,18 +109,20 @@ decorate, decoration={
 
 
     \section*{Introduction}
-        Building on the work done by \citet{petri-nets}, we investigate proof search in classical logic through Additive Linear Logic (ALL).
-        The process we investigate, called \textit{coalescence}, is a top-down proof search from axiom links down to the conclusion.
+        Building on the work done by \citet{petri-nets}, we investigate proof search in Classical Logic (CL) through Additive Linear Logic (ALL).
+        The process we investigate, called \emph{coalescence}, is a top-down proof search from axiom links down to the conclusion.
         This method is promising as it boasts great efficiency for ALL proof search and has a natural transformation to sequent calculus proofs.
+        The interesting features are that: proof search steps are simple, $\mathcal{O}(n)$, there is no need for backtracking, the method has built-in sharing (or memoization); but dimensionality increases rapidly, and sometimes unexpectedly.
 
 
 
     \section*{Additive Linear Logic}
-        ALL is the fragment of linear logic that concerns sum $(+)$ and product $(\*)$, with their units $0$ and $1$. A \emph{formula} of ALL is constructed:
+        ALL is the fragment of linear logic that concerns sum $(+)$ and product $(\*)$, with their units $0$ and $1$.
+        A \emph{formula} of ALL is constructed:
         \begin{equation*}
             A, B, C \quad \defeq \quad 0 \mid 1 \mid a \mid \dual a \mid A + B \mid A \* B
         \end{equation*}
-        We write $\subs A$ for the set of subformula occurrences of $A$ (we distinguish both occurrences of $a$ in $a\*a$).
+        We write $\subs A$ for the set of subformula occurrences of $A$ (we distinguish uniquely both occurrences of $a$ in $a\*a$).
 
         A sequent for ALL is a pair $\vdash A,B$, and a sequent calculus for ALL is given by the following rules (where the symmetric rules operating on the second element of the pair $\vdash A,B$ are omitted):
         \begin{figure}[H]
@@ -151,7 +149,6 @@ decorate, decoration={
                 \end{prooftree}
             \end{minipage}
 
-
             \begin{minipage}{0.4\linewidth}
                 \begin{prooftree}
                     \AxiomC{$\vdash B,C$}
@@ -173,7 +170,6 @@ decorate, decoration={
 
     \section*{Coalescence Proof Search}
         Naively searching for a sequent proof, starting from a given conclusion, is exponential: the additive conjunction rule $(\*)$ duplicates its context $C$, and reciprocated duplication between both formulas in the sequent creates exponential growth.
-
         A more efficient algorithm, first observed by \citet{semantic-methods} and later by \citet{petri-nets}, is given by placing proof search for a sequent $\vdash A,B$ in the product space $\subs A\* \subs B$.
         This set contains all \emph{sub-sequents} of $\vdash A,B$ that might occur in a sequent proof of $\vdash A,B$, without redundancy.
         We represent $\subs A\* \subs B$ by a grid, e.g.\ that for $\vdash \dual a\+(\dual b\+\dual c),(a\* b)\*c$ is below:
@@ -194,16 +190,19 @@ decorate, decoration={
             \end{tikzpicture}}
         \]
 
-        The \emph{coalescence proof search} algorithm for ALL is then as follows. We place tokens on this grid to indicate a sub-sequent is provable. Initially, we place tokens on each position $(\dual a,a)$, $(\1,A)$, and $(A,\1)$, as shown above right for our example. Then, we apply the following local rules (and the symmetric variants).
-        \begin{itemize}
+        The \emph{coalescence proof search} algorithm for ALL is then as follows.
+        We place tokens on this grid to indicate a sub-sequent is provable.
+        We initially place tokens on each position $(\dual a,a)$, $(\1,A)$, and $(A,\1)$, as shown above right for our example, then apply the following local rules (and the symmetric variants):
+        \begin{itemize}[noitemsep]
             \item Place a token on $(A\+B,C)$ if $(A,C)$ has a token.
             \item Place a token on $(A\+B,C)$ if $(B,C)$ has a token.
             \item Place a token on $(A\*B,C)$ if $(A,C)$ and $(B,C)$ have a token.
         \end{itemize}
-        We illustrate these graphically as follows; note, though, that the \emph{neighbours} of a position in the grid are given by the subformula relation, and not by adjacency in the plane.
+
+        We illustrate these graphically as follows; note, though, that the \emph{neighbours} of a position in the grid are given by the subformula relation, and not by adjacency in the plane:
         \[
             \def\dual{}
-            \begin{array}{ccc}
+            \begin{array}{cccccc}
                 \begin{tikzpicture}[matrix]
                     \foreach \i/\a in {1/{}, 2/\dual A, 3/{}}
                         {\draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,3.3);}
@@ -235,7 +234,7 @@ decorate, decoration={
                   \draw[jmp2] (a) to (c);
                   \draw[jmp2] (b) to (c);
                 \end{tikzpicture}
-                \\ \\
+                &
                 \begin{tikzpicture}[matrix]
                     \foreach \i/\a in {1/\dual A, 2/\*, 3/\dual B}
                         {\draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,3.3);}
@@ -269,9 +268,10 @@ decorate, decoration={
                 \end{tikzpicture}
             \end{array}
         \]
-        Observe also that the initial token placement and the propagation rules corresponds directly to the axioms respectively the rules of the sequent rules for ALL.
+        Observe also that the initial token placement and the propagation rules correspond directly to the axioms and sequent rules for ALL respectively.
 
-        Finally, if the root position $(A,B)$ for $\vdash A,B$ has a token, we succeed; otherwise, if no more tokens can be placed we fail. For our example, we get the following trace:
+        Finally, if the root position $(A,B)$ for $\vdash A,B$ has a token, we succeed; otherwise, if no more tokens can be placed we fail.
+        For our example, we get the following trace:
         \[
             \vc{\begin{tikzpicture}[matrix]
                 \foreach \x/\a in {1/\dual{\atom1}, 2/\+, 3/(\dual{\atom2}, 4/\+, 5/\dual{\atom3})}%
@@ -293,25 +293,23 @@ decorate, decoration={
                 \draw[jmp2,bend right=45] (ab) to (abc);
             \end{tikzpicture}}
         \]
-        %\[
-        %\begin{tikzpicture}[matrix]
-        %\foreach \i/\a in {1/\dual{\atom1}, 2/\+, 3/(\dual{\atom2}, 4/\+, 5/\dual{\atom1})} \draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,5.3);
-        %    \foreach \j/\b in {1/(\atom2, 2/\*, 3/\atom1), 4/\*, 5/\atom2} \draw[gray] (0,\j) node[tgt] {$\b$} (.7,\j) -- (5.3,\j);
-        %    \foreach \i/\j in {1/3, 3/1, 3/5, 5/3} \node[tokB] (\i-\j) at (\i,\j) {};
-        %    \foreach \i/\j in {2/2, 2/1, 2/3, 2/5, 4/4, 4/2, 4/1, 4/3, 4/5} \node[tokG] (\i-\j) at (\i,\j) {};
-        %    \node[tokR] (2-4) at (2,4) {};
-        %    \foreach \s/\t in {3-1/4-1, 1-3/2-3, 5-3/4-3, 3-5/4-5}  \draw[jmp1] (\s)--(\t);
-        %    \foreach \s/\t in {2-1/2-2, 2-3/2-2, 2-5/2-4, 4-1/4-2, 4-3/4-2, 4-5/4-4} \draw[jmp2] (\s)--(\t);
-        %    \foreach \i in {1,...,5} \draw[jmp1,bend left=45] (4-\i) to (2-\i);
-        %    \draw[jmp2,bend right=60] (2-2) to (2-4);
-        %    \draw[jmp2,bend left=60] (4-2) to (4-4);
-        %  \end{tikzpicture}
-        %\]
+
+        This algorithm succeeds if and only if there is an ALL proof of the given formula.
+        Clearly, each progression is local (i.e.\ constant time), and the number of tokens placed is bounded by the size of the grid $\subs A\times\subs B$.
+        The algorithm thus runs in polynomial time.
+        The interesting observation is that, naively, the additive, context-duplicating conjunction rule seems very inefficient for proof search.
+        The coalescence approach solves this problem by using a natural data structure, the grid, to obtain an algorithm with natural memoization, that is efficient for this reason.
 
 
 
     \section*{Classical Logic and Coalescence}
-        A \textit{formula} of ALL within Classical Logic (CL) is constructed:
+        We investigate how the coalescence technique applies to classical propositional logic.
+        The main idea is that a classical formula $A$ can be proved by additive rules applied to a sequent $\vdash A,\dots,A$ with $n$ copies of $A$.
+        This is easily shown by a \emph{stratification} of sequent proofs with additive rules, where all contractions are pushed to the bottom (conclusion), and weakenings to the top (axioms).
+
+        Correspondingly, we generalize coalescence proof search to CL by applying it to a grid of $n$ dimensions, for any $n$, where it was previously fixed at $2$.
+        The algorithm will start at dimension $1$, and when it fails at dimension $n$ it will try again at dimension $n+1$, up to a theoretically determined upper bound.
+        A \emph{formula} within CL is constructed:
         \begin{equation*}
             A, B, C \quad \defeq \quad \top \mid \bot \mid a \mid \dual a \mid A \vee B \mid A \wedge B
         \end{equation*}
@@ -357,45 +355,39 @@ decorate, decoration={
                 \end{prooftree}
             \end{minipage}
         \end{figure}
-
         where $A, B, C$ are formulae and $\Gamma, \Delta, \Sigma$ are sequents.
-        Notice that both conjunction $\wedge$ and disjunction $\vee$ rules preserve the number of terms in a sequent.
+        Notice that both conjunction $\wedge$ and disjunction $\vee$ rules preserve the number of terms in a sequent, but there is no longer a bound on the number of terms per sequent through the weakening $w$ and contraction $c$ rules.
 
-        For a formula $P$, the algorithm runs as follows:
-        \begin{enumerate}
-            \item Set $n := 2$
-            \item\label{l} Construct the $n$-dimensional net of possible transitions on $n$-term sequents $\vdash A_1 \ldots A_n$
-            \item Spawn tokens in the net at all instances of axiom links $\vdash \Gamma, a, \dual a$
-            \item Exhaustively fire the net
-            \item Does there exist a token at $(P, P \ldots P) \equiv \,\, \vdash P, P \ldots P \equiv \,\, \vdash P$?
-            \begin{enumerate}
-                \item Yes --- Halt with a proof for $P$
-                \item No --- Increment $n := n + 1$ and goto~\ref{l}
-            \end{enumerate}
-        \end{enumerate}
-        The dimensionality of a proof is then the dimensionality of our grid when the root is reached, equivalent to the number of contractions required in an equivalent sequent proof.
-        We thus say a classical formula can be proved by an $n$-dimensional additive proof, where $n$ is the number of terms in a sequent.
-
-        We prove that this is exactly proof search through \textit{additive stratification} of the sequent calculus --- that is, any sequent proof may be `rearranged' up to the order of rules applied.
-        A proof tree is said to be \textit{additively stratified} if it is structured as follows:
+        A proof tree is said to be \emph{additively stratified} if it is structured as follows:
         \begin{prooftree}
             \AxiomC{}
             \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_1$}
             \RightLabel{$w$}\doubleLine\UnaryInfC{$\vdash \Gamma_1$}
-            \AxiomC{\ldots}
+            \AxiomC{\dots}
             \AxiomC{}
             \RightLabel{$\top, ax$}\doubleLine\UnaryInfC{$\vdash A_n$}
             \RightLabel{$w$}\doubleLine\UnaryInfC{$\vdash \Gamma_n$}
-            \RightLabel{$\wedge, \vee$}\doubleLine\TrinaryInfC{$\vdash P \ldots P$}
+            \RightLabel{$\wedge, \vee$}\doubleLine\TrinaryInfC{$\vdash P \dots P$}
             \RightLabel{$c$}\doubleLine\UnaryInfC{$\vdash P$}
         \end{prooftree}
-        Coalescence is then equivalent to (additively stratified) proof search, with implicit weakening and contraction of all sequents up to $n$ terms.
+        That is, any proof tree in CL sequent calculus may be rearranged such that rules applied are ordered $\{\top, ax\}, w, \{\vee, \wedge\}, c$.
+        This rearrangement does not affect the number of terms of sequents.
 
-
-
-    \section*{Motivation}
-        Clearly complexity scales with dimensionality and our motivation is then: \textit{`What dimension is sufficient for a given formula?'}.
-        In essence, this gives an upper bound for proof search.
+        For a formula $P$ in CL, the coalescence algorithm runs as follows:
+        \begin{enumerate}[noitemsep]
+            \item Set $n := 1$
+            \item\label{l} Construct the $n$-dimensional grid of possible $n$-term sequents $\vdash A_1 \dots A_n \in \subs A \* \dots_n \* \subs A$
+            \item Spawn tokens at all instances of axiom links $\vdash \Gamma, a, \dual a$
+            \item Exhaustively perform transitions given by the CL sequent calculus rules
+            \item Does there exist a token at $(P, P \dots P) \equiv \,\, \vdash P, P \dots P \equiv \,\, \vdash P$?
+                \begin{enumerate}[noitemsep]
+                \item Yes --- Halt with a proof for $P$ and dimensionality $n$
+                \item No --- Increment $n := n + 1$ and goto~\ref{l}
+            \end{enumerate}
+        \end{enumerate}
+        The dimensionality of a proof is then the dimensionality of our grid when the root is reached, equivalent to the number of contractions required in an equivalent sequent proof.
+        A CL formula can thus be proved by an $n$-dimensional additively stratified proof, where $n$ is the number of terms in a sequent before contraction.
+        Through a natural transformation on steps of the algorithm to equivalent sequent proofs, coalescence up to $n = N$ is then exactly (additively stratified) proof search, with implicit weakening and contraction of all sequents up to $N$ terms.
 
 
 
@@ -420,7 +412,7 @@ decorate, decoration={
         \]
 
         The root position $(A, A)$ is reached in 2 dimensions so we describe the associated proof as having dimensionality 2.
-        Consider next a simple proof requiring conjunction through $B \defeq (a \vee \dual a) \wedge (b \vee \dual b)$ as follows (note that the intermediate steps are skipped and the net is saturated before a proof is reached):
+        Consider next a simple proof requiring conjunction through $B \defeq (a \vee \dual a) \wedge (b \vee \dual b)$ as follows (note intermediate steps are skipped and the grid is saturated before a proof is reached):
 
         \newcommand\spawnIIGrid[1]{\vc{\begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
                     \foreach \x/\a in {1/\atom1, 2/\vee, 3/\dual{\atom1}, 4/\wedge, 5/\atom2, 6/\vee, 7/\dual{\atom2}} \draw[gray] (\x,0) node[src] {\footnotesize$\a$} (\x,.7) -- (\x,7.3);
@@ -442,9 +434,9 @@ decorate, decoration={
 
 
 
-    \section*{Solution}
+    \section*{Current Work}
         To solve this issue, we then investigate liberating the search algorithm and generalising over the properties of sequents --- namely, idempotency and commutativity.
-        This includes: some notion of applying conjunctions `diagonally' (from $(a \vee \dual a, b \vee \dual b)$ to ($B, B$) in one step in the above) and switching from \textit{tuple} or \textit{multiset} links to \textit{set} links.
+        This includes: some notion of applying conjunctions `diagonally' (from $(a \vee \dual a, b \vee \dual b)$ to ($B, B$) in one step in the above) and switching from \emph{tuple} or \emph{multiset} links to \emph{set} links.
         The latter takes us into more familiar/obvious proof search territory:
         \begin{figure}[H]
             \def\x{1cm}
@@ -475,7 +467,10 @@ decorate, decoration={
                 \draw[-arr] (4c) to (4);
             \end{tikzpicture}
         \end{figure}
-        Beyond these two points, there exist various other implementation trade-offs: dense/sparse representation, high-performance data structures and assorted other ad-hoc optimisations.
+
+        Furthermore, we examine bounds on the dimension required for a given formula.
+        We initially propose a trivial theoretical upper bound through number of unique atoms in a formula $A$.
+        Through construction of a set of classes representing formulae provable in $n$ dimensions and a simple algebra of these classes, we hypothesise complexity is bounded by the largest disjunctive form in $\subs A$.
 
 
 
