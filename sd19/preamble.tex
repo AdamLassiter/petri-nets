@@ -1,0 +1,94 @@
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bpextra}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{latexsym}
+\usepackage{natbib}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+\usepackage{varwidth}
+
+% tikz things
+\usetikzlibrary{petri, topaths, positioning, decorations.pathmorphing}
+
+% natbib source
+\bibliographystyle{agsm}
+\renewcommand{\bibsection}{}
+
+\pgfarrowsdeclare{arr}{arr}{
+    \setlength{\arrowsize}{2\pgflinewidth}
+    \addtolength{\arrowsize}{.5\pgflinewidth}
+    \pgfarrowsrightextend{-1\arrowsize}
+    \pgfarrowsleftextend{1\arrowsize}
+}{
+    \setlength{\arrowsize}{2\pgflinewidth}
+    \addtolength{\arrowsize}{.5\pgflinewidth}
+    \pgfpathmoveto{\pgfpoint{-5\arrowsize}{4\arrowsize}}
+    \pgfpathlineto{\pgfpointorigin}
+    \pgfpathlineto{\pgfpoint{-5\arrowsize}{-4\arrowsize}}
+    \pgfusepathqstroke
+}
+
+\newcommand{\drawsquig}{\draw[-arr,
+line join=round,
+decorate, decoration={
+    zigzag,
+    segment length=4,
+    amplitude=.9,post=lineto,
+    post length=2pt
+}]}
+
+\newcommand\vc[1]{\vcenter{\hbox{#1}}}
+
+\newcommand\atom[1]{%
+ \ifx#11a\else%
+ \ifx#12b\else%
+ \ifx#13c\else%
+ \fi\fi\fi
+}
+
+\newcommand\0{0}
+\newcommand\1{1}
+\newcommand\+{+}
+\renewcommand\*{\times}
+
+\newcommand{\tightplus}{\!+\!}
+\newcommand{\tighttimes}{\!\*\!}
+\newcommand\subs[1]{\mathsf{|#1|}}
+
+\tikzstyle{tok}=[circle,inner sep=0pt,minimum size=4pt,outer sep=1pt]
+\tikzstyle{src}=[black,text height=1ex,text depth=0ex,rotate=90]
+\tikzstyle{tgt}=[black,text height=1ex,text depth=0ex]%,rotate=-45]
+\tikzstyle{for}=[text height=1.5ex,text depth=.25ex]
+\tikzstyle{jmp}=[->,line width=1pt,cap=round,gray]
+\tikzstyle{jmp1}=[jmp]
+\tikzstyle{jmp2}=[jmp,red]
+
+\tikzstyle{tokB}=[fill,tok]
+\tikzstyle{tokG}=[fill,tok,gray]
+\tikzstyle{tokR}=[fill,tok,red]
+\tikzstyle{tokRed}=[fill,tok,red]
+\tikzstyle{tokBlue}=[fill,tok,blue]
+\tikzstyle{tokGreen}=[fill,tok,darkgreen]
+\tikzstyle{tokF}=[draw,thick,gray,circle,inner sep=0pt, minimum size=7pt]
+
+\tikzstyle{matrix}=[x=-5mm,y=5mm,rotate=-90]
+
+% delta-equals (unused)
+\def\deltaeq{\mathrel{\ensurestackMath{\stackon[1pt]{=}{\scriptstyle\Delta}}}}
+% define-equals
+\def\defeq{::=}
+% set-to-equals
+\def\seteq{:=}
+
+\newcommand\dual{\overline}
+
+\title{From Additive to Classical Proof Search}
+\author{Adam Lassiter \and Willem Heijltjes\\Department of Computer Science\\University of Bath}
+\date{}
+
