@@ -130,7 +130,7 @@ decorate, decoration={
             \begin{minipage}{0.3\linewidth}
                 \begin{prooftree}
                     \AxiomC{~}
-                    \RightLabel{$\mathsf{ax}$}
+                    \RightLabel{$ax$}
                     \UnaryInfC{$\vdash a,\dual a$}
                 \end{prooftree}
             \end{minipage}
@@ -323,6 +323,23 @@ decorate, decoration={
                     \RightLabel{$\top$}
                     \UnaryInfC{$\vdash \top$}
                 \end{prooftree}
+            \end{minipage}
+            \begin{minipage}[H]{.3\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma, A$}
+                    \RightLabel{$\vee$}
+                    \UnaryInfC{$\vdash \Gamma, A \vee B$}
+                \end{prooftree}
+            \end{minipage}
+            \begin{minipage}[H]{.3\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash \Gamma$}
+                    \RightLabel{$w$}
+                    \UnaryInfC{$\vdash \Gamma, A$}
+                \end{prooftree}
+            \end{minipage}
+
+            \begin{minipage}[H]{.3\linewidth}
                 \begin{prooftree}
                     \AxiomC{~}
                     \RightLabel{$ax$}
@@ -332,11 +349,6 @@ decorate, decoration={
             \begin{minipage}[H]{.3\linewidth}
                 \begin{prooftree}
                     \AxiomC{$\vdash \Gamma, A$}
-                    \RightLabel{$\vee$}
-                    \UnaryInfC{$\vdash \Gamma, A \vee B$}
-                \end{prooftree}
-                \begin{prooftree}
-                    \AxiomC{$\vdash \Gamma, A$}
                     \AxiomC{$\vdash \Gamma, B$}
                     \RightLabel{$\wedge$}
                     \BinaryInfC{$\vdash \Gamma, A \wedge B$}
@@ -344,18 +356,13 @@ decorate, decoration={
             \end{minipage}
             \begin{minipage}[H]{.3\linewidth}
                 \begin{prooftree}
-                    \AxiomC{$\vdash \Gamma$}
-                    \RightLabel{$w$}
-                    \UnaryInfC{$\vdash \Gamma, A$}
-                \end{prooftree}
-                \begin{prooftree}
                     \AxiomC{$\vdash \Gamma, A, A$}
                     \RightLabel{$c$}
                     \UnaryInfC{$\vdash \Gamma, A$}
                 \end{prooftree}
             \end{minipage}
         \end{figure}
-        where $A, B, C$ are formulae and $\Gamma, \Delta, \Sigma$ are sequents.
+        \noindent where $A, B, C$ are formulae and $\Gamma, \Delta, \Sigma$ are sequents.
         Notice that both conjunction $\wedge$ and disjunction $\vee$ rules preserve the number of terms in a sequent, but there is no longer a bound on the number of terms per sequent through the weakening $w$ and contraction $c$ rules.
 
         A proof tree is said to be \emph{additively stratified} if it is structured as follows:
@@ -380,7 +387,7 @@ decorate, decoration={
             \item Spawn tokens at all instances of axiom links $\vdash \Gamma, a, \dual a$
             \item Exhaustively perform transitions given by the CL sequent calculus rules
             \item Does there exist a token at $(P, P \dots P) \equiv \,\, \vdash P, P \dots P \equiv \,\, \vdash P$?
-                \begin{enumerate}[noitemsep]
+            \begin{enumerate}[noitemsep]
                 \item Yes --- Halt with a proof for $P$ and dimensionality $n$
                 \item No --- Increment $n := n + 1$ and goto~\ref{l}
             \end{enumerate}
