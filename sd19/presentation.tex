@@ -9,9 +9,130 @@
         \titlepage
     }
 
+
     \frame{
-        \frametitle{Page Title}
+        \frametitle{Introduction}
+        
+        Outline:
+        \begin{itemize}
+            \item Additive Linear Logic (ALL)
+            \item Proof search in ALL through \emph{coalescence}
+            \item Classical Logic (CL)
+            \item Proof search in CL through \emph{coalescence} and \emph{additive stratification}
+            \item Complexity bounds of proof search
+            \item Dimensionality of CL formulae
+        \end{itemize}
     }
+
+
+    \frame{
+        \frametitle{Additive Linear Logic (ALL)}
+
+        A formula of ALL is constructed:
+        \[ A, B, C \quad \defeq \quad 0 \mid 1 \mid a \mid \dual a \mid A + B \mid A \* B \]
+        where $0, a, \+$ are duals of $1, \dual a, \*$ respectively.
+
+        E.g. $(\atom1 \+ \dual{\atom2}) \* 1$ is the dual of $(\dual{\atom1} \* \atom2) \+ 0$
+    }
+
+    \frame{
+        \frametitle{Additive Linear Logic (ALL)}
+
+        A sequent calculus for ALL is given by the following rules:
+        \begin{figure}
+            \centering
+            \begin{minipage}{0.3\linewidth}
+                \begin{prooftree}
+                    \AxiomC{~}
+                    \RightLabel{$ax$}
+                    \UnaryInfC{$\vdash a,\dual a$}
+                \end{prooftree}
+            \end{minipage}
+            \begin{minipage}{0.3\linewidth}
+                \begin{prooftree}
+                    \AxiomC{~}
+                    \RightLabel{$\1$}
+                    \UnaryInfC{$\vdash \1,A$}
+                \end{prooftree}
+            \end{minipage}
+            \begin{minipage}{0.3\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash A,C$}
+                    \RightLabel{$\+_1$}
+                    \UnaryInfC{$\vdash A\+B,C$}
+                \end{prooftree}
+            \end{minipage}
+        \end{figure}
+
+        \begin{figure}
+            \begin{minipage}{0.4\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash B,C$}
+                    \RightLabel{$\+_2$}
+                    \UnaryInfC{$\vdash A\+B,C$}
+                \end{prooftree}
+            \end{minipage}
+            \begin{minipage}{0.4\linewidth}
+                \begin{prooftree}
+                    \AxiomC{$\vdash A,C$}
+                    \AxiomC{$\vdash B,C$}
+                    \RightLabel{$\*$}
+                    \BinaryInfC{$\vdash A\*B,C$}
+                \end{prooftree}
+            \end{minipage}
+        \end{figure}
+
+        Note that all sequents are comprised of a pair of terms and this is maintained by deduction rules.
+    }
+    
+    \frame{
+        \frametitle{Additive Linear Logic (ALL)}
+
+        Consider the proof of $\vdash \atom1 \* \atom2, \dual{\atom1} \+ \dual{\atom2}$ as follows:
+        \begin{prooftree}
+            \AxiomC{$~$}
+            \RightLabel{$ax$}\UnaryInfC{$\atom1, \dual{\atom1}$}
+            \RightLabel{$\+$}\UnaryInfC{$\atom1, \dual{\atom1} \+ \dual{\atom2}$}
+            \AxiomC{$~$}
+            \RightLabel{$ax$}\UnaryInfC{$\atom2, \dual{\atom2}$}
+            \RightLabel{$\+$}\UnaryInfC{$\atom2, \dual{\atom1} \+ \dual{\atom2}$}
+            \RightLabel{$\*$}\BinaryInfC{$\atom1 \* \atom2, \dual{\atom1} \+ \dual{\atom2}$}
+        \end{prooftree}
+    }
+
+    
+    \frame{
+        \frametitle{Coalescence}
+
+         First discovered by \citet{semantic-methods} and later developed by \citet{petri-nets}.
+
+    }
+
+
+    \frame{
+        \frametitle{Classical Logic (CL)}
+    }
+
+
+    \frame{
+        \frametitle{Additive Stratification}
+    }
+
+
+    \frame{
+        \frametitle{Coalescence}
+    }
+
+
+    \frame{
+        \frametitle{Dimensionality}
+    }
+
+
+    \frame{
+        \frametitle{Conclusion}
+    }
+
 
     \frame{
         \frametitle{References}
