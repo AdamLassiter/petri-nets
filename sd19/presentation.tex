@@ -25,14 +25,24 @@
     }
 
 
+
     \frame{
         \frametitle{Additive Linear Logic (ALL)}
 
         A formula of ALL is constructed:
         \[ A, B, C \quad \defeq \quad 0 \mid 1 \mid a \mid \dual a \mid A + B \mid A \* B \]
         where $0, a, \+$ are duals of $1, \dual a, \*$ respectively.
+    }
 
-        E.g. $(\atom1 \+ \dual{\atom2}) \* 1$ is the dual of $(\dual{\atom1} \* \atom2) \+ 0$
+    \frame{
+        \frametitle{Additive Linear Logic (ALL)}
+        
+        Some examples:
+        \begin{itemize}
+            \item Conceptually, $\atom1 \+ \dual{\atom2}$ describes ``Is $\atom1$ true \textit{or} is $\atom2$ false''
+            \item In a looser definition, we could say $\atom1 \equiv \dual{\dual{\atom1}}$ and define duality up to non-atomic terms
+            \item Then $(\atom1 \+ \dual{\atom2}) \* 1$ is the dual of $(\dual{\atom1} \* \atom2) \+ 0$ and vice versa.
+        \end{itemize}
     }
 
     \frame{
@@ -84,11 +94,22 @@
 
         Note that all sequents are comprised of a pair of terms and this is maintained by deduction rules.
     }
+
+    \frame{
+        \frametitle{Additive Linear Logic (ALL)}
+
+        This sequent calculus exhibits proofs of ALL formulae:
+        \begin{itemize}
+            \item We start with some grounding --- there is a proof that $\atom1$ is either true or false, or there is a proof of $1$.
+            \item Given proofs of $A, B, C$, we can construct further provable formulae.
+            \item The proof tree is grown downwards building up to some conclusion.
+        \end{itemize}
+    }
     
     \frame{
         \frametitle{Additive Linear Logic (ALL)}
 
-        Consider the proof of $\vdash \atom1 \* \atom2, \dual{\atom1} \+ \dual{\atom2}$ as follows:
+        Consider the proof of $\vdash \atom1 \* \atom2, \dual{\atom1} \+ \dual{\atom2}$ --- either $\atom1$ and $\atom2$ are both true or at least one of them is false --- as follows:
         \begin{prooftree}
             \AxiomC{$~$}
             \RightLabel{$ax$}\UnaryInfC{$\atom1, \dual{\atom1}$}
@@ -100,7 +121,8 @@
         \end{prooftree}
     }
 
-    
+
+
     \frame{
         \frametitle{Coalescence}
 
@@ -109,9 +131,11 @@
     }
 
 
+
     \frame{
         \frametitle{Classical Logic (CL)}
     }
+
 
 
     \frame{
@@ -119,9 +143,11 @@
     }
 
 
+
     \frame{
         \frametitle{Coalescence}
     }
+
 
 
     \frame{
@@ -129,9 +155,11 @@
     }
 
 
+
     \frame{
         \frametitle{Conclusion}
     }
+
 
 
     \frame{
