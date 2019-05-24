@@ -42,6 +42,11 @@ decorate, decoration={
     post length=2pt
 }]}
 
+\newenvironment{scprooftree}[1]%
+  {\gdef\scalefactor{#1}\begin{center}\proofSkipAmount \leavevmode}%
+  {\scalebox{\scalefactor}{\DisplayProof}\proofSkipAmount \end{center} }
+
+
 \newcommand\vc[1]{\vcenter{\hbox{#1}}}
 
 \newcommand\atom[1]{%
@@ -88,6 +93,5 @@ decorate, decoration={
 \newcommand\dual{\overline}
 
 \title{From Additive to Classical Proof Search}
-\author{Adam Lassiter \and Willem Heijltjes\\Department of Computer Science\\University of Bath}
 \date{}
 
