@@ -3,6 +3,8 @@
 \input{preamble}
 \author{Adam Lassiter \and Willem Heijltjes\\Department of Computer Science\\University of Bath}
 
+\usepackage{xifthen}
+
 \begin{document}
 
     \frame{
@@ -42,7 +44,8 @@
         Some examples:
         \begin{itemize}
             \item $(\atom1 \+ \dual{\atom2}) \* 1$ is the dual of $(\dual{\atom1} \* \atom2) \+ 0$ and vice versa
-            \item %TODO More examples
+            \item $(\atom1 \+ (\dual{\atom2} \* \atom3 \* 0)) \* (\atom2 \+ 1)$
+            \item etc.
         \end{itemize}
     }
 
@@ -94,6 +97,8 @@
 
         \begin{itemize}
             \item All sequents are comprised of a pair of terms, maintained by deduction rules
+            \item $␣ \+ 0, ␣ \* 1$ are identities
+            \item Sequents are not necessarily commutative, idempotent etc.
         \end{itemize}
     }
 
@@ -246,7 +251,7 @@
         \]
 
         \begin{itemize}
-            \item Algorithm succeeds if and only if there is an ALL proof of the given formula, see \citet{petri-nets}
+            \item Algorithm is precisely ALL proof search, see \citet{petri-nets}
         \end{itemize}
     }
 
@@ -258,6 +263,23 @@
         \[
             A, B, C \quad \defeq \quad \top \mid \bot \mid a \mid \dual a \mid A \vee B \mid A \wedge B
         \]
+
+        \begin{itemize}
+            \item Analogous to \texttt{True}, \texttt{False} and boolean operations
+            \item $\bot, \atom1, \vee$ are duals of $\top, \dual{\atom1}, \wedge$
+            \item Similar to ALL formulae
+        \end{itemize}
+    }
+
+    \frame{
+        \frametitle{Classical Logic (CL)}
+
+        Examples:
+        \begin{itemize}
+            \item $(\atom1 \vee \dual{\atom1}) \wedge (\atom2 \vee \dual{\atom2})$ will be a recurrent example
+            \item $\dual{\atom1 \vee \dual{\atom2}} \leftrightsquigarrow \dual{\atom1} \wedge \atom2$ and associated De Morgan laws
+            \item $\dual{A} \vee B \leftrightsquigarrow A \implies B$ and other useful syntax
+        \end{itemize}
     }
 
     \frame{
@@ -313,14 +335,25 @@
 
         \begin{itemize}
             \item $A, B, C$ are formulae, $\Gamma, \Delta, \Sigma$ are sequents
-            \item $\wedge, \vee$ rules preserve the number of terms in a sequent
+            \item $\wedge, \vee$ rules preserve the number of terms in a sequent, $c, w$ rules do not
+            \item Sequents are commutative, \emph{morally equivalent} up to idempotence
         \end{itemize}
     }
 
     \frame{
         \frametitle{Classical Logic (CL)}
 
-        Example: % TODO: CL sequent proof example
+        Example:
+        \begin{prooftree}
+            \AxiomC{$~$}
+            \RightLabel{$ax$}\UnaryInfC{$\vdash \atom1, \neg \atom1$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash \atom1 \vee \neg \atom1, \neg \atom1$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash \atom1 \vee \neg \atom1, \atom1 \vee \neg \atom1$}
+            \RightLabel{$c$}\UnaryInfC{$\vdash \atom1 \vee \neg \atom1$}
+            \AxiomC{$~$}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash (\atom1 \vee \neg \atom1) \wedge \top$}
+        \end{prooftree}
     }
 
 
@@ -465,25 +498,158 @@
     \frame{
         \frametitle{Additive Stratification}
 
-        Example:
-        %TODO: Additive stratification example
+        Previous Example:
+        \begin{prooftree}
+            \AxiomC{$~$}
+            \RightLabel{$ax$}\UnaryInfC{$\vdash \atom1, \neg \atom1$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash \atom1 \vee \neg \atom1, \neg \atom1$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash \atom1 \vee \neg \atom1, \atom1 \vee \neg \atom1$}
+            \RightLabel{$c$}\UnaryInfC{$\vdash \atom1 \vee \neg \atom1$}
+            \AxiomC{$~$}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash (\atom1 \vee \neg \atom1) \wedge \top$}
+        \end{prooftree}
     }
 
+    \frame{
+        \frametitle{Additive Stratification}
+
+        Example:
+        \begin{prooftree}
+            \AxiomC{$~$}
+            \RightLabel{$ax$}\UnaryInfC{$\vdash \atom1, \neg \atom1$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash \atom1 \vee \neg \atom1, \neg \atom1$}
+            \RightLabel{$\vee$}\UnaryInfC{$\vdash \atom1 \vee \neg \atom1, \atom1 \vee \neg \atom1$}
+            \AxiomC{$~$}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$w$}\UnaryInfC{$\vdash \top, \atom1 \vee \neg \atom1$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash (\atom1 \vee \neg \atom1) \wedge \top, \atom1 \vee \neg \atom1$}
+            \AxiomC{$~$}
+            \RightLabel{$\top$}\UnaryInfC{$\vdash \top$}
+            \RightLabel{$w$}\UnaryInfC{$\vdash (\atom1 \vee \neg \atom1) \wedge \top, \top$}
+            \RightLabel{$\wedge$}\BinaryInfC{$\vdash (\atom1 \vee \neg \atom1) \wedge \top, (\atom1 \vee \neg \atom1) \wedge \top$}
+            \RightLabel{$c$}\UnaryInfC{$\vdash (\atom1 \vee \neg \atom1) \wedge \top$}
+        \end{prooftree}
+    }
 
 
     \frame{
         \frametitle{Coalescence in CL}
 
-        We investigate how the coalescence technique applies to classical propositional logic.
-        The main idea is that a classical formula $A$ can be proved by additive rules applied to a sequent $\vdash A,\dots,A$ with $n$ copies of $A$.
-        This is easily shown by a \emph{stratification} of sequent proofs with additive rules, where all contractions are pushed to the bottom (conclusion), and weakenings to the top (axioms).
+        Example: $\bot \vee (\top \wedge \top)$, $n \seteq 1$
 
-        Correspondingly, we generalize coalescence proof search to CL by applying it to a grid of $n$ dimensions, for any $n$, where it was previously fixed at $2$.
-        The algorithm will start at dimension $1$, and when it fails at dimension $n$ it will try again at dimension $n+1$, up to a theoretically determined upper bound.
-        
-        % TODO: Example in 1D, 2D, lines & squares for 3D?
-    }    
-       
+        \newcommand\spawnIGrid[1]{\vc{\begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                \foreach \x/\a in {1/\,} \draw[gray] (\x,0) node[src] {\footnotesize$\a$} (\x,.7) -- (\x,5.3);
+                \foreach \y/\b in {1/\bot, 2/\vee, 3/\top, 4/\wedge, 5/\top} \draw[gray] (0,\y) node[tgt] {\footnotesize$\b$} (.7,\y) -- (1.3,\y);
+                \foreach \p/\n/\c in {####1} \node[fill,tok,\c] (\n) at (\p) {};
+            \end{tikzpicture}}}
+        \newcommand\initSpawnIGrid{\spawnIGrid{{1,3}/a1/blue, {1,5}/b1/red}}
+
+        \[
+             \initSpawnIGrid
+             \quad\rightsquigarrow\quad
+             \spawnIGrid{{1,3}/a1/blue, {1,5}/b1/red, {1,4}/c1/purple}
+             \quad\rightsquigarrow\quad
+             \spawnIGrid{{1,3}/a1/blue, {1,5}/b1/red, {1,4}/c1/purple, {1,2}/d1/purple}
+        \]
+
+    }
+
+    \frame{
+        \frametitle{Coalescence in CL}
+
+        Example: $\atom1 \vee \dual{\atom1}$, $n \seteq 2$
+
+        \newcommand\spawnIIGrid[1]{\vc{\begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                \foreach \x/\a in {1/\atom1, 2/\vee, 3/\dual{\atom1}} \draw[gray] (\x,0) node[src] {\footnotesize$\a$} (\x,.7) -- (\x,3.3);
+                \foreach \y/\b in {1/\atom1, 2/\vee, 3/\dual{\atom1}} \draw[gray] (0,\y) node[tgt] {\footnotesize$\b$} (.7,\y) -- (3.3,\y);
+                \foreach \p/\n/\c in {####1} \node[fill,tok,\c] (\n) at (\p) {};
+            \end{tikzpicture}}}
+        \newcommand\initSpawnIIGrid{\spawnIIGrid{{1,3}/a1/blue, {3,1}/b1/red}}
+
+        \[
+             \initSpawnIIGrid
+             \quad\rightsquigarrow\quad
+             \spawnIIGrid{{1,3}/a1/blue, {3,1}/b1/red, {2,3}/c1/blue}
+             \quad\rightsquigarrow\quad
+             \spawnIIGrid{{1,3}/a1/blue, {3,1}/b1/red, {2,3}/c1/blue, {3,2}/d1/red}
+             \quad\rightsquigarrow\quad
+             \spawnIIGrid{{1,3}/a1/blue, {3,1}/b1/red, {2,3}/c1/blue, {3,2}/d1/red, {2,2}/e1/blue}
+        \]
+    
+    }
+
+    \frame{
+        \frametitle{Coalescence in CL}
+
+        Example $(\atom1 \vee \dual{\atom1}) \wedge (\atom2 \vee \dual{\atom2})$, $n \seteq 2$ 
+
+        \newcommand\spawnIIGrid[1]{\vc{\begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                \foreach \x/\a in {1/\atom1, 2/\vee, 3/\dual{\atom1}, 4/\wedge, 5/\atom2, 6/\vee, 7/\dual{\atom2}} \draw[gray] (\x,0) node[src] {\footnotesize$\a$} (\x,.7) -- (\x,7.3);
+                \foreach \y/\b in {1/\atom1, 2/\vee, 3/\dual{\atom1}, 4/\wedge, 5/\atom2, 6/\vee, 7/\dual{\atom2}} \draw[gray] (0,\y) node[tgt] {\footnotesize$\b$} (.7,\y) -- (7.3,\y);
+                \foreach \p/\n/\c in {####1} \node[fill,tok,\c] (\n) at (\p) {};
+            \end{tikzpicture}}}
+        \newcommand\initSpawnIIGrid{\spawnIIGrid{{1,3}/a1/blue, {3,1}/b1/black!10!green, {5,7}/c1/red, {7,5}/d1/black!10!yellow}}
+
+        \[
+            \initSpawnIIGrid
+            \quad\rightsquigarrow^*\quad
+            \spawnIIGrid{{1,3}/a1/blue, {2,3}/a2/blue, {1,2}/a3/blue, {2,2}/a4/blue, {3,1}/b1/black!10!green, {3,2}/b2/black!10!green, {2,1}/b3/black!10!green, {5,7}/c1/red, {6,7}/c2/red, {5,6}/c3/red, {6,6}/c4/red, {7,5}/d1/black!10!yellow, {7,6}/d2/black!10!yellow, {6,5}/d3/black!10!yellow}
+        \]
+    }
+
+    \frame{
+        \frametitle{Coalescence in CL}
+
+        Example $(\atom1 \vee \dual{\atom1}) \wedge (\atom2 \vee \dual{\atom2})$, $n \seteq 3$, using the above proofs for $A \seteq \atom1 \vee \dual{\atom1}$, $B \seteq \atom2 \vee \dual{\atom2}$
+
+        %\vc{\begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+        %        \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/-1, 0/0/0/1/2/0/0, 0/2/1/0/2*.4/2*.4/-1, 2.8/0.8/0/1/-2*.4/-2*.4/0, 0/2/.4/.4/2/0/-1, 2/0/.4/.4/0/2/45} {
+        %            \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
+        %                \ifthenelse{\d = 0}{
+        %                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+        %                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+        %                        (0,0) -- (0,0)}{
+        %                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+        %                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+        %                        (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)}
+        %            ;
+        %        };
+        %        \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red}} \node[fill,tok,\d] (\n) at (\p) {};
+        %    \end{tikzpicture}}
+
+            \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/-1, 0/0/0/1/2/0/0, 0/2/1/0/2*.4/2*.4/-1, 2.8/0.8/0/1/-2*.4/-2*.4/0, 0/2/.4/.4/2/0/-1, 2/0/.4/.4/0/2/45} {
+                    \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
+                        \ifthenelse{\d = 0}{
+                            \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                (0,0) -- (0,0)}{
+                            \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)}
+                    ;
+                };
+                \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red} \node[fill,tok,\d] (\n) at (\p) {};
+            \end{tikzpicture}
+            $\quad\rightsquigarrow\quad$
+            \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/-1, 0/0/0/1/2/0/0, 0/2/1/0/.8/.8/-1, 2.8/0.8/0/1/-.8/-.8/0, 0/2/.4/.4/2/0/-1, 2/0/.4/.4/0/2/45} {
+                    \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
+                        \ifthenelse{\d = 0}{
+                            \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                (0,0) -- (0,0)}{
+                            \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)}
+                    ;
+                };
+                \foreach \s/\e/\n/\d in {{0,0}/{}/a1/blue, {2,2}/b1/red} \node[fill,tok,\d] (\n) at (\s) {};
+            \end{tikzpicture}
+
+    }
+
     \frame{
         \frametitle{Coalescence in CL}
 
