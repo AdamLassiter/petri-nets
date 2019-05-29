@@ -12,6 +12,7 @@
     }
 
 
+
     \frame{
         \frametitle{Introduction}
         
@@ -273,27 +274,58 @@
         \frametitle{Coalescence Proof Search}
 
         Example:
-        \[
-            \vc{\begin{tikzpicture}[matrix]
-                \foreach \x/\a in {1/\dual{\atom1}, 2/\+, 3/(\dual{\atom2}, 4/\+, 5/\dual{\atom3})}%
-                    \draw[gray] (\x,0) node[src] {$\a$} (\x,.7) -- (\x,5.3);
-                \foreach \y/\b in {1/(\atom1, 2/\*, 3/\atom2), 4/\*, 5/\atom3}%
-                    \draw[gray] (0,\y) node[tgt] {$\b$} (.7,\y) -- (5.3,\y);
-                \foreach \p/\n in {
-                    {2,1}/a2, {2,2}/ab,
-                    {4,3}/b2, {2,3}/b3,
-                    {4,5}/c2, {2,5}/c3%
-                } \node[tokG] (\n) at (\p) {};
-                \node[tokG] (abc) at (2,4) {};
-                \node[circle,draw,gray,thick,inner sep=0pt,minimum size=7pt] at (2,4) {};
-                \foreach \p/\n in { {1,1}/a1, {3,3}/b1, {5,5}/c1} \node[tokB] (\n) at (\p) {};
-                \foreach \s/\t in { a1/a2, b1/b2, c1/c2} \draw[jmp1] (\s)--(\t);
-                \foreach \s/\t in { a2/ab, b3/ab, c3/abc} \draw[jmp2] (\s)--(\t);
-                \draw[jmp1,bend right=45] (b2) to (b3);
-                \draw[jmp1,bend right=45] (c2) to (c3);
-                \draw[jmp2,bend right=45] (ab) to (abc);
-            \end{tikzpicture}}
-        \]
+        \begin{minipage}[H]{\linewidth}
+            \centering
+            \begin{minipage}[H]{0.2\linewidth}
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \x/\a in {1/\dual{\atom1}, 2/\+, 3/(\dual{\atom2}, 4/\+, 5/\dual{\atom3})}%
+                        \draw[gray] (\x,0) node[src] {$\a$} (\x,.7) -- (\x,5.3);
+                    \foreach \y/\b in {1/(\atom1, 2/\*, 3/\atom2), 4/\*, 5/\atom3}%
+                        \draw[gray] (0,\y) node[tgt] {$\b$} (.7,\y) -- (5.3,\y);
+                    \foreach \p/\n in { {1,1}/a1, {3,3}/b1, {5,5}/c1} \node[tokB] (\n) at (\p) {};
+                \end{tikzpicture}
+            \end{minipage}
+            $\quad\leadsto\quad$
+            \begin{minipage}[H]{0.2\linewidth}
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \x/\a in {1/\dual{\atom1}, 2/\+, 3/(\dual{\atom2}, 4/\+, 5/\dual{\atom3})}%
+                        \draw[gray] (\x,0) node[src] {$\a$} (\x,.7) -- (\x,5.3);
+                    \foreach \y/\b in {1/(\atom1, 2/\*, 3/\atom2), 4/\*, 5/\atom3}%
+                        \draw[gray] (0,\y) node[tgt] {$\b$} (.7,\y) -- (5.3,\y);
+                    \foreach \p/\n in {
+                        {2,1}/a2,
+                        {4,3}/b2, {2,3}/b3,
+                        {4,5}/c2, {2,5}/c3%
+                    } \node[tokG] (\n) at (\p) {};
+                    \foreach \p/\n in { {1,1}/a1, {3,3}/b1, {5,5}/c1} \node[tokB] (\n) at (\p) {};
+                    \foreach \s/\t in { a1/a2, b1/b2, c1/c2} \draw[jmp1] (\s)--(\t);
+                    \draw[jmp1,bend right=45] (b2) to (b3);
+                    \draw[jmp1,bend right=45] (c2) to (c3);
+                \end{tikzpicture}
+            \end{minipage}
+            $\quad\leadsto\quad$
+            \begin{minipage}[H]{0.2\linewidth}
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \x/\a in {1/\dual{\atom1}, 2/\+, 3/(\dual{\atom2}, 4/\+, 5/\dual{\atom3})}%
+                        \draw[gray] (\x,0) node[src] {$\a$} (\x,.7) -- (\x,5.3);
+                    \foreach \y/\b in {1/(\atom1, 2/\*, 3/\atom2), 4/\*, 5/\atom3}%
+                        \draw[gray] (0,\y) node[tgt] {$\b$} (.7,\y) -- (5.3,\y);
+                    \foreach \p/\n in {
+                        {2,1}/a2, {2,2}/ab,
+                        {4,3}/b2, {2,3}/b3,
+                        {4,5}/c2, {2,5}/c3%
+                    } \node[tokG] (\n) at (\p) {};
+                    \node[tokG] (abc) at (2,4) {};
+                    \node[circle,draw,gray,thick,inner sep=0pt,minimum size=7pt] at (2,4) {};
+                    \foreach \p/\n in { {1,1}/a1, {3,3}/b1, {5,5}/c1} \node[tokB] (\n) at (\p) {};
+                    \foreach \s/\t in { a1/a2, b1/b2, c1/c2} \draw[jmp1] (\s)--(\t);
+                    \foreach \s/\t in { a2/ab, b3/ab, c3/abc} \draw[jmp2] (\s)--(\t);
+                    \draw[jmp1,bend right=45] (b2) to (b3);
+                    \draw[jmp1,bend right=45] (c2) to (c3);
+                    \draw[jmp2,bend right=45] (ab) to (abc);
+                \end{tikzpicture}
+            \end{minipage}
+        \end{minipage}
     }
 
 
