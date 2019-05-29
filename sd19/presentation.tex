@@ -18,11 +18,10 @@
         Outline:
         \begin{itemize}
             \item Additive Linear Logic (ALL)
-            \item Proof search in ALL through \emph{coalescence}
+            \item \emph{Coalescence} proof search for ALL
             \item Classical Logic (CL)
             \item Proof search in CL through \emph{coalescence} and \emph{additive stratification}
-            \item Complexity bounds of proof search
-            \item Dimensionality of CL formulae
+            \item Dimensionality of CL formulae and optimisations
         \end{itemize}
     }
 
@@ -120,9 +119,9 @@
 
 
     \frame{
-        \frametitle{Coalescence}
+        \frametitle{Coalescence Proof Search}
         
-        Spawning:
+        Initialization:
         \[
             \vc{\begin{tikzpicture}[matrix]
                 \foreach \x/\a in {1/\dual{\atom1}, 2/\+, 3/(\dual{\atom2}, 4/\+, 5/\dual{\atom3})}%
@@ -130,7 +129,7 @@
                 \foreach \y/\b in {1/(\atom1, 2/\*, 3/\atom2), 4/\*, 5/\atom3}%
                     \draw[gray] (0,\y) node[tgt] {$\b$} (.7,\y) -- (5.3,\y);
             \end{tikzpicture}}
-            \quad\rightsquigarrow\quad
+            \quad\leadsto\quad
             \vc{\begin{tikzpicture}[matrix]
                 \foreach \x/\a in {1/\dual{\atom1}, 2/\+, 3/(\dual{\atom2}, 4/\+, 5/\dual{\atom3})}%
                     \draw[gray] (\x,0) node[src] {$\a$} (\x,.7) -- (\x,5.3);
@@ -141,17 +140,17 @@
         \]
 
         \begin{itemize}
+            \item See \citet{petri-nets}
             \item Corresponds to axiom rule for ALL
         \end{itemize}
 
     }
 
     \frame{
-        \frametitle{Coalescence}
+        \frametitle{Coalescence Proof Search}
 
         Transitions:
         \[
-            \def\dual{}
             \begin{array}{ccc}
                 \begin{tikzpicture}[matrix]
                     \foreach \i/\a in {1/{}, 2/\dual A, 3/{}}
@@ -218,14 +217,60 @@
                 \end{tikzpicture}
             \end{array}
         \]
-        
-        \begin{itemize}
-            \item Corresponds to sequent rules for ALL
-        \end{itemize}
     }
 
     \frame{
-        \frametitle{Coalescence}
+        \frametitle{Coalescence Proof Search}
+
+        Corresponding sequent rules for ALL:
+        \[
+            \begin{minipage}[H]{\linewidth}
+                \centering
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash A, B$}
+                        \UnaryInfC{$\vdash A, B \+ C$}
+                    \end{prooftree}
+                \end{minipage}
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash A, C$}
+                        \UnaryInfC{$\vdash A, B \+ C$}
+                    \end{prooftree}
+                \end{minipage}
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash A, B$}
+                        \AxiomC{$\vdash A, C$}
+                        \BinaryInfC{$\vdash A, B \* C$}
+                    \end{prooftree}
+                \end{minipage}
+                
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash A, C$}
+                        \AxiomC{$\vdash B, C$}
+                        \BinaryInfC{$\vdash A \* B, C$}
+                    \end{prooftree}
+                \end{minipage}
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash A, C$}
+                        \UnaryInfC{$\vdash A \+ B, C$}
+                    \end{prooftree}
+                \end{minipage}
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash B, C$}
+                        \UnaryInfC{$\vdash A \+ B, C$}
+                    \end{prooftree}
+                \end{minipage}
+            \end{minipage}
+        \]
+    }
+
+    \frame{
+        \frametitle{Coalescence Proof Search}
 
         Example:
         \[
@@ -249,10 +294,6 @@
                 \draw[jmp2,bend right=45] (ab) to (abc);
             \end{tikzpicture}}
         \]
-
-        \begin{itemize}
-            \item Algorithm is precisely ALL proof search, see \citet{petri-nets}
-        \end{itemize}
     }
 
 
@@ -265,7 +306,6 @@
         \]
 
         \begin{itemize}
-            \item Analogous to \texttt{True}, \texttt{False} and boolean operations
             \item $\bot, \atom1, \vee$ are duals of $\top, \dual{\atom1}, \wedge$
             \item Similar to ALL formulae
         \end{itemize}
@@ -284,7 +324,8 @@
 
     \frame{
         \frametitle{Classical Logic (CL)}
-
+        
+        Sequent calculus with \emph{additive} rules:
         \begin{figure}[H]
             \centering
             \begin{minipage}[H]{.3\linewidth}
@@ -373,8 +414,7 @@
             \RightLabel{$c$}\doubleLine\UnaryInfC{$\vdash P$}
         \end{prooftree}
         \begin{itemize}
-            \item Rearrangement does not affect the number of terms in sequents
-            \item Does not work for MLL rules, see \citet{contraction-restrictions}
+            \item Does not work for \emph{multiplicative} $\vee, \wedge$ rules, see \citet{contraction-restrictions}
         \end{itemize}
     }
 
@@ -489,10 +529,6 @@
                 \end{scprooftree}
             \end{minipage}
         \end{figure}
-
-        \begin{itemize}
-            \item Proof trees are described as \emph{morally equivalent}, see \citet{proofs-and-types}
-        \end{itemize}
     }
 
     \frame{
@@ -533,8 +569,19 @@
     }
 
 
+
     \frame{
-        \frametitle{Coalescence in CL}
+        \frametitle{Coalescence Proof Search in CL}
+
+        \begin{itemize}
+            \item No longer polynomially bounded
+            \item Coalescence on $|A|^n$
+            \item Increase $n$ until \dots ?
+        \end{itemize}
+    }
+
+    \frame{
+        \frametitle{Coalescence Proof Search in CL}
 
         Example: $\bot \vee (\top \wedge \top)$, $n \seteq 1$
 
@@ -547,16 +594,16 @@
 
         \[
              \initSpawnIGrid
-             \quad\rightsquigarrow\quad
+             \quad\leadsto\quad
              \spawnIGrid{{1,3}/a1/blue, {1,5}/b1/red, {1,4}/c1/purple}
-             \quad\rightsquigarrow\quad
+             \quad\leadsto\quad
              \spawnIGrid{{1,3}/a1/blue, {1,5}/b1/red, {1,4}/c1/purple, {1,2}/d1/purple}
         \]
 
     }
 
     \frame{
-        \frametitle{Coalescence in CL}
+        \frametitle{Coalescence Proof Search in CL}
 
         Example: $\atom1 \vee \dual{\atom1}$, $n \seteq 2$
 
@@ -569,18 +616,18 @@
 
         \[
              \initSpawnIIGrid
-             \quad\rightsquigarrow\quad
+             \quad\leadsto\quad
              \spawnIIGrid{{1,3}/a1/blue, {3,1}/b1/red, {2,3}/c1/blue}
-             \quad\rightsquigarrow\quad
+             \quad\leadsto\quad
              \spawnIIGrid{{1,3}/a1/blue, {3,1}/b1/red, {2,3}/c1/blue, {3,2}/d1/red}
-             \quad\rightsquigarrow\quad
+             \quad\leadsto\quad
              \spawnIIGrid{{1,3}/a1/blue, {3,1}/b1/red, {2,3}/c1/blue, {3,2}/d1/red, {2,2}/e1/blue}
         \]
     
     }
 
     \frame{
-        \frametitle{Coalescence in CL}
+        \frametitle{Coalescence Proof Search in CL}
 
         Example $(\atom1 \vee \dual{\atom1}) \wedge (\atom2 \vee \dual{\atom2})$, $n \seteq 2$ 
 
@@ -593,33 +640,20 @@
 
         \[
             \initSpawnIIGrid
-            \quad\rightsquigarrow^*\quad
+            \quad\leadsto^*\quad
             \spawnIIGrid{{1,3}/a1/blue, {2,3}/a2/blue, {1,2}/a3/blue, {2,2}/a4/blue, {3,1}/b1/black!10!green, {3,2}/b2/black!10!green, {2,1}/b3/black!10!green, {5,7}/c1/red, {6,7}/c2/red, {5,6}/c3/red, {6,6}/c4/red, {7,5}/d1/black!10!yellow, {7,6}/d2/black!10!yellow, {6,5}/d3/black!10!yellow}
         \]
     }
 
     \frame{
-        \frametitle{Coalescence in CL}
+        \frametitle{Coalescence Proof Search in CL}
 
-        Example $(\atom1 \vee \dual{\atom1}) \wedge (\atom2 \vee \dual{\atom2})$, $n \seteq 3$, using the above proofs for $A \seteq \atom1 \vee \dual{\atom1}$, $B \seteq \atom2 \vee \dual{\atom2}$
-
-        %\vc{\begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
-        %        \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/-1, 0/0/0/1/2/0/0, 0/2/1/0/2*.4/2*.4/-1, 2.8/0.8/0/1/-2*.4/-2*.4/0, 0/2/.4/.4/2/0/-1, 2/0/.4/.4/0/2/45} {
-        %            \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
-        %                \ifthenelse{\d = 0}{
-        %                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-        %                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-        %                        (0,0) -- (0,0)}{
-        %                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-        %                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-        %                        (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)}
-        %            ;
-        %        };
-        %        \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red}} \node[fill,tok,\d] (\n) at (\p) {};
-        %    \end{tikzpicture}}
-
+        Example $(\atom1 \vee \dual{\atom1}) \wedge (\atom2 \vee \dual{\atom2})$, $n \seteq 3$, $A \seteq \atom1 \vee \dual{\atom1}$, $B \seteq \atom2 \vee \dual{\atom2}$
+        
+        \begin{minipage}{\linewidth}
+            \centering
             \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
-                \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/-1, 0/0/0/1/2/0/0, 0/2/1/0/2*.4/2*.4/-1, 2.8/0.8/0/1/-2*.4/-2*.4/0, 0/2/.4/.4/2/0/-1, 2/0/.4/.4/0/2/45} {
+                \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
                     \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
                         \ifthenelse{\d = 0}{
                             \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
@@ -627,74 +661,330 @@
                                 (0,0) -- (0,0)}{
                             \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
                                 node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-                                (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)}
-                    ;
-                };
+                                (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
                 \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red} \node[fill,tok,\d] (\n) at (\p) {};
             \end{tikzpicture}
-            $\quad\rightsquigarrow\quad$
-            \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
-                \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/-1, 0/0/0/1/2/0/0, 0/2/1/0/.8/.8/-1, 2.8/0.8/0/1/-.8/-.8/0, 0/2/.4/.4/2/0/-1, 2/0/.4/.4/0/2/45} {
-                    \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
-                        \ifthenelse{\d = 0}{
-                            \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-                                node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-                                (0,0) -- (0,0)}{
-                            \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-                                node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-                                (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)}
-                    ;
-                };
-                \foreach \s/\e/\n/\d in {{0,0}/{}/a1/blue, {2,2}/b1/red} \node[fill,tok,\d] (\n) at (\s) {};
-            \end{tikzpicture}
 
-    }
-
-    \frame{
-        \frametitle{Coalescence in CL}
-
-        For a formula $P$ in CL, the coalescence algorithm runs as follows:
-        \begin{enumerate}
-            \item Set $n := 1$
-            \item\label{l} Construct the $n$-dimensional grid of possible $n$-term sequents $\vdash A_1 \dots A_n \in \subs A \* \dots_n \* \subs A$
-            \item Spawn tokens at all instances of axiom links $\vdash \Gamma, a, \dual a$
-            \item Exhaustively perform transitions given by the CL sequent calculus rules
-            \item Does there exist a token at $(P, P \dots P) \equiv \,\, \vdash P, P \dots P \equiv \,\, \vdash P$?
-            \begin{enumerate}
-                \item Yes --- Halt with a proof for $P$ and dimensionality $n$
-                \item No --- Increment $n := n + 1$ and goto~\ref{l}
-            \end{enumerate}
-        \end{enumerate}
-    }
-
-
-
-    \frame{
-        \frametitle{Questions}
-        
-        % TODO: upper bound on dimension, what is a good representation for (matrix | tokens | ...)
+            \begin{minipage}[H]{0.18\linewidth}
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/0/1/2/0/0, 0.8/2.8/1/0/-.8/-.8/90, 2/0/.4/.4/0/2/45} {
+                        \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1} \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5) node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}} (0,0) -- (0,0);}
+                    \draw[gray] (0,0) -- (2,0) -- (2,2) -- (0,2) -- (0,0) -- (.8,.8) -- (2.8,.8) -- (2.8,2.8) -- (.8,2.8) -- (.8,.8) -- (2.8,.8) -- (2,0) -- (2,2) -- (2.8,2.8) -- (.8,2.8) -- (0,2);
+                    \foreach \s/\e/\n/\d in {{0,0}/{0,2}/a1/blue, {2,0}/{2,2}/b1/red, {2.8,.8}/{2.8,2.8}/c1/black!10!green, {.8,.8}/{.8,2.8}/d1/black!10!yellow} {
+                        \node[fill,tok,\d] (\n) at (\s) {};
+                        \node[fill,tok,\d] (\n) at (\e) {};}
+                \end{tikzpicture}
+            \end{minipage}
+            $\leadsto^*$
+            \begin{minipage}[H]{0.18\linewidth}
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/0/1/2/0/0, 0.8/2.8/1/0/-.8/-.8/90, 2/0/.4/.4/0/2/45} {
+                        \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1} \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5) node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}} (0,0) -- (0,0);}
+                    \draw[gray] (0,0) -- (2,0) -- (2,2) -- (0,2) -- (0,0) -- (.8,.8) -- (2.8,.8) -- (2.8,2.8) -- (.8,2.8) -- (.8,.8) -- (2.8,.8) -- (2,0) -- (2,2) -- (2.8,2.8) -- (.8,2.8) -- (0,2);
+                    \foreach \s/\e/\n/\d in {{0,0}/{0,2}/a1/blue, {2,0}/{2,2}/b1/red, {2.8,.8}/{2.8,2.8}/c1/black!10!green, {.8,.8}/{.8,2.8}/d1/black!10!yellow} {
+                        \node[fill,tok,\d] (\n) at (\s) {};
+                        \node[fill,tok,\d] (\n) at (\e) {};
+                        \draw[very thick,fill,tok,\d] (\s) -- (\e);}
+                \end{tikzpicture}
+            \end{minipage}
+            $\leadsto^*$
+            \begin{minipage}[H]{0.18\linewidth}
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/0/1/2/0/0, 0.8/2.8/1/0/-.8/-.8/90, 2/0/.4/.4/0/2/45} {
+                        \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1} \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5) node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}} (0,0) -- (0,0);}
+                    \draw[gray] (0,0) -- (2,0) -- (2,2) -- (0,2) -- (0,0) -- (.8,.8) -- (2.8,.8) -- (2.8,2.8) -- (.8,2.8) -- (.8,.8) -- (2.8,.8) -- (2,0) -- (2,2) -- (2.8,2.8) -- (.8,2.8) -- (0,2);
+                    \foreach \s/\e/\n/\d in {{0,0}/{0,2}/a1/blue, {2,0}/{2,2}/b1/red, {2.8,.8}/{2.8,2.8}/c1/black!10!green, {.8,.8}/{.8,2.8}/d1/black!10!yellow} {
+                        \node[fill,tok,\d] (\n) at (\s) {};
+                        \node[fill,tok,\d] (\n) at (\e) {};
+                        \draw[very thick,tok,\d] (\s) -- (\e);}
+                    \fill[tok,fill=lime,opacity=.7] (2.8,.8) rectangle (.8,2.8);
+                    \fill[tok,fill=purple,opacity=.7] (0,0) rectangle (2,2);
+                \end{tikzpicture}
+            \end{minipage}
+            $\leadsto$
+            \begin{minipage}[H]{0.18\linewidth}
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/0/1/2/0/0, 0.8/2.8/1/0/-.8/-.8/90, 2/0/.4/.4/0/2/45} {
+                        \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1} \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5) node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}} (0,0) -- (0,0);}
+                    \draw[gray] (0,0) -- (2,0) -- (2,2) -- (0,2) -- (0,0) -- (.8,.8) -- (2.8,.8) -- (2.8,2.8) -- (.8,2.8) -- (.8,.8) -- (2.8,.8) -- (2,0) -- (2,2) -- (2.8,2.8) -- (.8,2.8) -- (0,2);
+                    \foreach \s/\e/\n/\d in {{0,0}/{0,2}/a1/blue, {2,0}/{2,2}/b1/red, {2.8,.8}/{2.8,2.8}/c1/black!10!green, {.8,.8}/{.8,2.8}/d1/black!10!yellow} {
+                        \node[fill,tok,\d] (\n) at (\s) {};
+                        \node[fill,tok,\d] (\n) at (\e) {};
+                        \draw[very thick,tok,\d] (\s) -- (\e);}
+                    \fill[tok,fill=brown,opacity=.7] (0,0) -- (0,2) -- (.8,2.8) -- (2.8,2.8) -- (2.8,.8) -- (2,0) -- cycle;
+                \end{tikzpicture}
+            \end{minipage}
+        \end{minipage}
     }
 
 
 
     \frame{
         \frametitle{Dimensionality}
+		
+		\begin{align*}
+			\mathcal{D}^1 \quad &\defeq \quad \top \mid \bot \mid \mathcal{D}^1 \vee \mathcal{D}^1 \mid \mathcal{D}^1 \wedge \mathcal{D}^1 \\
+			\mathcal{D}^2 \quad &\defeq \quad ALL \\
+				      &\dots
+		\end{align*}
 
-        The dimensionality of a proof is then the dimensionality of our grid when the root is reached, equivalent to the number of contractions required in an equivalent sequent proof.
-        A CL formula can thus be proved by an $n$-dimensional additively stratified proof, where $n$ is the number of terms in a sequent before contraction.
-        Through a natural transformation on steps of the algorithm to equivalent sequent proofs, coalescence up to $n = N$ is then exactly (additively stratified) proof search, with implicit weakening and contraction of all sequents up to $N$ terms.
+		\begin{itemize}
+			\item Difficult to categorise further
+			\item Unsatisfactory results for $(a \vee \dual a) \wedge \dots \wedge (z \vee \dual z)$
+		\end{itemize}
     }
 
 
 
     \frame{
-        \frametitle{Conclusion}
+        \frametitle{Satisfying Optimisations}
+        
+        \begin{minipage}[H]{\linewidth}
+            \centering
+            \begin{minipage}[H]{0.15\linewidth}
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+                        \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
+                            \ifthenelse{\d = 0}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (0,0) -- (0,0)}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+                    \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red} \node[fill,tok,\d] (\n) at (\p) {};
+                \end{tikzpicture}
+            \end{minipage}
+            
+            \vspace{1cm}
+
+            \begin{minipage}[H]{0.15\linewidth}
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+                        \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
+                            \ifthenelse{\d = 0}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (0,0) -- (0,0)}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+                    \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red, {1,1/c1/purple}} \node[fill,tok,\d] (\n) at (\p) {};
+                \end{tikzpicture}
+            \end{minipage}
+            $\qquad$
+            \begin{minipage}[H]{0.15\linewidth}
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+                        \foreach \z/\a/\d in {0/\top/1, 1/\wedge/0, 2/\top/1}
+                            \ifthenelse{\d = 0}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (0,0) -- (0,0)}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+                \end{tikzpicture}
+            \end{minipage}
+            $\leadsto$
+            \begin{minipage}[H]{0.15\linewidth}
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+                        \foreach \z/\a/\d in {0/\top/1, 1/\wedge/0, 2/\top/1}
+                            \ifthenelse{\d = 0}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (0,0) -- (0,0)}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+                    \foreach \p/\n/\d in {{0,0}/a1/blue, {0,2}/a2/blue, {2,0}/a3/blue, {2,2}/a4/blue} \node[fill,tok,\d] (\n) at (\p) {};
+                \end{tikzpicture}
+            \end{minipage}
+        \end{minipage}
+    }
+
+
+    
+    \frame{
+        \frametitle{Questions}
+         
+        \begin{itemize}
+            \item Upper bound on dimensionality?
+            \begin{itemize}
+                \item Exact or approximate?
+            \end{itemize}
+            \item Good datatype representation for:
+            \begin{itemize}
+                \item Matrix?
+                \item Tokens?
+            \end{itemize}
+        \end{itemize}
+    }
+
+
+
+    \frame{
+        \frametitle{Datatypes}
+        
+        \begin{minipage}[H]{\linewidth}
+            \centering
+            \begin{minipage}[H]{0.15\linewidth}
+				\centering
+				Tuple:
+	
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+                        \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
+                            \ifthenelse{\d = 0}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (0,0) -- (0,0)}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+                    \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red} \node[fill,tok,\d] (\n) at (\p) {};
+                \end{tikzpicture}
+            \end{minipage}
+            
+            \vspace{1cm}
+
+            \begin{minipage}[H]{0.15\linewidth}
+				\centering
+				Set:
+
+                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+                        \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
+                            \ifthenelse{\d = 0}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (0,0) -- (0,0)}{
+                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                    (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+                    \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red, {1,1/c1/purple}} \node[fill,tok,\d] (\n) at (\p) {};
+                \end{tikzpicture}
+            \end{minipage}
+			$\qquad$
+			\begin{minipage}[H]{0.35\linewidth}
+				\centering
+				Multiset:
+
+				\begin{minipage}[H]{0.4\linewidth}
+					\begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+						\foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+							\foreach \z/\a/\d in {0/\top/1, 1/\wedge/0, 2/\top/1}
+								\ifthenelse{\d = 0}{
+									\draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+										node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+										(0,0) -- (0,0)}{
+									\draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+										node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+										(\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+					\end{tikzpicture}
+				\end{minipage}
+				$\leadsto$
+				\begin{minipage}[H]{0.4\linewidth}
+					\begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+						\foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+							\foreach \z/\a/\d in {0/\top/1, 1/\wedge/0, 2/\top/1}
+								\ifthenelse{\d = 0}{
+									\draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+										node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+										(0,0) -- (0,0)}{
+									\draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+										node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+										(\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+						\foreach \p/\n/\d in {{0,0}/a1/blue, {0,2}/a2/blue, {2,0}/a3/blue, {2,2}/a4/blue} \node[fill,tok,\d] (\n) at (\p) {};
+					\end{tikzpicture}
+				\end{minipage}
+			\end{minipage}
+        \end{minipage}
+    }
+
+
+	
+	\frame{
+		\frametitle{Datatypes}
+		
+		Tuple:
+		\input{proofnet-example-tuple}
+	}
+
+	\frame{
+		\frametitle{Datatypes}
+
+		Multiset:
+		\input{proofnet-example-multiset}
+
+		\begin{itemize}
+            \item Store tokens as sorted tuples
+            \item Matrix is upper-triangular (in n-dimensions)
+		\end{itemize}
+	}
+
+
+	\frame{
+		\frametitle{Datatypes}
+		
+		Set:
+		\input{proofnet-example-set}
+	}
+	
+\frame{
+		\frametitle{Datatypes}
+		
+		Set:
+		\input{proofnet-example-set-symbols}
+		
+		\begin{itemize}
+			\item How should the matrix be encoded?
+		\end{itemize}
+	}
+
+
+	\frame{
+        \frametitle{Dimensionality}
+		
+		\begin{align*}
+			\mathcal{D}^1 \quad \defeq \quad &\top \mid \bot \mid \mathcal{D}^1 \vee \mathcal{D}^1 \mid \mathcal{D}^1 \wedge \mathcal{D}^1 \\
+			\mathcal{D}^2 \quad \defeq \quad &ALL \mid A \vee \dual A \mid \mathcal{D}^{n \le 2} \wedge \mathcal{D}^2 \mid \mathcal{D}^{n \ge 2} \vee \mathcal{D}^2 \\
+			\mathcal{D}^3 \quad \defeq \quad &(A \wedge B) \vee (\dual A \wedge B) \vee (A \wedge \dual B) \vee (\dual A \wedge \dual B) \\
+										     &\mid \mathcal{D}^{n \le 3} \wedge \mathcal{D}^3 \mid \mathcal{D}^{n \ge 3} \vee \mathcal{D}^3 \\
+				          		\dots  \quad &
+		\end{align*}
+
+		\begin{itemize}
+			\item $A \in \mathcal{D}^n, B \in \mathcal{D}^m$ $\implies$ $A \vee B \in \mathcal{D}^{min(n, m)}$, $A \wedge B \in \mathcal{D}^{max(n, m)}$
+		\end{itemize}
+    }
+
+
+
+    \frame{
+        \frametitle{Dimensionality Bounds}
+		
+		\begin{itemize}
+			\item Number of variables
+			\item Dimensionality of largest \emph{disjunctive normal form} term
+			\item Exact bound is equivalent to proof search?
+		\end{itemize}
+    }
+
+
+
+    \frame{
+        \frametitle{Questions?}
+
+        
     }
 
 
 
     \frame{
         \frametitle{References}
+
         \bibliography{dortmund}
     }
 
