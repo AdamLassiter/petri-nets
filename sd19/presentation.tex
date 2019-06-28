@@ -96,7 +96,7 @@
         \end{figure}
 
         \begin{itemize}
-            \item All sequents are comprised of a pair of terms, maintained by deduction rules
+            \item Sequents are a pair of terms, maintained by deduction rules
             \item $␣ \+ 0, ␣ \* 1$ are identities
             \item Sequents are not necessarily commutative, idempotent etc.
         \end{itemize}
@@ -121,6 +121,17 @@
 
     \frame{
         \frametitle{Coalescence Proof Search}
+
+        \begin{itemize}
+            \item Fast (quadratic polynomial time and space)
+            \item Can extract a sequent proof
+            \item See \citet{petri-nets}
+        \end{itemize}
+
+    }
+
+    \frame{
+        \frametitle{Coalescence Proof Search}
         
         Initialization:
         \[
@@ -141,7 +152,6 @@
         \]
 
         \begin{itemize}
-            \item See \citet{petri-nets}
             \item Corresponds to axiom rule for ALL
         \end{itemize}
 
@@ -150,11 +160,11 @@
     \frame{
         \frametitle{Coalescence Proof Search}
 
-        Transitions:
+        Transitions and corresponding sequent rules:
         \[
             \begin{array}{ccc}
                 \begin{tikzpicture}[matrix]
-                    \foreach \i/\a in {1/{}, 2/\dual A, 3/{}}
+                    \foreach \i/\a in {1/{}, 2/A, 3/{}}
                         {\draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,3.3);}
                     \foreach \j/\b in {1/B, 2/\+, 3/C}
                         {\draw[gray] (0,\j) node[tgt] {$\b$} (.7,\j) -- (3.3,\j);}
@@ -164,7 +174,7 @@
                 \end{tikzpicture}
                 &
                 \begin{tikzpicture}[matrix]
-                    \foreach \i/\a in {1/{}, 2/\dual A, 3/{}}
+                    \foreach \i/\a in {1/{}, 2/A, 3/{}}
                         {\draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,3.3);}
                     \foreach \j/\b in {1/B, 2/\+, 3/C}
                         {\draw[gray] (0,\j) node[tgt] {$\b$} (.7,\j) -- (3.3,\j);}
@@ -174,7 +184,7 @@
                 \end{tikzpicture}
                 &
                 \begin{tikzpicture}[matrix]
-                  \foreach \i/\a in {1/{}, 2/\dual A, 3/{}}
+                  \foreach \i/\a in {1/{}, 2/A, 3/{}}
                     {\draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,3.3);}
                   \foreach \j/\b in {1/B, 2/\*, 3/C}
                     {\draw[gray] (0,\j) node[tgt] {$\b$} (.7,\j) -- (3.3,\j);}
@@ -185,8 +195,39 @@
                   \draw[jmp2] (b) to (c);
                 \end{tikzpicture}
                 \\
-                \begin{tikzpicture}[matrix]
-                    \foreach \i/\a in {1/\dual A, 2/\*, 3/\dual B}
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash A, B$}
+                        \UnaryInfC{$\vdash A, B \+ C$}
+                    \end{prooftree}
+                \end{minipage}
+                &
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash A, C$}
+                        \UnaryInfC{$\vdash A, B \+ C$}
+                    \end{prooftree}
+                \end{minipage}
+                &
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash A, B$}
+                        \AxiomC{$\vdash A, C$}
+                        \BinaryInfC{$\vdash A, B \* C$}
+                    \end{prooftree}
+                \end{minipage}
+            \end{array}
+        \]
+    }
+
+    \frame{
+        \frametitle{Coalescence Proof Search}
+
+        Transitions and corresponding sequent rules:
+        \[
+            \begin{array}{ccc}
+              \begin{tikzpicture}[matrix]
+                    \foreach \i/\a in {1/A, 2/\*, 3/B}
                         {\draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,3.3);}
                     \foreach \j/\b in {1/{}, 2/C, 3/{}}
                         {\draw[gray] (0,\j) node[tgt] {$\b$} (.7,\j) -- (3.3,\j);}
@@ -198,7 +239,7 @@
                 \end{tikzpicture}
                 &
                 \begin{tikzpicture}[matrix]
-                    \foreach \i/\a in {1/\dual A, 2/\+, 3/\dual B}
+                    \foreach \i/\a in {1/A, 2/\+, 3/B}
                         {\draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,3.3);}
                     \foreach \j/\b in {1/{}, 2/C, 3/{}}
                         {\draw[gray] (0,\j) node[tgt] {$\b$} (.7,\j) -- (3.3,\j);}
@@ -208,7 +249,7 @@
                 \end{tikzpicture}
                 &
                 \begin{tikzpicture}[matrix]
-                    \foreach \i/\a in {1/\dual A, 2/\+, 3/\dual B}
+                    \foreach \i/\a in {1/A, 2/\+, 3/B}
                         {\draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,3.3);}
                     \foreach \j/\b in {1/{}, 2/C, 3/{}}
                         {\draw[gray] (0,\j) node[tgt] {$\b$} (.7,\j) -- (3.3,\j);}
@@ -216,37 +257,7 @@
                     \node[tokG] (c) at (2,2) {};
                     \draw[jmp1] (b) to (c);
                 \end{tikzpicture}
-            \end{array}
-        \]
-    }
-
-    \frame{
-        \frametitle{Coalescence Proof Search}
-
-        Corresponding sequent rules for ALL:
-        \[
-            \begin{minipage}[H]{\linewidth}
-                \centering
-                \begin{minipage}[H]{0.3\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash A, B$}
-                        \UnaryInfC{$\vdash A, B \+ C$}
-                    \end{prooftree}
-                \end{minipage}
-                \begin{minipage}[H]{0.3\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash A, C$}
-                        \UnaryInfC{$\vdash A, B \+ C$}
-                    \end{prooftree}
-                \end{minipage}
-                \begin{minipage}[H]{0.3\linewidth}
-                    \begin{prooftree}
-                        \AxiomC{$\vdash A, B$}
-                        \AxiomC{$\vdash A, C$}
-                        \BinaryInfC{$\vdash A, B \* C$}
-                    \end{prooftree}
-                \end{minipage}
-                
+                \\
                 \begin{minipage}[H]{0.3\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash A, C$}
@@ -254,19 +265,21 @@
                         \BinaryInfC{$\vdash A \* B, C$}
                     \end{prooftree}
                 \end{minipage}
+                &
                 \begin{minipage}[H]{0.3\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash A, C$}
                         \UnaryInfC{$\vdash A \+ B, C$}
                     \end{prooftree}
                 \end{minipage}
+                &
                 \begin{minipage}[H]{0.3\linewidth}
                     \begin{prooftree}
                         \AxiomC{$\vdash B, C$}
                         \UnaryInfC{$\vdash A \+ B, C$}
                     \end{prooftree}
                 \end{minipage}
-            \end{minipage}
+            \end{array}
         \]
     }
 
@@ -446,7 +459,8 @@
             \RightLabel{$c$}\doubleLine\UnaryInfC{$\vdash P$}
         \end{prooftree}
         \begin{itemize}
-            \item Does not work for \emph{multiplicative} $\vee, \wedge$ rules, see \citet{contraction-restrictions}
+            \item Required for Coalescence to be equivalent to CL proof search
+            \item Does not work for \emph{multiplicative} rules, see \citet{contraction-restrictions}
         \end{itemize}
     }
 
@@ -604,9 +618,75 @@
 
     \frame{
         \frametitle{Coalescence Proof Search in CL}
+        
+        Transitions and corresponding sequent rules:
+        \[
+            \begin{array}{ccc}
+                \begin{tikzpicture}[matrix]
+                    \foreach \i/\a in {1/{}, 2/\Gamma, 3/{}}
+                        {\draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,3.3);}
+                    \foreach \j/\b in {1/A, 2/\vee, 3/B}
+                        {\draw[gray] (0,\j) node[tgt] {$\b$} (.7,\j) -- (3.3,\j);}
+                    \node[tokG] (a) at (2,1) {};
+                    \node[tokG] (c) at (2,2) {};
+                    \draw[jmp1] (a) to (c);
+                \end{tikzpicture}
+                &
+                \begin{tikzpicture}[matrix]
+                    \foreach \i/\a in {1/{}, 2/\Gamma, 3/{}}
+                        {\draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,3.3);}
+                    \foreach \j/\b in {1/A, 2/\vee, 3/B}
+                        {\draw[gray] (0,\j) node[tgt] {$\b$} (.7,\j) -- (3.3,\j);}
+                    \node[tokG] (b) at (2,3) {};
+                    \node[tokG] (c) at (2,2) {};
+                    \draw[jmp1] (b) to (c);
+                \end{tikzpicture}
+                &
+                \begin{tikzpicture}[matrix]
+                  \foreach \i/\a in {1/{}, 2/\Gamma, 3/{}}
+                    {\draw[gray] (\i,0) node[src] {$\a$} (\i,.7) -- (\i,3.3);}
+                  \foreach \j/\b in {1/A, 2/\wedge, 3/B}
+                    {\draw[gray] (0,\j) node[tgt] {$\b$} (.7,\j) -- (3.3,\j);}
+                  \node[tokG] (a) at (2,1) {};
+                  \node[tokG] (b) at (2,3) {};
+                  \node[tokG] (c) at (2,2) {};
+                  \draw[jmp2] (a) to (c);
+                  \draw[jmp2] (b) to (c);
+                \end{tikzpicture}
+                \\
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash \Gamma, A$}
+                        \UnaryInfC{$\vdash \Gamma, A \vee B$}
+                    \end{prooftree}
+                \end{minipage}
+                &
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash \Gamma, B$}
+                        \UnaryInfC{$\vdash \Gamma, A \vee B$}
+                    \end{prooftree}
+                \end{minipage}
+                &
+                \begin{minipage}[H]{0.3\linewidth}
+                    \begin{prooftree}
+                        \AxiomC{$\vdash \Gamma, A$}
+                        \AxiomC{$\vdash \Gamma, B$}
+                        \BinaryInfC{$\vdash \Gamma, A \wedge B$}
+                    \end{prooftree}
+                \end{minipage}
+            \end{array}
+        \]
+        \begin{itemize}
+            \item $w$/$c$ equivalent to increasing/decreasing dimension by one
+        \end{itemize}
+    }
+
+    \frame{
+        \frametitle{Coalescence Proof Search in CL}
 
         \begin{itemize}
-            \item No longer polynomially bounded
+            \item No longer quadratically bounded
             \item Coalescence on $|A|^n$
             \item Increase $n$ until \dots ?
         \end{itemize}
@@ -682,8 +762,7 @@
 
         Example $(\atom1 \vee \dual{\atom1}) \wedge (\atom2 \vee \dual{\atom2})$, $n \seteq 3$, $A \seteq \atom1 \vee \dual{\atom1}$, $B \seteq \atom2 \vee \dual{\atom2}$
         
-        \begin{minipage}{\linewidth}
-            \centering
+        \[
             \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
                 \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
                     \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
@@ -696,7 +775,9 @@
                                 (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
                 \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red} \node[fill,tok,\d] (\n) at (\p) {};
             \end{tikzpicture}
-
+        \]
+        \begin{minipage}{\linewidth}
+            \centering
             \begin{minipage}[H]{0.18\linewidth}
                 \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
                     \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/0/1/2/0/0, 0.8/2.8/1/0/-.8/-.8/90, 2/0/.4/.4/0/2/45} {
@@ -804,35 +885,36 @@
                     \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red, {1,1/c1/purple}} \node[fill,tok,\d] (\n) at (\p) {};
                 \end{tikzpicture}
             \end{minipage}
-            $\qquad$
+            $\qquad\textit{or}\qquad$
             \begin{minipage}[H]{0.15\linewidth}
-                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
-                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
-                        \foreach \z/\a/\d in {0/\top/1, 1/\wedge/0, 2/\top/1}
-                            \ifthenelse{\d = 0}{
-                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-                                    (0,0) -- (0,0)}{
-                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-                                    (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
-                \end{tikzpicture}
-            \end{minipage}
-            $\leadsto$
-            \begin{minipage}[H]{0.15\linewidth}
-                \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
-                    \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
-                        \foreach \z/\a/\d in {0/\top/1, 1/\wedge/0, 2/\top/1}
-                            \ifthenelse{\d = 0}{
-                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-                                    (0,0) -- (0,0)}{
-                                \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-                                    node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-                                    (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
-                    \foreach \p/\n/\d in {{0,0}/a1/blue, {0,2}/a2/blue, {2,0}/a3/blue, {2,2}/a4/blue} \node[fill,tok,\d] (\n) at (\p) {};
-                \end{tikzpicture}
-            \end{minipage}
+                    \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                        \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+                            \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
+                                \ifthenelse{\d = 0}{
+                                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                        (0,0) -- (0,0)}{
+                                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                        (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+                        \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red} \node[fill,tok,\d] (\n) at (\p) {};
+                    \end{tikzpicture}
+                \end{minipage}
+				$\leadsto$
+				\begin{minipage}[H]{0.15\linewidth}
+                    \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                        \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+                            \foreach \z/\a/\d in {0/\top/1, 1/\wedge/0, 2/\top/1}
+                                \ifthenelse{\d = 0}{
+                                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                        (0,0) -- (0,0)}{
+                                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                        (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+                        \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red} \node[fill,tok,\d] (\n) at (\p) {};
+                    \end{tikzpicture}
+                \end{minipage}
         \end{minipage}
     }
 
@@ -898,39 +980,40 @@
                     \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red, {1,1/c1/purple}} \node[fill,tok,\d] (\n) at (\p) {};
                 \end{tikzpicture}
             \end{minipage}
-			$\qquad$
-			\begin{minipage}[H]{0.35\linewidth}
+            $\qquad\textit{or}\qquad$
+			\begin{minipage}[H]{0.5\linewidth}
 				\centering
-				Multiset:
+				Multiset + Formula Rewriting:
 
 				\begin{minipage}[H]{0.4\linewidth}
-					\begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
-						\foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
-							\foreach \z/\a/\d in {0/\top/1, 1/\wedge/0, 2/\top/1}
-								\ifthenelse{\d = 0}{
-									\draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-										node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-										(0,0) -- (0,0)}{
-									\draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-										node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-										(\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
-					\end{tikzpicture}
-				\end{minipage}
-				$\leadsto$
+                    \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                        \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+                            \foreach \z/\a/\d in {0/A/1, 1/\wedge/0, 2/B/1}
+                                \ifthenelse{\d = 0}{
+                                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                        (0,0) -- (0,0)}{
+                                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                        (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+                        \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red} \node[fill,tok,\d] (\n) at (\p) {};
+                    \end{tikzpicture}
+                \end{minipage}
+				$\leadsto\quad$
 				\begin{minipage}[H]{0.4\linewidth}
-					\begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
-						\foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
-							\foreach \z/\a/\d in {0/\top/1, 1/\wedge/0, 2/\top/1}
-								\ifthenelse{\d = 0}{
-									\draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-										node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-										(0,0) -- (0,0)}{
-									\draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
-										node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
-										(\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
-						\foreach \p/\n/\d in {{0,0}/a1/blue, {0,2}/a2/blue, {2,0}/a3/blue, {2,2}/a4/blue} \node[fill,tok,\d] (\n) at (\p) {};
-					\end{tikzpicture}
-				\end{minipage}
+                    \begin{tikzpicture}[matrix,x=-3.5mm,y=3.5mm]
+                        \foreach \xs/\ys/\xz/\yz/\xl/\yl/\rot in {0/0/1/0/0/2/90, 0/0/0/1/2/0/0} {
+                            \foreach \z/\a/\d in {0/\top/1, 1/\wedge/0, 2/\top/1}
+                                \ifthenelse{\d = 0}{
+                                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                        (0,0) -- (0,0)}{
+                                    \draw[gray] (\xs + \z*\xz - \xl*0.5, \ys + \z*\yz - \yl*0.5)
+                                        node[tgt] {\ifthenelse{\rot > -1}{\rotatebox{\rot}{\footnotesize$\a$}}{}}
+                                        (\xs + \z*\xz - \xl*0.15, \ys + \z*\yz - \yl*0.15) -- (\xs + \z*\xz + \xl*1.15, \ys + \z*\yz + \yl*1.15)};};
+                        \foreach \p/\n/\d in {{0,0}/a1/blue, {2,2}/b1/red} \node[fill,tok,\d] (\n) at (\p) {};
+                    \end{tikzpicture}
+                \end{minipage}
 			\end{minipage}
         \end{minipage}
     }
