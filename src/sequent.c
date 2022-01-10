@@ -30,24 +30,24 @@ SequentProof *sequent_backtrack(PetriNet *net, size_t *place) {
 
     // Create a new sequent proof here
     SequentProof *proof = sequent_proof_new();
-    
+
     // For each possible branch (sequent term)
     for (size_t dim = 0; dim < n; dim++) {
         Formula *f = net->symbols[place[dim]];
         Grammar type = f->type;
         // Regardless of how we got here, this is proven
         llist_append(proof->sequents, f);
-        
+
         // Check if one or both paths need to be checked
         size_t arity = type == And ? 2 : type == Or ? 1 : 0;
         bool left_child = false,
              right_child = false;
-        
+
         // FIXME: There exists some bug where we end up with an invalid state and the proof halts
         // This seems to occur on right-branches
 
         // Where they exist, get both children
-        if (arity > 0) { 
+        if (arity > 0) {
             // Left
             memcpy(left_tk, place, sizeof(*place) * n);
             left_tk[dim] = f->left->i;
@@ -59,7 +59,7 @@ SequentProof *sequent_backtrack(PetriNet *net, size_t *place) {
             petri_net_token_sort(left_tk, n);
             right_child = ndarray_get(net->places, right_tk);
         }
-        
+
         // Append children as tree branches
         size_t n_children = left_child && right_child ? 2 : left_child || right_child ? 1 : 0;
         // Don't follow in multiple dimensions
@@ -161,7 +161,7 @@ static int sequent_recurse(Formula *formula, bool with_sequent, bool top_optimis
 
         free(root);
     }
-    
+
     time_t diff_sec = stop.tv_sec - start.tv_sec,
            diff_usec = stop.tv_usec - start.tv_usec;
     printf(r.n > 0 ? "Solution in %d dimensions.\n" : "No solution found (up to %d dimensions).\n", abs(r.n));
@@ -198,13 +198,13 @@ static int sequent_proof_main(int argc, char *argv[]) {
             default:
                 abort();
         }
-    
+
     char *string = argv[optind];
     Formula *formula = formula_parse(&string);
-    
+
     if (with_sequent) printf("\\documentclass[border=1in]{standalone}\n\\usepackage{bpextra,varwidth}\n\\begin{document}\n\\begin{tabular}{@{}l@{}}\n");
     int ret = sequent_recurse(formula, with_sequent, top_optimise);
     if (with_sequent) printf("\\end{tabular}\n\\end{document}\n");
-    
+
     return ret > 0 ? ret : -1;
 }

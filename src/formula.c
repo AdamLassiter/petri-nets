@@ -35,7 +35,7 @@ Formula *formula_parse(char **string) {
                     formula->symbol = *op;
                     formula->type = (Grammar) *op;
                 break;
-                
+
                 // Implies / Implied by (¬a v b) / (a v ¬b)
                 case Implies:
                 case Implied:
@@ -43,7 +43,7 @@ Formula *formula_parse(char **string) {
                     formula->type = Or;
                     formula_negate(*op == Implies? formula->left : formula->right);
                 break;
-                
+
                 // Equivalence by (a -> b) ^ (a <- b)
                 case NotEquivalent:
                 case Equivalent:
@@ -80,7 +80,7 @@ Formula *formula_parse(char **string) {
                 exit(1);
             }
         break;
-        
+
         // Unary Not
         case NotAtom:
             *string += sizeof(char);
@@ -94,7 +94,7 @@ Formula *formula_parse(char **string) {
                 formula->type = NotAtom;
             }
         break;
-        
+
         // Out-of-place Binary Operator
         case Or:
         case And:
@@ -106,14 +106,14 @@ Formula *formula_parse(char **string) {
                     *string[0], Top, Bottom, NotAtom);
             exit(1);
         break;
-        
+
         // Top/Bottom
         case Top:
         case Bottom:
             formula->symbol = *string[0];
             formula->type = (Grammar) *string[0];
         break;
-        
+
         // Atom
         default:
             formula->symbol = *string[0];
@@ -216,7 +216,7 @@ void formula_negate(Formula *formula) {
 size_t formula_n_free_names(Formula *formula) {
     bool free_chars[128] = {0};
     size_t free_chars_tot = 0;
-    
+
     Formula **nodes = formula_flatten(formula);
     for (size_t i = 0; i < formula_length(formula); i++)
         if (nodes[i]->type == Atom || nodes[i]->type == NotAtom)
@@ -227,7 +227,7 @@ size_t formula_n_free_names(Formula *formula) {
         if (free_chars[i]) {
             free_chars_tot++;
         }
-    
+
     return free_chars_tot;
 }
 

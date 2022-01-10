@@ -90,7 +90,7 @@ void rbtree_free(RBTree *tree, rbtree_node_f node_cb) {
         if (node_cb) {
             RBTreeNode *node = tree->root;
             RBTreeNode *save = NULL;
-            
+
             // Rotate away the left links so that
             // we can treat this like the destruction
             // of a linked list
@@ -102,7 +102,7 @@ void rbtree_free(RBTree *tree, rbtree_node_f node_cb) {
                     node_cb(tree, node);
                     node = NULL;
                 } else {
-                    
+
                     // Rotate away the left link and check again
                     save = node->link[0];
                     node->link[0] = save->link[1];
@@ -169,7 +169,7 @@ static bool rbtree_insert_node(RBTree *tree, RBTreeNode *node) {
                     // Insert node at the first null link.
                     p->link[dir] = q = node;
                 } else if (rbtree_node_is_red(q->link[0]) && rbtree_node_is_red(q->link[1])) {
-                
+
                     // Simple red violation: color flip
                     q->red = 1;
                     q->link[0]->red = 0;
@@ -186,7 +186,7 @@ static bool rbtree_insert_node(RBTree *tree, RBTreeNode *node) {
                         t->link[dir2] = rbtree_node_rotate2(g, !last);
                     }
                 }
-          
+
                 // Stop working if we inserted a node. This
                 // check also disallows duplicates in the tree
                 if (tree->cmp(tree, q, node) == 0) {
@@ -213,7 +213,7 @@ static bool rbtree_insert_node(RBTree *tree, RBTreeNode *node) {
         tree->root->red = 0;
         ++tree->size;
     }
-    
+
     return result;
 }
 
@@ -234,7 +234,7 @@ bool rbtree_remove_with_cb(RBTree *tree, void *value, rbtree_node_f node_cb) {
         q = &head;
         g = p = NULL;
         q->link[1] = tree->root;
-    
+
         // Search and push a red node down
         // to fix red violations as we go
         while (q->link[dir] != NULL) {
@@ -244,7 +244,7 @@ bool rbtree_remove_with_cb(RBTree *tree, void *value, rbtree_node_f node_cb) {
             g = p, p = q;
             q = q->link[dir];
             dir = tree->cmp(tree, q, &node) < 0;
-      
+
             // Save the node with matching value and keep
             // going; we'll do removal tasks at the end
             if (tree->cmp(tree, q, &node) == 0) {
@@ -271,7 +271,7 @@ bool rbtree_remove_with_cb(RBTree *tree, void *value, rbtree_node_f node_cb) {
                             } else if (rbtree_node_is_red(s->link[!last])) {
                                 g->link[dir2] = rbtree_node_rotate(p, last);
                             }
-                            
+
                             // Ensure correct coloring
                             q->red = g->link[dir2]->red = 1;
                             g->link[dir2]->link[0]->red = 0;
@@ -287,9 +287,9 @@ bool rbtree_remove_with_cb(RBTree *tree, void *value, rbtree_node_f node_cb) {
             void *tmp = f->value;
             f->value = q->value;
             q->value = tmp;
-            
+
             p->link[p->link[1] == q] = q->link[q->link[0] == NULL];
-            
+
             if (node_cb) {
                 node_cb(tree, q);
             }
@@ -416,4 +416,3 @@ void *rbtree_iter_next(RBTreeIter *self) {
 void *rbtree_iter_prev(RBTreeIter *self) {
     return rbtree_iter_move(self, 0);
 }
-
