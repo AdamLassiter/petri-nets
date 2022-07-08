@@ -13,11 +13,6 @@ The following do not represent minimum requirements, but those used in developme
 * gcc 8.2.0
 
 ## Getting Started
-To download the repository:
-```
-git clone https://gitlab.com/adamlassiter/petri-nets.git
-```
-
 To compile and start using the solver:
 ```
 cd petri-nets/src
@@ -47,7 +42,7 @@ latexmk -pdf presentation.tex
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details on code of conduct and the process for submitting pull requests.
 
 ## Authors
-This project remains the sole work of Adam Lassiter (https://gitlab.com/adamlassiter, http://people.bath.ac.uk/atl35/) and Willem Heijltjes (http://willem.heijltj.es/) - see [COPYRIGHT.md](COPYRIGHT.md) for details.
+This project remains the sole work of Adam Lassiter (https://github.com/AdamLassiter) and Willem Heijltjes (http://willem.heijltj.es/) - see [COPYRIGHT.md](COPYRIGHT.md) for details.
 
 ## License
 This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) for details.
